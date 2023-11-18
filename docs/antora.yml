@@ -1,0 +1,6 @@
+name: identity
+version: 0.1-draft
+title: Identity Assertion
+start_page: index.adoc
+nav:
+- modules/nav.adoc  

@@ -1,0 +1,14 @@
+# Use this playbook when building locally.
+
+site:
+  title: Identity Assertion
+  start_page: identity::index.adoc
+content:
+  sources: 
+  - url: .
+    branches: main
+    start_path: docs
+ui: 
+  bundle:
+    url: https://local--voluble-treacle-74ce0d.netlify.app/ui-bundle.zip
+    snapshot: true
