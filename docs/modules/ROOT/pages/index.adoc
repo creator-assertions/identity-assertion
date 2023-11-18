@@ -1,4 +1,4 @@
-= Identity assertion
+= Identity Assertion
 :toc: macro
 :toc-title:
 :sectanchors:
