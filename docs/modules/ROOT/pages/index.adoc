@@ -200,7 +200,7 @@ A *partial claim* MUST contain the exact CBOR serialization as the corresponding
 
 The CBOR serialization of the *partial claim* is presented as the content to be signed by the _<<_credential_subject,credential subject>>._
 
-== Creating the dentity assertion and claim
+== Creating the identity assertion and claim
 
 === Claim creation overview
 
