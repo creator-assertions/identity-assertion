@@ -254,16 +254,43 @@ IMPORTANT: The final claim MUST contain the exact CBOR serialization as the corr
 
 == Validating the identity assertion
 
-A identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical spec AND all steps in this section are successful. This validation MUST be completed before a validator presents a successful result to a human user or begins to render any content.
+An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical spec. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
 
-[NOTE]
-.TO DO: These steps/rules are rough; will wordsmith and add status codes later.
-====
-* Assertion must fit CBOR `identity` rule as described earlier in this spec.
-* `sig_type` must be one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
-* `pad1` and `pad2` must contain only zero bytes.
-* All rules defined in the “Validation” section corresponding to the `sig_type` value. (These haven’t been written yet.)
-====
+=== Status codes
+
+The set of standard success and failure codes for identity assertion validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_status_codes++[Section 16.1, “Status codes,”] of the C2PA technical spec.
+
+The `url` field for a status code MUST always be the label of the identity assertion. It is omitted from the tables below.
+
+==== Success codes
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |   Meaning
+|`xyz.identity.validated` | The identity assertion, including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
+|=======================
+
+==== Failure codes
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |   Meaning
+|`xyz.identity.cbor.invalid` | The CBOR of the identity assertion is not valid.
+|`xyz.identity.sig_type.invalid` | The `sig_type` of the identity assertion is not valid.
+|`xyz.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
+|=======================
+
+NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+
+=== Validation method
+
+An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `xyz.identity.cbor.invalid` error code SHALL be used to report assertions that do follow this rule.
+
+The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `xyz.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+
+The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `xyz.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
+
+The validator MUST also follow all validation rules for the signature type declared in the `sig_type` field as described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 == Credentials, signatures, and validation methods
 
