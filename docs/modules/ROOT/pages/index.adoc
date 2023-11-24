@@ -350,3 +350,13 @@ _This section is non-normative._
 * Think through wallet-holder experience challenges, especially when batch-producing assets.
 * Think through async issues and online failure cases involved in verifying VC/DID document chains.
 ====
+
+== Open issues / discussion
+
+_This section is non-normative._
+
+Resolve the following topics before producing a 1.0 version of this spec:
+
+* How to express the credential holder's role in relation to the manifest or specific actions in the manifest? The soon-to-be-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
+* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
+* Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
