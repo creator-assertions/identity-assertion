@@ -367,25 +367,36 @@ NOTE: TO DO: Write up verification procedures.
 
 === X.509 certificates and COSE signatures
 
-[NOTE]
-.TO DO: For this section I still need to define:
-====
-* value of `sig_type` field
-* content of `signature` field
-* signing protocol
-* validation protocol
-====
+In some use cases, the _<<actor,actors>>_ in the system may wish to provide an https://tools.ietf.org/html/rfc5280[X.509 certificate] to have an organizational or individual identity described by the certificate associated with the _<<_c2pa-claim,C2PA claim>>._
+
+The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signature` value MUST be a https://datatracker.ietf.org/doc/html/rfc8152[COSE signature] as described below.
+
+==== Generating the COSE signature
+
+To generate the COSE signature for an identity assertion, the steps described in the listed sections of the C2PA technical spec MUST be followed with adaptations as described subsequently:
+
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time-stamps”]
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashing++[Section 14.1, “Hashing”]
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_digital_signatures++[Section 14.2, “Digital signature”]
+* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_inclusion_of_signer_icons++[Section 14.2.5, “Inclusion of signer icons”]
+
+In each of the above sections, the following changes MUST be applied:
+
+* Any reference to the _claim_ MUST be replaced with the _partial claim_ as defined in xref:_partial_claim_definition[xrefstyle=full] of this document.
+* Any reference to the _claim generator_ MUST be replaced with the _actor_ whose _X.509 certificate_ is being used for this assertion.
 
 [NOTE]
-.TO DO: Describe how signatures should be generated. Adapt from or possibly reference the following sections from C2PA spec:
+.TO DO: Review C2PA spec for additional adaptions that might be relevant.
 ====
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_signing_a_claim++[11.3.2.4. Signing a claim]
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_time_stamps++[11.3.2.5. Time-stamps]
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_credential_revocation_information++[11.3.2.6. Credential revocation information]
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashing++[14.1. Hashing]
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_digital_signatures++[14.2. Digital signature]
-* link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_inclusion_of_signer_icons++[14.2.5. Inclusion of signer icons]
+* Is the EKU usage still valid for this purpose?
+* Is the trust list the same?
 ====
+
+==== Validating the COSE signature
+
+NOTE: TO DO: Write this section. Similar to the generation section, I expect it will largely leverage the C2PA spec.
 
 == Trust model
 
