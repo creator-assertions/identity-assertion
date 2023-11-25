@@ -300,17 +300,17 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials and verifiable presentations
 
-In some use cases, an _<<actor>>_ in the system may wish to provide its own https://www.w3.org/TR/vc-data-model/[W3C verifiable credential], as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This actors may be an individual, group, or organization.
+In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
 
 NOTE: TO DO: Above comment about association with assertion is adapted from C2PA spec. Is it still correct to tie identity _only_ to _assertions_ or can it also be more generally to a _claim_ or _asset?_
 
-The actor’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation].
+The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a _link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation]._
 
 NOTE: Discuss whether the VC for the claim is necessary. I’ve heard some feedback that having a VC for the claim would make it easier for a wallet application to have suitable information to present when fulfulling the presentation request. A counter-concern is that this is effectively redundant and would require the claim-generator’s identity to be expressed both in X.509 and VC. Need to balance these concerns.
 
 The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
 
-NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in section 6 of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
+NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
 ==== Verifiable credential for actor
 
@@ -325,16 +325,16 @@ ____
 
 NOTE: TO DO: Build a new example of a compliant credential.
 
-A W3C verifiable credential used with an identity assertion MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid https://www.w3.org/TR/did-core/[W3C Decentralized Identifier].
+A _verifiable credential_ used with an identity assertion MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid _https://www.w3.org/TR/did-core/[W3C decentralized identifier]._
 
 As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Methods,”] of the W3C decentralized identifier spec, a _DID method_ defines how implementers can create, resolve, update, and deactivate DIDs and DID documents.
 
-All W3C distributed identifiers that are stored in an identity assertion SHALL be generated using one of the DID methods as described in this section. This section defines both:
+All _W3C distributed identifiers_ that are stored in an identity assertion SHALL be generated using one of the _DID methods_ as described in this section. This section defines both:
 
-* A list of DID methods that are allowed for generating identifiers for new content as well as required for validating identifiers of existing content (the allowed list), and
-* A list of DID methods that are required to be supported for validating identifiers of existing content but are not allowed for generating identifiers for new content (the deprecated list).
+* A list of _DID methods_ that are allowed for generating identifiers for new content as well as required for validating identifiers of existing content (the allowed list), and
+* A list of _DID methods_ that are required to be supported for validating identifiers of existing content but are not allowed for generating identifiers for new content (the deprecated list).
 
-A DID method MUST appear in no more than one list. If a DID method does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding an algorithm. For this reason, implementations MUST NOT support additional algorithms on an optional basis.
+A _DID method_ MUST appear in no more than one list. If a DID method does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding an algorithm. For this reason, implementations MUST NOT support additional algorithms on an optional basis.
 
 NOTE: TO DO: Is the strict prohibition necessary in this case?
 
@@ -367,9 +367,9 @@ NOTE: TO DO: Write up verification procedures.
 
 === X.509 certificates and COSE signatures
 
-In some use cases, an _<<actor>_ in the system may wish to provide an https://tools.ietf.org/html/rfc5280[X.509 certificate] to have an organizational or individual identity described by the certificate associated with the _<<_c2pa-claim,C2PA claim>>._
+In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the _<<C2PA claim>>._
 
-The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signature` value MUST be a https://datatracker.ietf.org/doc/html/rfc8152[COSE signature] as described below.
+The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
 ==== Generating the COSE signature
 
@@ -385,7 +385,7 @@ To generate the COSE signature for an identity assertion, the steps described in
 In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the _partial claim_ as defined in xref:_partial_claim_definition[xrefstyle=full] of this document.
-* Any reference to the _claim generator_ MUST be replaced with the _actor_ whose _X.509 certificate_ is being used for this assertion.
+* Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 [NOTE]
 .TO DO: Review C2PA spec for additional adaptions that might be relevant.
