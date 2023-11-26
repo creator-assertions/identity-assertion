@@ -286,7 +286,7 @@ NOTE: Additional failure codes relating to specific signature types are defined 
 
 === Validation method
 
-An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do follow this rule.
+An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
 The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
