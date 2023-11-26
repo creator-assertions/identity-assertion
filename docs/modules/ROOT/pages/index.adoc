@@ -157,7 +157,7 @@ The identity assertion contains the following data fields:
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are explained in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The identity assertion shall have a label of `xyz.identity`. More than one identity assertion may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_multiple_instances++[Section 11.4, “Multiple instances,”] of the C2PA technical specification.
+The identity assertion shall have a label of `cca.identity`. More than one identity assertion may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_multiple_instances++[Section 11.4, “Multiple instances,”] of the C2PA technical specification.
 
 NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
@@ -188,7 +188,7 @@ NOTE: TO DO: Prepare example.
 
 === Partial claim definition
 
-There is a circular dependency issue involving the following relationships:
+It is necessary to resolve a circular dependency issue involving the following relationships:
 
 * A _<<C2PA claim>>_ must reference at least one _content binding assertion_ which provides a tamper-evident link from the _<<C2PA claim>>_ to the _<<C2PA asset>>._ For many asset file formats, it is necessary to finalize the file layout in order to correctly create the content binding assertion.
 * The identity assertion contains a signature over the _<<C2PA claim>>_ issued by a _<<_credential_subject,credential subject>>._
@@ -228,9 +228,9 @@ A temporary version of the identity assertion, referred to as a *placeholder ass
 
 This enables the final layout of the _<<C2PA asset>>_ to be computed, which then enables a valid _content binding assertion_ to be computed. A valid content binding assertion is critical to binding the _<<C2PA Manifest>>_ to the _<<C2PA asset>>_ and thus to binding the _<<_credential_subject,credential subject>>_ to the _<<C2PA asset>>._
 
-A placeholder assertion MUST have its `sig_type` field set to `xyz.placeholder`. The `signature` field MUST be set to a zero-length byte array. The `pad1` and `pad2` fields MUST be filled with zero bytes to leave sufficient room for the `signature` value will be added later.
+A placeholder assertion MUST have its `sig_type` field set to `cca.placeholder`. The `signature` field MUST be set to a zero-length byte array. The `pad1` and `pad2` fields MUST be filled with zero bytes to leave sufficient room for the `signature` value will be added later.
 
-IMPORTANT: The `sig_type` value of `xyz.placeholder` is not valid when present in a final, signed _<<C2PA Manifest>>._
+IMPORTANT: The `sig_type` value of `cca.placeholder` is not valid when present in a final, signed _<<C2PA Manifest>>._
 
 IMPORTANT: The size of the final identity assertion MUST exactly match the size of the placeholder assertion created at this time. Therefore, the `pad1` and `pad2` fields of a placeholder assertion MUST be sufficiently large to reflect any possible size of the final assertion.
 
@@ -267,7 +267,7 @@ The `url` field for a status code MUST always be the label of the identity asser
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`xyz.identity.validated` | The identity assertion, including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
+|`cca.identity.validated` | The identity assertion, including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
 |=======================
 
 ==== Failure codes
@@ -275,20 +275,20 @@ The `url` field for a status code MUST always be the label of the identity asser
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`xyz.identity.cbor.invalid` | The CBOR of the identity assertion is not valid.
-|`xyz.identity.sig_type.invalid` | The `sig_type` of the identity assertion is not valid.
-|`xyz.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
+|`cca.identity.cbor.invalid` | The CBOR of the identity assertion is not valid.
+|`cca.identity.sig_type.invalid` | The `sig_type` of the identity assertion is not valid.
+|`cca.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 === Validation method
 
-An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `xyz.identity.cbor.invalid` error code SHALL be used to report assertions that do follow this rule.
+An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do follow this rule.
 
-The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `xyz.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
-The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `xyz.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
+The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
 The validator MUST also follow all validation rules for the signature type declared in the `sig_type` field as described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
