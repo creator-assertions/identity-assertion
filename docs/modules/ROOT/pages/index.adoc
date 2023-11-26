@@ -298,6 +298,8 @@ The identity assertion allows multiple signature types to be represented, althou
 
 The signature type is represented by the `sig_type` field and must be one of the values described within this section.
 
+NOTE: TO DO: Add sequence diagram here.
+
 === W3C verifiable credentials and verifiable presentations
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
