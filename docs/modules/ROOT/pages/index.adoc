@@ -8,7 +8,7 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 24 November 2023*
+*Preliminary draft 27 November 2023*
 
 *Editors:*
 
@@ -228,9 +228,9 @@ As per link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Spec
 
 A temporary version of the identity assertion, referred to as a *placeholder assertion,* is created to reserve space for the _<<_credential_subject,credential subject>>’s_ signature which will be added later.
 
-This enables the final layout of the _<<C2PA asset>>_ to be computed, which then enables a valid _content binding assertion_ to be computed. A valid content binding assertion is critical to binding the _<<C2PA Manifest>>_ to the _<<C2PA asset>>_ and thus to binding the _<<_credential_subject,credential subject>>_ to the _<<C2PA asset>>._
+This enables the final layout of the _<<C2PA asset>>_ to be computed, which then enables a valid _content binding assertion_ to be computed. A valid content binding assertion is critical to binding the _<<C2PA Manifest>>_ to the _<<C2PA asset>>_ which also enables binding the _<<_credential_subject,credential subject>>_ to the _<<C2PA asset>>._
 
-A placeholder assertion MUST have its `sig_type` field set to `cca.placeholder`. The `signature` field MUST be set to a zero-length byte array. The `pad1` and `pad2` fields MUST be filled with zero bytes to leave sufficient room for the `signature` value will be added later.
+A placeholder assertion MUST have its `sig_type` field set to `cca.placeholder`. The `signature` field MUST be set to a zero-length byte array. The `pad1` and `pad2` fields MUST be filled with enough zero-value (`0x00`) bytes to leave sufficient room for the `signature` value that will be added later.
 
 IMPORTANT: The `sig_type` value of `cca.placeholder` is not valid when present in a final, signed _<<C2PA Manifest>>._
 
@@ -242,7 +242,7 @@ The serialized CBOR of the _<<_partial_claim,partial claim>>_ document at this s
 
 The signature method will depend on the nature of credential presented. These are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-Once the signatures are obtained, the content of each identity assertion previously added to the _<<C2PA claim>>_ MUST be replaced with new assertion content where the `sig_type` and `signature` value correctly bind the _<<_credential_subject,credential subject>>_ to the content. The acceptable values for these fields depend on the nature of credentials used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The values of the `pad1` and `pad2` MUST be adjusted (changed in length) so that the assertion size exactly matches the size of the placeholder assertion. All bytes written into `pad1` and `pad2` MUST be zero.
+Once the signatures are obtained, the content of each identity assertion previously added to the _<<C2PA claim>>_ MUST be replaced with new assertion content where the `sig_type` and `signature` value correctly bind the _<<_credential_subject,credential subject>>_ to the content. The acceptable values for these fields depend on the nature of credentials used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. Now that the `signature and `sig_type` values are available, the values of the `pad1` and `pad2` MUST be recomputed (reduced in size) such that the resulting identity assertion exactly matches the size of the placeholder assertion.
 
 NOTE: Preferred/deterministic CBOR serialization of byte arrays uses a variable-length integer to specify the length of the encoded binary data. When the length goes from zero to one byte, or one to two bytes (etc.), the length of the resulting pad jumps by two bytes. This means that not all paddings can be expressed using a single padding field. For example, 24-byte and 26-byte pads can be created, but a 25-byte pad cannot. If this situation arises, the desired padding can be split between `pad1` and `pad2`. For example, to make a 25-byte pad, an implementation can encode 19 bytes into `pad1` (resulting in an encoded length of 20 bytes), and 4 bytes into `pad2` (resulting in 5 bytes.)
 
@@ -257,6 +257,16 @@ IMPORTANT: The final claim MUST contain the exact CBOR serialization as the corr
 == Validating the identity assertion
 
 An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical spec. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
+
+=== Validation method
+
+An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
+
+The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+
+The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
+
+The validator MUST compute the _<<_partial_claim,partial claim>>_ as described in xref:_partial_claim_definition[xrefstyle=full]. The validator MUST also follow all validation rules for the signature type declared in the `sig_type` field as described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full], using the value of _<<_partial_claim,partial claim>>_ just calculated.
 
 === Status codes
 
@@ -284,16 +294,6 @@ The `url` field for a status code MUST always be the label of the identity asser
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-=== Validation method
-
-An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
-
-The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
-
-The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
-
-The validator MUST also follow all validation rules for the signature type declared in the `sig_type` field as described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
-
 == Credentials, signatures, and validation methods
 
 The identity assertion allows multiple signature types to be represented, although only one _<<ToIP verifiable identifier>>_ and corresponding signature can be used in any single assertion.
@@ -313,6 +313,8 @@ The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiabl
 NOTE: Discuss whether the VC for the claim is necessary. I’ve heard some feedback that having a VC for the claim would make it easier for a wallet application to have suitable information to present when fulfulling the presentation request. A counter-concern is that this is effectively redundant and would require the claim-generator’s identity to be expressed both in X.509 and VC. Need to balance these concerns.
 
 The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
+
+NOTE: TO DO: Is JSON-LD still required/preferred? I’ve heard some feedback that there may be less consensus around this now.
 
 NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
