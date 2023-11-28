@@ -10,6 +10,8 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *ide
 
 *Preliminary draft 27 November 2023*
 
+IMPORTANT: This is an early review draft of this document. Please refer to the draft date when providing feedback. The version number “0.1-draft” will be used for all drafts until the first public review of this document.
+
 *Editors:*
 
 * mailto:scouten@adobe.com[Eric Scouten] (https://adobe.com[Adobe])
