@@ -200,8 +200,6 @@ A *partial claim* MUST contain the exact CBOR serialization as the corresponding
 
 The CBOR serialization of the *partial claim* is presented as the content to be signed by the _<<_credential_subject,credential subject>>._
 
-NOTE: TO DO: Add a sequence diagram here.
-
 == Creating the identity assertion and claim
 
 === Claim creation overview
@@ -221,6 +219,30 @@ The C2PA technical spec defines a specific sequence of steps to perform in link:
 9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
 11. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
+
+These steps are also represented by the following sequence diagram, which is non-normative.
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+    participant G as Claim generator
+    participant H as Credential holder
+
+    G->>G: Create assertions
+    Note right of G: Includes identity placeholder assertions
+    G->>G: Create content bindings
+    G->>G: Create partial claim
+
+    loop For each credential holder
+    G->>H: Request signature over partial claim
+    H->>G: Provide signature over partial claim
+    end
+
+    G->>G: Replace placeholder assertions with final identity assertions
+    G->>G: Create final claim
+    G->>G: Issue claim generator signature for final claim
+    G->>G: Create manifest store
+....
 
 === Creating placeholders for identity assertions
 
