@@ -8,9 +8,10 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 27 November 2023*
+*Preliminary draft 29 November 2023* +
+xref:_version_history[]
 
-IMPORTANT: This is an early review draft of this document. Please refer to the draft date when providing feedback. The version number “0.1-draft” will be used for all drafts until the first public review of this document.
+IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
 
 *Editors:*
 
@@ -135,13 +136,8 @@ See xref:_partial_claim_definition[xrefstyle=full] for details on how to calcula
 * https://www.w3.org/TR/did-core/[W3C distributed identifiers (DIDs)]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
-== Standard terms
-
-The key words “MUST,” “MUST NOT,” “REQUIRED,” “SHALL,” “SHALL NOT,” “SHOULD,” “SHOULD NOT,” “RECOMMENDED,” “NOT RECOMMENDED,” “MAY,” and “OPTIONAL” in this document are to be interpreted as described in https://tools.ietf.org/html/bcp14[BCP 14], https://tools.ietf.org/html/rfc2119[RFC 2119], and https://tools.ietf.org/html/rfc8174[RFC 8174] when they appear in any casing (upper, lower, or mixed).
-
-== Version history
-
-NOTE: TO DO: Add version history starting with initial draft.
+include::partial$terms.adoc[]
+include::partial$version_history.adoc[]
 
 == Assertion definition
 
