@@ -9,4 +9,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *29 November 2023*
 
 * Added this version history section.
-
+* Replace partial claim mechanism with list of assertions.
