@@ -276,7 +276,7 @@ An identity assertion MUST contain valid CBOR that satisfies the `identity` rule
 
 For each entry in the `assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that the `assertions` field contains at least one MUST include a content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical spec. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing content binding.
+The validator MUST ensure that the `assertions` field contains at least one content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical spec. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing content binding.
 
 The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
