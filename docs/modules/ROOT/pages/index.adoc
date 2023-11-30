@@ -231,7 +231,7 @@ The C2PA technical specification explains the need for pre-computing the _<<_c2p
 
 Similarly, the size of the identity assertion cannot be known until its signature is obtained. Changing the size of the identity assertion after file layout is completed would invalidate the content binding hash, which is required to be present in the identity assertion.
 
-In this case, it is necessary to use a *<<_placeholder_assertion,placeholder assertion,>>* to reserve space for the content of the final identity assertion (including its signature) which will be created later.
+In this case, it is necessary to use a *<<_placeholder_assertion,placeholder assertion>>* to reserve space for the content of the final identity assertion (including its signature) which will be created later.
 
 When using a data hash assertion, a claim generator MUST follow the process described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
 
