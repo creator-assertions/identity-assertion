@@ -8,7 +8,7 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 29 November 2023* +
+*Preliminary draft 30 November 2023* +
 xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
@@ -202,7 +202,7 @@ The CBOR serialization of the *partial claim* is presented as the content to be 
 
 === Claim creation overview
 
-The C2PA technical spec defines a specific sequence of steps to perform in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim.”] When creating a _<<C2PA claim>>_ with one or more identity assertions, that sequence MUST be performed as described in the C2PA technical spec with additional steps as described below:
+The C2PA technical specification defines a specific sequence of steps to perform in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim.”] When creating a _<<C2PA claim>>_ with one or more identity assertions, that sequence MUST be performed as described in the C2PA technical specification with additional steps as described below:
 
 1. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions.”] Any identity assertion that will be added to the claim MUST be represented during this step by a placeholder assertion as described in xref:_creating_placeholders_for_identity_assertions[xrefstyle=full] during this step.
 2. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 11.3.2.1, “Adding assertions and redactions”]
@@ -244,7 +244,7 @@ sequenceDiagram
 
 === Creating placeholders for identity assertions
 
-As per link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical spec, all assertions must be created and stored in a newly-created assertion store.
+As per link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification, all assertions must be created and stored in a newly-created assertion store.
 
 A temporary version of the identity assertion, referred to as a *placeholder assertion,* is created to reserve space for the _<<_credential_subject,credential subject>>’s_ signature which will be added later.
 
@@ -276,7 +276,7 @@ IMPORTANT: The final claim MUST contain the exact CBOR serialization as the corr
 
 == Validating the identity assertion
 
-An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical spec. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
+An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
 
 === Validation method
 
@@ -290,7 +290,7 @@ The validator MUST compute the _<<_partial_claim,partial claim>>_ as described i
 
 === Status codes
 
-The set of standard success and failure codes for identity assertion validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_status_codes++[Section 16.1, “Status codes,”] of the C2PA technical spec.
+The set of standard success and failure codes for identity assertion validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_status_codes++[Section 16.1, “Status codes,”] of the C2PA technical specification.
 
 The `url` field for a status code MUST always be the label of the identity assertion. It is omitted from the tables below.
 
@@ -397,7 +397,7 @@ The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signatu
 
 ==== Generating the COSE signature
 
-To generate the COSE signature for an identity assertion, the steps described in the listed sections of the C2PA technical spec MUST be followed with adaptations as described subsequently:
+To generate the COSE signature for an identity assertion, the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described subsequently:
 
 * link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 * link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time-stamps”]
@@ -428,7 +428,7 @@ IMPORTANT: This section augments link:++https://c2pa.org/specifications/specific
 [NOTE]
 .TO DO: Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
 ====
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_trust_model++[15. Trust model] in C2PA technical spec
+* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_trust_model++[15. Trust model] in C2PA technical specification
 * link:++https://c2pa.org/specifications/specifications/1.0/security/Security_Considerations.html#_trust_model++[2.2 Trust model] in C2PA security considerations
 * link:++https://www.w3.org/TR/vc-data-model/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
 * link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
