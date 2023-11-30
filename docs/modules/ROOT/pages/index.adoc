@@ -156,6 +156,8 @@ For each assertion listed in the `assertions` field of the identity assertion, a
 
 The `assertions` entry of the identity assertion MUST NOT reference the same identity assertion itself.
 
+NOTE: The list of assertions in the `assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+
 The `assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
 
 The `assertions` entry of an identity assertion MAY reference any other identity assertion. A claim generator MUST NOT allow any two identity assertions to refer to each other.
@@ -202,6 +204,8 @@ The list of assertions that will be included in the identity assertion MUST be p
 
 === Creating the assertion
 
+IMPORTANT: If a data hash assertion is being used, the claim generator MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+
 Once the signature is obtained, the identity assertion can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.`
 
 The `assertions` field MUST contain the same list of assertions that was presented to the _<<_credential_subject,credential subject>>_ for signature.
@@ -218,7 +222,7 @@ The `pad1` and `pad2` fields of an identity assertion MUST contain only zero-val
 
 === Interaction with data hash assertion
 
-IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion”] of the C2PA technical spec. This process MAY be followed when using other content binding assertions.
+IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion,”] of the C2PA technical spec. This process MAY be followed when using other content binding assertions.
 
 The C2PA technical spec explains the need for pre-computing the _<<_c2pa_asset,C2PA asset’s>>_ final file layout when using a data hash assertion as follows:
 
