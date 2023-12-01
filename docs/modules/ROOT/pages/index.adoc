@@ -11,6 +11,8 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *ide
 *Preliminary draft 30 November 2023* +
 xref:_version_history[]
 
+NOTE: This draft includes a proposed additional requirement for _DID verification methods._ See xref:_did_verification_methods[xrefstyle=full].
+
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
 
 *Editors:*
@@ -370,6 +372,36 @@ The allowed list is:
 * https://trustoverip.github.io/tswg-did-method-webs-specification/[`did:webs`]
 
 The deprecated list is empty.
+
+==== DID verification methods
+
+The _DID document_ for the _<<_c2pa_actor,C2PA actor,>>_ which is located by resolving the _https://www.w3.org/TR/did-core/[W3C decentralized identifier]_ from the _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ MUST contain an `assertionMethod` field 
+as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification.
+
+As defined in link:++https://www.w3.org/TR/did-core/#verification-methods++[Section 5.2, “Verification methods,”] of the W3C decentralized identifier spec, a _verification method type_ defines how implementers can interpret the verification method map and associated parameters.
+
+NOTE: TO DO: This phrasing is awkward. Is there a better way to specify that this standard requires implementations to choose from a limited set of verification methods?
+
+All _W3C verification methods_ that are stored in a _DID document_ referenced from an identity assertion SHALL be one of the _verification methods_ as described in this section. This section defines both:
+
+* A list of _verification methods_ that are allowed when generating new content as well as required for validating public key material for existing content (the allowed list), and
+* A list of _verification methods_ that are required to be supported for validating public key material for existing content but are not allowed for generating new content (the deprecated list).
+
+A _verification method_ MUST appear in no more than one list. If a _verification method_ does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding an algorithm. For this reason, implementations MUST NOT support additional algorithms on an optional basis.
+
+NOTE: TO DO: Is the strict prohibition necessary in this case?
+
+Implementers SHOULD consult this section in the current version of the specification when releasing software updates and ensure their supported algorithms conform to it.
+
+NOTE: Refer to link:++https://www.w3.org/TR/did-spec-registries/#verification-method-types++[Section 6.1, “Verification method types,”] of the W3C DID specification registries document for further information on verification method implementation details.
+
+The allowed list is:
+
+* `JsonWebKey2020`
+
+The deprecated list is empty.
+
+NOTE: TO DO: Solicit feedback on other verification methods that should be allow-listed.
 
 ==== Credential security considerations
 

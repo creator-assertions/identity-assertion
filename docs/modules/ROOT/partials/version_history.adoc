@@ -13,3 +13,7 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *30 November 2023*
 
 * Minor proofreading edits.
+
+*Pending merge*
+
+* Add requirement that DID document contains `verificationMethod`. See xref:_did_verification_methods[xrefstyle=full].
