@@ -14,6 +14,6 @@ IMPORTANT: This version history reflects changes to this document made while in 
 
 * Minor proofreading edits.
 
-*Pending merge*
+*01 December 2023*
 
 * Replace partial claim mechanism with list of assertions.
