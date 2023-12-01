@@ -21,6 +21,8 @@ IMPORTANT: This version history reflects changes to this document made while in 
 ** xref:_assertion_definition[xrefstyle=full]
 ** xref:_creating_the_identity_assertion[xrefstyle=full]
 ** xref:_validation_method[xrefstyle=full]
+* Identify versions of normative reference documents.
+** xref:_normative_references[xrefstyle=full]
 
 *Pending merge*
 

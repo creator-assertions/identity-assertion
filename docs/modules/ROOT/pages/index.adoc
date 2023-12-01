@@ -131,9 +131,9 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 
 == Normative references
 
-* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification]
-* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model]
-* https://www.w3.org/TR/did-core/[W3C distributed identifiers (DIDs)]
+* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
+* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
+* https://www.w3.org/TR/did-core/[W3C distributed identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
 include::partial$terms.adoc[]
