@@ -8,7 +8,7 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 30 November 2023* +
+*Preliminary draft 30 November 2023* _(with proposed list-of-assertions changes)_ +
 xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
@@ -123,11 +123,9 @@ See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-i
 
 An _<<_actor,actor>>_ that is identified by a _<<ToIP verifiable identifier>>._
 
-==== Partial claim
+==== Placeholder assertion
 
-A _<<C2PA claim>>_ with specific data fields blanked out because the content of the *identity assertion* has not yet been determined.
-
-See xref:_partial_claim_definition[xrefstyle=full] for details on how to calculate this assertion.
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the content binding assertion.
 
 == Normative references
 
@@ -143,15 +141,26 @@ include::partial$version_history.adoc[]
 
 === Overview
 
-Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign an adapted version of the _<<_c2pa_claim,C2PA claim>>_ data structure known as a _<<_partial_claim,partial claim>>._
-
-The derivation of a _<<_partial_claim,partial claim>>_ is explained in xref:_partial_claim_definition[xrefstyle=full].
+Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._
 
 The identity assertion contains the following data fields:
 
+* `assertions` contains a list of assertions
 * `signature` contains the raw byte stream of the _<<_credential_subject,credential subject>>’s_ signature
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
+
+The content of `assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of assertions MUST include a content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
+
+For each assertion listed in the `assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
+
+The `assertions` entry of the identity assertion MUST NOT reference the same identity assertion itself.
+
+NOTE: The list of assertions in the `assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+
+The `assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
+
+The `assertions` entry of an identity assertion MAY reference any other identity assertion. A claim generator MUST NOT allow any two identity assertions to refer to each other.
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are explained in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -168,12 +177,15 @@ The schema for this type is defined by the `identity` rule in the following http
 [source,cddl]
 ----
 identity = {
+  "assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; A string identifying the data type of the signature field that follows. If the value of this string is not declared in this specification under (TO DO), this structure is invalid.
   "signature": bstr, ; byte string of the signature
   "pad1": bstr, ; zero-filled byte string used for filling up space
   ? "pad2": bstr, ; optional zero-filled byte string used for filling up space
 }
 ----
+
+The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3, “Hashed URIs,”] of the C2PA technical specification.
 
 An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below:
 
@@ -184,36 +196,53 @@ xxx
 
 NOTE: TO DO: Prepare example.
 
-=== Partial claim definition
+== Creating the identity assertion
 
-It is necessary to resolve a circular dependency issue involving the following relationships:
+=== Presenting the list of assertions for signature
 
-* A _<<C2PA claim>>_ must reference at least one _content binding assertion_ which provides a tamper-evident link from the _<<C2PA claim>>_ to the _<<C2PA asset>>._ For many asset file formats, it is necessary to finalize the file layout in order to correctly create the content binding assertion.
-* The identity assertion contains a signature over the _<<C2PA claim>>_ issued by a _<<_credential_subject,credential subject>>._
-* A _<<C2PA claim>>_ references its _<<_c2pa_assertion,C2PA assertions>>_ by hashed URIs.
+The list of assertions that will be included in the identity assertion MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each identity assertion. The exact formatting of the list of assertions as presented to the signature method will depend on the nature of credential presented. These are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-In order to break the circular dependency between the _<<C2PA claim>>_ and the _<<_c2pa_assertion,C2PA assertions>>_ listed above, this specification introduces the concept of *partial claim.*
+=== Creating the assertion
 
-A *partial claim* MUST contain the exact CBOR serialization as the corresponding final _<<C2PA claim>>,_ except that for each identity assertion referenced in the claim, the `hash` field of the hashed URI entry MUST be replaced with an equivalent number of zero bytes.
+IMPORTANT: If a data hash assertion is being used, the claim generator MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
-The CBOR serialization of the *partial claim* is presented as the content to be signed by the _<<_credential_subject,credential subject>>._
+Once the signature is obtained, the identity assertion can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.`
 
-== Creating the identity assertion and claim
+The `assertions` field MUST contain the same list of assertions that was presented to the _<<_credential_subject,credential subject>>_ for signature.
 
-=== Claim creation overview
+The acceptable values for the `sig_type` and `signature` fields depend on the nature of credential used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a _<<placeholder_assertion,placeholder assertion>>_ was used and the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process MUST be repeated with a larger padding size chosen in the xref:_creating_placeholder_assertions[xrefstyle=full] step.
 
-The C2PA technical specification defines a specific sequence of steps to perform in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim.”] When creating a _<<C2PA claim>>_ with one or more identity assertions, that sequence MUST be performed as described in the C2PA technical specification with additional steps as described below:
+If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting identity assertion exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_
 
-1. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions.”] Any identity assertion that will be added to the claim MUST be represented during this step by a placeholder assertion as described in xref:_creating_placeholders_for_identity_assertions[xrefstyle=full] during this step.
+NOTE: Preferred/deterministic CBOR serialization of byte arrays uses a variable-length integer to specify the length of the encoded binary data. When the length goes from zero to one byte, or one to two bytes (etc.), the length of the resulting pad jumps by two bytes. This means that not all paddings can be expressed using a single padding field. For example, 24-byte and 26-byte pads can be created, but a 25-byte pad cannot. If this situation arises, the desired padding can be split between `pad1` and `pad2`. For example, to make a 25-byte pad, an implementation can encode 19 bytes into `pad1` (resulting in an encoded length of 20 bytes), and 4 bytes into `pad2` (resulting in 5 bytes.)
+
+If no _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MAY be empty.
+
+The `pad1` and `pad2` fields of an identity assertion MUST contain only zero-value (`0x00`) bytes.
+
+=== Interaction with data hash assertion
+
+IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion,”] of the C2PA technical specification. This process MAY be followed when using other content binding assertions.
+
+The C2PA technical specification explains the need for pre-computing the _<<_c2pa_asset,C2PA asset’s>>_ final file layout when using a data hash assertion as follows:
+
+> Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that content bindings will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
+-- link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4: “Multiple step processing”]
+
+Similarly, the size of the identity assertion cannot be known until its signature is obtained. Changing the size of the identity assertion after file layout is completed would invalidate the content binding hash, which is required to be present in the identity assertion.
+
+In this case, it is necessary to use a *<<_placeholder_assertion,placeholder assertion>>* to reserve space for the content of the final identity assertion (including its signature) which will be created later.
+
+When using a data hash assertion, a claim generator MUST follow the process described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+
+1. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions.”] Any identity assertion that will be added to the claim MUST be represented during this step by an assertion using the same label as the final identity assertion. The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final identity assertion.
 2. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 11.3.2.1, “Adding assertions and redactions”]
 3. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_ingredients++[Section 11.3.2.2, “Adding ingredients”]
 4. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_connecting_the_signature++[Section 11.3.2.3, “Connecting the signature”]
-5. If the link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[multiple step processing (Section 11.4)] process is being used, the following steps from that workflow MUST be completed before proceeding:
-** link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
-** link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
-6. A _<<_partial_claim,partial claim>>_ MUST be computed at this time as defined in xref:_partial_claim_definition[xrefstyle=full]. This _<<_partial_claim,partial claim>>_ MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_partial_claim_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
-7. Convert the _<<_partial_claim,partial claim>>_ to the final _<<c2pa-claim,C2PA claim>>_ as described in xref:_generating_the_final_claim[xrefstyle=full].
-8. If the link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[multiple step processing (Section 11.4)] process is being used, the remaining steps from that workflow MUST be completed. The remaining steps MUST NOT be performed sooner than this stage in the overall process.
+5. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
+6. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
+7. The list of assertions (including the content binding assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
+8. The remaining steps from link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
 11. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
@@ -227,52 +256,19 @@ sequenceDiagram
     participant H as Credential holder
 
     G->>G: Create assertions
-    Note right of G: Includes identity placeholder assertions
+    Note right of G: Includes placeholder assertions
     G->>G: Create content bindings
-    G->>G: Create partial claim
-
+    
     loop For each credential holder
-    G->>H: Request signature over partial claim
-    H->>G: Provide signature over partial claim
+    G->>H: Request signature over list of assertions
+    H->>G: Provide signature over list of assertions
     end
 
     G->>G: Replace placeholder assertions with final identity assertions
-    G->>G: Create final claim
+    G->>G: Create claim
     G->>G: Issue claim generator signature for final claim
     G->>G: Create manifest store
 ....
-
-=== Creating placeholders for identity assertions
-
-As per link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification, all assertions must be created and stored in a newly-created assertion store.
-
-A temporary version of the identity assertion, referred to as a *placeholder assertion,* is created to reserve space for the _<<_credential_subject,credential subject>>’s_ signature which will be added later.
-
-This enables the final layout of the _<<C2PA asset>>_ to be computed, which then enables a valid _content binding assertion_ to be computed. A valid content binding assertion is critical to binding the _<<C2PA Manifest>>_ to the _<<C2PA asset>>_ which also enables binding the _<<_credential_subject,credential subject>>_ to the _<<C2PA asset>>._
-
-A placeholder assertion MUST have its `sig_type` field set to `cca.placeholder`. The `signature` field MUST be set to a zero-length byte array. The `pad1` and `pad2` fields MUST be filled with enough zero-value (`0x00`) bytes to leave sufficient room for the `signature` value that will be added later.
-
-IMPORTANT: The `sig_type` value of `cca.placeholder` is not valid when present in a final, signed _<<C2PA Manifest>>._
-
-IMPORTANT: The size of the final identity assertion MUST exactly match the size of the placeholder assertion created at this time. Therefore, the `pad1` and `pad2` fields of a placeholder assertion MUST be sufficiently large to reflect any possible size of the final assertion.
-
-=== Presenting the partial claim for signature
-
-The serialized CBOR of the _<<_partial_claim,partial claim>>_ document at this stage MUST now be presented as the payload to be signed by the credential holders corresponding to each identity assertion.
-
-The signature method will depend on the nature of credential presented. These are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
-
-Once the signatures are obtained, the content of each identity assertion previously added to the _<<C2PA claim>>_ MUST be replaced with new assertion content where the `sig_type` and `signature` value correctly bind the _<<_credential_subject,credential subject>>_ to the content. The acceptable values for these fields depend on the nature of credentials used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. Now that the `signature and `sig_type` values are available, the values of the `pad1` and `pad2` MUST be recomputed (reduced in size) such that the resulting identity assertion exactly matches the size of the placeholder assertion.
-
-NOTE: Preferred/deterministic CBOR serialization of byte arrays uses a variable-length integer to specify the length of the encoded binary data. When the length goes from zero to one byte, or one to two bytes (etc.), the length of the resulting pad jumps by two bytes. This means that not all paddings can be expressed using a single padding field. For example, 24-byte and 26-byte pads can be created, but a 25-byte pad cannot. If this situation arises, the desired padding can be split between `pad1` and `pad2`. For example, to make a 25-byte pad, an implementation can encode 19 bytes into `pad1` (resulting in an encoded length of 20 bytes), and 4 bytes into `pad2` (resulting in 5 bytes.)
-
-If the signature exceeds the space available in the identity assertion, the claim generation process MUST be repeated with a larger padding size chosen in the xref:_creating_placeholders_for_identity_assertions[xrefstyle=full] step.
-
-=== Generating the final claim
-
-The final _<<C2PA claim>>_ data structure MUST now be computed by replacing the hashed URI references for identity assertions in the _<<_partial_claim,partial claim>>_ with correct values for the `hash` field for each now-updated assertions.
-
-IMPORTANT: The final claim MUST contain the exact CBOR serialization as the corresponding _<<_partial_claim,partial claim>>,_ except for the `hash` updates as just described.
 
 == Validating the identity assertion
 
@@ -282,11 +278,13 @@ An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the asse
 
 An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
-The `pad1` and `pad2` fields of an identity assertion MUST contain only zero bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+For each entry in the `assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+
+The validator MUST ensure that the `assertions` field contains at least one content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing content binding.
 
 The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
-The validator MUST compute the _<<_partial_claim,partial claim>>_ as described in xref:_partial_claim_definition[xrefstyle=full]. The validator MUST also follow all validation rules for the signature type declared in the `sig_type` field as described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full], using the value of _<<_partial_claim,partial claim>>_ just calculated.
+The `pad1` and `pad2` fields of an identity assertion MUST contain only zero-value (`0x00`) bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
 === Status codes
 
@@ -308,6 +306,8 @@ The `url` field for a status code MUST always be the label of the identity asser
 |=======================
 | Value        |   Meaning
 |`cca.identity.cbor.invalid` | The CBOR of the identity assertion is not valid.
+|`cca.identity.assertion.mismatch` | The identity assertion contains an assertion reference that could not be found in the _<<C2PA claim>>.
+|`cca.identity.content_binding_missing` | The identity assertion does not reference a content binding assertion.
 |`cca.identity.sig_type.invalid` | The `sig_type` of the identity assertion is not valid.
 |`cca.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
@@ -324,11 +324,11 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
 
-NOTE: TO DO: Above comment about association with assertion is adapted from C2PA spec. Is it still correct to tie identity _only_ to _assertions_ or can it also be more generally to a _claim_ or _asset?_
-
 The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a _link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation]._
 
-NOTE: Discuss whether the VC for the claim is necessary. I’ve heard some feedback that having a VC for the claim would make it easier for a wallet application to have suitable information to present when fulfulling the presentation request. A counter-concern is that this is effectively redundant and would require the claim-generator’s identity to be expressed both in X.509 and VC. Need to balance these concerns.
+NOTE: TO DO: We’re no longer having the VC subject sign even a partial claim, but a list of assertions. Need to think through exactly what we’re presenting to the VC holder and how we describe it.
+
+NOTE: TO DO: Discuss whether the VC for the claim is necessary. I’ve heard some feedback that having a VC for the claim would make it easier for a wallet application to have suitable information to present when fulfulling the presentation request. A counter-concern is that this is effectively redundant and would require the claim-generator’s identity to be expressed both in X.509 and VC. Need to balance these concerns.
 
 The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
 
@@ -338,7 +338,7 @@ NOTE: JSON-LD serialization is mandated as it is the most commonly used of the t
 
 ==== Verifiable credential for actor
 
-NOTE: TO DO: Reconsider the following statement from C2PA 1.3 spec. Since we’re shifting to verifiable presentations, I think we want to make a stronger statement to indicate that the actor _did_ authorize the claim.
+NOTE: TO DO: Reconsider the following statement from C2PA 1.3 spec. Since we’re shifting to verifiable presentations, I think we want to make a stronger statement to indicate that the actor _did_ authorize the assertions.
 
 [quote]
 ____
@@ -377,13 +377,13 @@ NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it�
 
 > In most W3C verifiable credential workflows, the information about the subject (e.g., the cryptographic keys) is fetched on demand at the time of validation. While that is an acceptable model, it does open up a possible attack vector by providing an attacker with an externally-visible signal about what the validator is validating. Therefore, this specification also supports having the information captured and embedded at the time of signature. This not only prevents leakage, but also makes it very clear what data the signer is asserting about the credential’s subject. 
 
-==== Verifiable credential for claim
+==== Verifiable credential for list of assertions
 
-NOTE: TO DO: Describe how to create VC for claim. Depends on outcome of TO DO item earlier regarding whether this VC is necessary.
+NOTE: TO DO: Describe how to create VC for the list of assertions. Depends on outcome of TO DO item earlier regarding whether this VC is necessary and what we call the list of assertions.
 
 ==== Verifiable presentation
 
-NOTE: TO DO: Describe how to create the VP from the above two claims.
+NOTE: TO DO: Describe how to create the VP from the above two credentials.
 
 ==== Verifying the verifiable presentation
 
@@ -391,7 +391,7 @@ NOTE: TO DO: Write up verification procedures.
 
 === X.509 certificates and COSE signatures
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the _<<C2PA claim>>._
+In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_c2pa_assertion,C2PA assertions>>._
 
 The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
@@ -407,7 +407,7 @@ To generate the COSE signature for an identity assertion, the steps described in
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the _partial claim_ as defined in xref:_partial_claim_definition[xrefstyle=full] of this document.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `assertions` field from the identity assertion.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 [NOTE]
