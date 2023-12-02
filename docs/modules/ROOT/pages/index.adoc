@@ -324,21 +324,55 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials and verifiable presentations
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
+==== Verifiable credential overview
 
-The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a _link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation]._
+In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ MAY be an individual, group, or organization.
 
-NOTE: TO DO: We’re no longer having the VC subject sign even a partial claim, but a list of assertions. Need to think through exactly what we’re presenting to the VC holder and how we describe it.
+The `credentialSubject` of this _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential]_ MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid _https://www.w3.org/TR/did-core/[W3C decentralized identifier]._ Additional requirements for this _https://www.w3.org/TR/did-core/[W3C decentralized identifier]_ are stated in _xref:_did_resolution_methods[xrefstyle=full]._
 
-NOTE: TO DO: Discuss whether the VC for the claim is necessary. I’ve heard some feedback that having a VC for the claim would make it easier for a wallet application to have suitable information to present when fulfulling the presentation request. A counter-concern is that this is effectively redundant and would require the claim-generator’s identity to be expressed both in X.509 and VC. Need to balance these concerns.
+As defined in link:++https://www.w3.org/TR/did-core/#resolution++[Section 7, “Resolution,”] of the W3C decentralized identifier specification, the result of _resolving_ a decentralized identifier is a _DID document,_ in this case a set of data describing the _<<_actor,actor>>_ whose _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential]_ was presented.
 
-The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
+This _DID document_ MUST contain an `assertionMethod` field as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification. Additional requirements for this verification method are stated in _xref:_did_verification_methods[xrefstyle=full]._
+
+NOTE: TO DO: Clean up this next paragraph. Running out of time for today. 
+
+The _claim generator_ MUST prepare a list of _<<_c2pa_assertion,C2PA assertions>>_ into a (WHAT? Verifiable Presentation Request) to be presented to the _<<_actor,actor.>>_ The _<<_actor,actor>>_ MUST respond with a Verifiable Presentation (TO DO: Add link) containing (TO DO: in what fields?) the VC and list of assertions.
+
+NOTE: TO DO: Does the list of assertions itself need a VC? If so, who issues that VC? (That feels redundant with the separate chain of authority that goes into the claim itself via X.509.)
+
+The relationships among _<<_actor,actor,>>_ _verifiable credential,_ _DID document,_ _assertions,_ and the _verifiable presentation_ are illustrated in the following diagram, which is non-normative.
+
+[mermaid,width=100%]
+....
+erDiagram
+  A[Actor] {
+    string private_key
+  }
+
+  VC["Actor’s VC"] {
+    string credentialSubject_id "(did:method:xxx)"
+  }
+
+  DID_DOC["DID document"] {
+    struct assertionMethod
+  }
+
+  ASSERTION["Other assertions"] {}
+
+  VP["Verifiable presentation"] {}
+
+  A ||--|| VC : "controls via private key"
+  VC ||--|| DID_DOC : "references via DID method"
+  VP ||--o{ ASSERTION: "references"
+  VP ||--|| VC: "references"
+  A ||--|| VP: "generates VP"
+....
+
+Once the verifiable presentation has been obtained, an identity assertion can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
 
 NOTE: TO DO: Is JSON-LD still required/preferred? I’ve heard some feedback that there may be less consensus around this now.
 
 NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
-
-==== Verifiable credential for actor
 
 NOTE: TO DO: Reconsider the following statement from C2PA 1.3 spec. Since we’re shifting to verifiable presentations, I think we want to make a stronger statement to indicate that the actor _did_ authorize the assertions.
 
@@ -351,7 +385,7 @@ ____
 
 NOTE: TO DO: Build a new example of a compliant credential.
 
-A _verifiable credential_ used with an identity assertion MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid _https://www.w3.org/TR/did-core/[W3C decentralized identifier]._
+==== DID resolution methods
 
 As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Methods,”] of the W3C decentralized identifier spec, a _DID method_ defines how implementers can create, resolve, update, and deactivate DIDs and DID documents.
 
@@ -408,10 +442,6 @@ NOTE: TO DO: Solicit feedback on other verification methods that should be allow
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
 > In most W3C verifiable credential workflows, the information about the subject (e.g., the cryptographic keys) is fetched on demand at the time of validation. While that is an acceptable model, it does open up a possible attack vector by providing an attacker with an externally-visible signal about what the validator is validating. Therefore, this specification also supports having the information captured and embedded at the time of signature. This not only prevents leakage, but also makes it very clear what data the signer is asserting about the credential’s subject. 
-
-==== Verifiable credential for list of assertions
-
-NOTE: TO DO: Describe how to create VC for the list of assertions. Depends on outcome of TO DO item earlier regarding whether this VC is necessary and what we call the list of assertions.
 
 ==== Verifiable presentation
 

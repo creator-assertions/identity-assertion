@@ -26,5 +26,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 
 *Pending merge*
 
-* Add requirement that DID document contains `verificationMethod`. New section:
-** xref:_did_verification_methods[xrefstyle=full]
+* Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].
