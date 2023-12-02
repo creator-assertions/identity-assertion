@@ -395,8 +395,8 @@ As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Met
 
 All _W3C distributed identifiers_ that are stored in an identity assertion SHALL be generated using one of the _DID methods_ as described in this section. This section defines both:
 
-* A list of _DID methods_ that are allowed for generating identifiers for new content as well as required for validating identifiers of existing content (the allowed list), and
-* A list of _DID methods_ that are required to be supported for validating identifiers of existing content but are not allowed for generating identifiers for new content (the deprecated list).
+* A list of _DID methods_ that are allowed for generating identifiers for new identity assertions as well as required for validating identifiers of existing identity assertions (the allowed list), and
+* A list of _DID methods_ that are required to be supported for validating identifiers of existing identity assertions but are not allowed for generating identifiers for new identity assertions (the deprecated list).
 
 A _DID method_ MUST appear in no more than one list. If a DID method does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding an algorithm. For this reason, implementations MUST NOT support additional algorithms on an optional basis.
 
@@ -422,8 +422,8 @@ NOTE: TO DO: This phrasing is awkward. Is there a better way to specify that thi
 
 All _W3C verification methods_ that are stored in a _DID document_ referenced from an identity assertion SHALL be one of the _verification methods_ as described in this section. This section defines both:
 
-* A list of _verification methods_ that are allowed when generating new content as well as required for validating public key material for existing content (the allowed list), and
-* A list of _verification methods_ that are required to be supported for validating public key material for existing content but are not allowed for generating new content (the deprecated list).
+* A list of _verification methods_ that are allowed when generating new identity assertions as well as required for validating public key material for existing identity assertions (the allowed list), and
+* A list of _verification methods_ that are required to be supported for validating public key material for existing identity assertions but are not allowed for generating new identity assertions (the deprecated list).
 
 A _verification method_ MUST appear in no more than one list. If a _verification method_ does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding an algorithm. For this reason, implementations MUST NOT support additional algorithms on an optional basis.
 
