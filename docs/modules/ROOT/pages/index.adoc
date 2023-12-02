@@ -4,11 +4,11 @@
 :sectanchors:
 :sectnums!:
 
-The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the assertions and the claim, which is why it is called the _claim generator._
+The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 01 December 2023* +
+*Preliminary draft 02 December 2023* +
 xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
@@ -67,7 +67,7 @@ The following definitions are adapted from the link:++https://c2pa.org/specifica
 
 ==== Actor
 
-A human or non-human (hardware or software) that is participating in the C2PA ecosystem. For example: a camera (capture device), image editing software, cloud service or the person using such tools.
+A human or non-human (hardware or software) that is participating in the C2PA ecosystem. For example: a camera (capture device), image editing software, cloud service, or the person using such tools.
 
 NOTE: An organization or group of _actors_ may also be considered an _actor_ in the C2PA ecosystem.
 
@@ -77,7 +77,7 @@ NOTE: TO DO: Track upcoming definition change in C2PA spec.
 
 A file or stream of data containing _digital content,_ _asset metadata,_ and a <<C2PA Manifest>>.
 
-For the purposes of this definition, we will extend the typical definition of “file” to include cloud-native and dynamically generated data.
+For the purposes of this definition, we will extend the typical definition of “file” to include cloud-native and dynamically-generated data.
 
 IMPORTANT: The definition of “C2PA asset” in this specification differs from the definition of “asset” given in the C2PA technical specification. A “C2PA asset” as defined in _this_ specification MUST contain a <<C2PA Manifest>>.
 
@@ -94,6 +94,10 @@ See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specifi
 A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the content binding. If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
 
 See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_claims++[Section 11, “Claims,”] of the C2PA technical specification.
+
+==== C2PA claim generator
+
+The non-human (hardware or software) _<<_actor,actor>>_ that generates the _<<C2PA claim>>_ about a _<<C2PA asset>>_ as well as the claim signature, thus leading to the _<<C2PA asset>>'s_ associated _<<C2PA Manifest>>._
 
 ==== C2PA assertion
 
@@ -160,9 +164,9 @@ NOTE: The list of assertions in the `assertions` field of the identity assertion
 
 The `assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
 
-The `assertions` entry of an identity assertion MAY reference any other identity assertion. A claim generator MUST NOT allow any two identity assertions to refer to each other.
+The `assertions` entry of an identity assertion MAY reference any other identity assertion. A _<<C2PA claim generator>>_ MUST NOT allow any two identity assertions to refer to each other directly or indirectly.
 
-The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are explained in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The identity assertion shall have a label of `cca.identity`. More than one identity assertion may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
@@ -204,15 +208,15 @@ The list of assertions that will be included in the identity assertion MUST be p
 
 === Creating the assertion
 
-IMPORTANT: If a data hash assertion is being used, the claim generator MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
-Once the signature is obtained, the identity assertion can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.`
+Once the signature is obtained, the identity assertion can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.
 
 The `assertions` field MUST contain the same list of assertions that was presented to the _<<_credential_subject,credential subject>>_ for signature.
 
-The acceptable values for the `sig_type` and `signature` fields depend on the nature of credential used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a _<<placeholder_assertion,placeholder assertion>>_ was used and the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process MUST be repeated with a larger padding size chosen in the xref:_creating_placeholder_assertions[xrefstyle=full] step.
+The acceptable values for the `sig_type` and `signature` fields depend on the nature of credential used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting identity assertion exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_
+If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting identity assertion exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_ If the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full] MUST be repeated with a larger _<<_placeholder_assertion,placeholder assertion>>._
 
 NOTE: Preferred/deterministic CBOR serialization of byte arrays uses a variable-length integer to specify the length of the encoded binary data. When the length goes from zero to one byte, or one to two bytes (etc.), the length of the resulting pad jumps by two bytes. This means that not all paddings can be expressed using a single padding field. For example, 24-byte and 26-byte pads can be created, but a 25-byte pad cannot. If this situation arises, the desired padding can be split between `pad1` and `pad2`. For example, to make a 25-byte pad, an implementation can encode 19 bytes into `pad1` (resulting in an encoded length of 20 bytes), and 4 bytes into `pad2` (resulting in 5 bytes.)
 
@@ -229,11 +233,11 @@ The C2PA technical specification explains the need for pre-computing the _<<_c2p
 > Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that content bindings will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
 -- link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4: “Multiple step processing”]
 
-Similarly, the size of the identity assertion cannot be known until its signature is obtained. Changing the size of the identity assertion after file layout is completed would invalidate the content binding hash, which is required to be present in the identity assertion.
+Similarly, the size of the identity assertion cannot be known until its signature is obtained. Changing the size of the identity assertion after file layout is completed would invalidate the file offsets contained within the data hash assertion.
 
 In this case, it is necessary to use a *<<_placeholder_assertion,placeholder assertion>>* to reserve space for the content of the final identity assertion (including its signature) which will be created later.
 
-When using a data hash assertion, a claim generator MUST follow the process described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
 
 1. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions.”] Any identity assertion that will be added to the claim MUST be represented during this step by an assertion using the same label as the final identity assertion. The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final identity assertion.
 2. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 11.3.2.1, “Adding assertions and redactions”]
@@ -252,7 +256,7 @@ These steps are also represented by the following sequence diagram, which is non
 [mermaid,width=100%]
 ....
 sequenceDiagram
-    participant G as Claim generator
+    participant G as C2PA claim generator
     participant H as Credential holder
 
     G->>G: Create assertions
@@ -322,7 +326,7 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials and verifiable presentations
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _claim generator_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
+In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
 
 The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a _link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation]._
 
@@ -451,7 +455,7 @@ _This section is non-normative._
 
 Resolve the following topics before producing a 1.0 version of this spec:
 
-* How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The soon-to-be-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
-** Related: Describe how to allow other assertions to refer to _this_ assertion.
+* How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
+** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
 * Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
