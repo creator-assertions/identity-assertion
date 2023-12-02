@@ -24,6 +24,12 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Identify versions of normative reference documents.
 ** xref:_normative_references[xrefstyle=full]
 
+*02 December 2023*
+
+* Add _<<C2PA claim generator>>_ to the glossary and cross-reference it through out the document.
+** xref:_concepts_adapted_from_c2pa_technical_specification[xrefstyle=full]
+* Minor proofreading edits.
+
 *Pending merge*
 
 * Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].
