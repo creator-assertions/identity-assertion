@@ -58,7 +58,7 @@ NOTE: The ToIP definition of the term “verifiable identifier” is well-aligne
 
 This specification describes mechanisms to support two common individual and organizational identity mechanisms that fit the conceptual description of _<<ToIP verifiable identifier>>:_
 
-* https://www.w3.org/TR/did-core/[Distributed identifiers (DIDs)] as defined by W3C, though support will be limited to specifically-chosen DID methods with wide adoption and independent verifiability.
+* https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C, though support will be limited to specifically-chosen DID methods with wide adoption and independent verifiability.
 * https://tools.ietf.org/html/rfc5280[X.509 certificates]
 
 == Glossary
@@ -129,6 +129,8 @@ See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-i
 
 An _<<_actor,actor>>_ that is identified by a _<<ToIP verifiable identifier>>._
 
+NOTE: TO DO: Consider adding a section adapted from W3C VC data model, which would include this and other terms used throughout this spec.
+
 ==== Placeholder assertion
 
 A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the content binding assertion.
@@ -137,7 +139,7 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 
 * https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
 * https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
-* https://www.w3.org/TR/did-core/[W3C distributed identifiers (DIDs), version 1.0]
+* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
 include::partial$terms.adoc[]
@@ -328,6 +330,8 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials and verifiable presentations
 
+IMPORTANT: TO DO: *Major discussion item:* I think there are reasonable cases for the content of the identity assertion to be a new Verifiable Credential and also for it to be a Verifiable Presentation. The VC path will resolve some of the redundant-chain-of-trust issues identified below, but may complicate the signing experience for wallet-based applications.
+
 ==== Verifiable credential overview
 
 In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ MAY be an individual, group, or organization.
@@ -393,7 +397,7 @@ NOTE: TO DO: Build a new example of a compliant credential.
 
 As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Methods,”] of the W3C decentralized identifier spec, a _DID method_ defines how implementers can create, resolve, update, and deactivate DIDs and DID documents.
 
-All _W3C distributed identifiers_ that are stored in an identity assertion SHALL be generated using one of the _DID methods_ as described in this section. This section defines both:
+All _W3C decentralized identifiers_ that are stored in an identity assertion SHALL be generated using one of the _DID methods_ as described in this section. This section defines both:
 
 * A list of _DID methods_ that are allowed for generating identifiers for new identity assertions as well as required for validating identifiers of existing identity assertions (the allowed list), and
 * A list of _DID methods_ that are required to be supported for validating identifiers of existing identity assertions but are not allowed for generating identifiers for new identity assertions (the deprecated list).
@@ -524,3 +528,5 @@ Resolve the following topics before producing a 1.0 version of this spec:
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
 * Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
+* Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
+* Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
