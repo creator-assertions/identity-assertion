@@ -30,6 +30,10 @@ IMPORTANT: This version history reflects changes to this document made while in 
 ** xref:_concepts_adapted_from_c2pa_technical_specification[xrefstyle=full]
 * Minor proofreading edits.
 
+*03 December 2023*
+
+* Add a TO DO item in xref:_trust_model[xrefstyle=full].
+
 *Pending merge*
 
 * Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].

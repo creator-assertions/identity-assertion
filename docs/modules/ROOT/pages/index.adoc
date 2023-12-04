@@ -8,7 +8,7 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *identity assertion* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 02 December 2023* _(with pending changes to W3C VC workflow)_ +
+*Preliminary draft 03 December 2023* _(with pending changes to W3C VC workflow)_ +
 xref:_version_history[]
 
 NOTE: This draft includes a proposed additional requirement for _DID verification methods._ See xref:_did_verification_methods[xrefstyle=full].
@@ -490,6 +490,9 @@ NOTE: TO DO: Write this section. Similar to the generation section, I expect it 
 == Trust model
 
 IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_trust_model++[Section 15, “Trust model,”] of the C2PA spec by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
+
+[NOTE]
+TO DO: Add language here that clarifies that the identity assertion introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this identity assertion.
 
 [NOTE]
 .TO DO: Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
