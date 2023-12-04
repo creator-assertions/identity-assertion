@@ -33,3 +33,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *03 December 2023*
 
 * Add a TO DO item in xref:_trust_model[xrefstyle=full].
+* Proofreading: Correct references to distributed identifiers to _decentralized identifiers._
