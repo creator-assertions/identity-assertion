@@ -83,6 +83,7 @@ IMPORTANT: The definition of “C2PA asset” in this specification differs from
 
 ==== C2PA Manifest
 
+//? Should "content bindings" below be a link to the relevant section in the C2PA spec?
 The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the combination of one or more _<<_c2pa_assertion,C2PA assertions>>_ (including content bindings), a single _<<C2PA claim>>,_ and a _claim signature._ A _C2PA Manifest_ is part of a _C2PA Manifest Store._
 
 NOTE: A _C2PA Manifest_ can reference other _C2PA Manifests._
@@ -91,6 +92,10 @@ See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specifi
 
 ==== C2PA claim
 
+//? "data structure" is intentionally vague below?
+//? Would it make sense to propose a non-normative sample of such a data structure for simpler reading. In "6.1 Overview", there is an attempt at that for "identity assertions", a better attempt at "6.2 Schema and example".
+//? It's easier to read a JSON than to have one desribed to you.
+// If you agree, a few other items in the Glossary might benefit from the same addition.
 A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the content binding. If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
 
 See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_claims++[Section 11, “Claims,”] of the C2PA technical specification.
@@ -156,6 +161,7 @@ The identity assertion contains the following data fields:
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
 
+//? Should this be specific about what is being signed: the entire list once, not each assertion individually?
 The content of `assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of assertions MUST include a content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
 
 For each assertion listed in the `assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
@@ -164,8 +170,10 @@ The `assertions` entry of the identity assertion MUST NOT reference the same ide
 
 NOTE: The list of assertions in the `assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
+//? Outside of redundancy, is there any other reason?
 The `assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
 
+//? Aren't these two statements contradictory? What am I missing?
 The `assertions` entry of an identity assertion MAY reference any other identity assertion. A _<<C2PA claim generator>>_ MUST NOT allow any two identity assertions to refer to each other directly or indirectly.
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
@@ -174,6 +182,8 @@ The identity assertion shall have a label of `cca.identity`. More than one ident
 
 NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
+//? In my opinion, the standard should not attempt to classify or otherwise rank identity claims. It's up to the content author and content consumer to determine what's reliable to them and what isn't.
+//? That is to say, I'd keep a verified name VC and a verified Twitter account info under the same umbrella.
 NOTE: TO DO: Where would things like social media accounts live? Or should that be a separate assertion?
 
 === Schema and example
@@ -255,6 +265,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 
 These steps are also represented by the following sequence diagram, which is non-normative.
 
+//? Should "Replace placeholder assertions with final identity assertions" be preceeded by a signature check on the C2PA claim generator side?
 [mermaid,width=100%]
 ....
 sequenceDiagram
@@ -280,6 +291,8 @@ sequenceDiagram
 
 An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
 
+//? Should there be validation that signatures match what was signed?
+//? cca.identity.signature.invalid
 === Validation method
 
 An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
@@ -332,6 +345,7 @@ IMPORTANT: TO DO: *Major discussion item:* I think there are reasonable cases fo
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to provide its own _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ may be an individual, group, or organization.
 
+//? Can actors also provide VPs?
 The _<<_actor,actor>>_’s _verifiable credential_ is combined with a _verifiable credential_ for the _<<C2PA claim>>_ into a _link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[W3C verifiable presentation]._
 
 NOTE: TO DO: We’re no longer having the VC subject sign even a partial claim, but a list of assertions. Need to think through exactly what we’re presenting to the VC holder and how we describe it.
@@ -357,6 +371,8 @@ ____
 
 NOTE: TO DO: Build a new example of a compliant credential.
 
+//? The subject of a DID could be a collective. As the spec states: "Anything can be the subject of a DID: person, group, organization, thing, or concept.". [https://www.w3.org/TR/did-core/#brief-architecture-overview-longdesc]
+//? Our definition of `actor` is more limited: "a human or non-human (hardware or software) that is participating in the C2PA ecosystem."
 A _verifiable credential_ used with an identity assertion MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid _https://www.w3.org/TR/did-core/[W3C decentralized identifier]._
 
 As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Methods,”] of the W3C decentralized identifier spec, a _DID method_ defines how implementers can create, resolve, update, and deactivate DIDs and DID documents.
@@ -374,6 +390,7 @@ Implementers SHOULD consult this section in the current version of the specifica
 
 The allowed list is:
 
+//? Why did:webs?
 * https://w3c-ccg.github.io/did-method-web/[`did:web`]
 * https://trustoverip.github.io/tswg-did-method-webs-specification/[`did:webs`]
 
@@ -462,9 +479,15 @@ _This section is non-normative._
 
 Resolve the following topics before producing a 1.0 version of this spec:
 
+
 * How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
+
+//? This needs a broader discussion. Custodial wallets such as the one IMS will host can allow for all sorts of customizations but once we allow users to bring their own key, this will get more difficult (i.e. thumbnail).
 * Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
+
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
+
+//? I'm not sure what this means. Is the question should platforms displaying assets be able to verify the VP? If yes, then, in my opinion, they should be able to. Anyone should be able to validate signatures. But I suspect I'm misreading the note here.
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
