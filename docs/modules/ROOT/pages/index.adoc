@@ -160,7 +160,9 @@ The content of `assertions` is a list of assertions which is presented to the _<
 
 For each assertion listed in the `assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
 
-The `assertions` entry of the identity assertion MUST NOT reference the same identity assertion itself.
+NOTE: TO DO: Include description of how referencing happens before we start talking about reference (next paragraph).
+
+The `assertions` entry of each identity assertion MUST NOT reference the same identity assertion itself.
 
 NOTE: The list of assertions in the `assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
@@ -206,7 +208,11 @@ NOTE: TO DO: Prepare example.
 
 === Presenting the list of assertions for signature
 
-The list of assertions that will be included in the identity assertion MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each identity assertion. The exact formatting of the list of assertions as presented to the signature method will depend on the nature of credential presented. These are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+Prior to requesting the credential holder with the list of assertions for signature, the assertions to be signed must themselves be created. The choice of which assertions to reference is not specified, except that the list of assertions MUST include the same content-binding assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
+
+IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+
+The list of assertions that will be referenced by the identity assertion MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each identity assertion. This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 === Creating the assertion
 
@@ -278,7 +284,7 @@ sequenceDiagram
 
 == Validating the identity assertion
 
-An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
+An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification and the identity assertion passes its own validation. Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an identity assertion.
 
 === Validation method
 
@@ -289,6 +295,8 @@ For each entry in the `assertions` field, the validator MUST verify that the sam
 The validator MUST ensure that the `assertions` field contains at least one content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing content binding.
 
 The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
+
+The `signature` field of an identity assertion MUST contain a valid signature. The procedure for validating each signature type and corresponding status codes are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `pad1` and `pad2` fields of an identity assertion MUST contain only zero-value (`0x00`) bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
