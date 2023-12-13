@@ -59,6 +59,19 @@ This specification describes mechanisms to support two common individual and org
 * https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C, though support will be limited to specifically-chosen DID methods with wide adoption and independent verifiability.
 * https://tools.ietf.org/html/rfc5280[X.509 certificates]
 
+=== Conceptual overview
+
+Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram:
+
+.Overview of identity assertion
+ifdef::backend-html5[]
+image::overview.drawio.svg[Identity assertion overview,width=680,height=922,align="center"]
+endif::[]
+
+The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of identity assertions.
+
+Each identity assertion contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>_ and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of assertions.
+
 == Glossary
 
 === Concepts adapted from C2PA technical specification
@@ -146,8 +159,6 @@ include::partial$version_history.adoc[]
 == Assertion definition
 
 === Overview
-
-Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._
 
 The identity assertion contains the following data fields:
 
