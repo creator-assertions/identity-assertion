@@ -16,7 +16,7 @@ IMPORTANT: This version history reflects changes to this document made while in 
 
 *01 December 2023*
 
-* Replace partial claim mechanism with list of assertions. Significant updates to these sections:
+* Replace partial claim mechanism with list of assertions. Significant updates to:
 ** xref:_placeholder_assertion[xrefstyle=full]
 ** xref:_assertion_definition[xrefstyle=full]
 ** xref:_creating_the_identity_assertion[xrefstyle=full]
@@ -42,3 +42,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * New wording regarding intended meaning of credential holder’s signature. Changes to:
 ** xref:_conceptual_overview[xrefstyle=full]
 ** xref:_verifiable_credential_for_actor[xrefstyle=full] (Removed wording carried over from C2PA 1.3 spec regarding interpretation of verifiable credential.)
+* Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].
