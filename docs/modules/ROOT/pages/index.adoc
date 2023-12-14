@@ -64,9 +64,7 @@ This specification describes mechanisms to support two common individual and org
 Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram:
 
 .Overview of identity assertion
-ifdef::backend-html5[]
 image::overview.drawio.svg[Identity assertion overview,width=680,height=922,align="center"]
-endif::[]
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of identity assertions.
 
