@@ -96,7 +96,7 @@ IMPORTANT: The definition of “C2PA asset” in this specification differs from
 
 ==== C2PA Manifest
 
-The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the combination of one or more _<<_c2pa_assertion,C2PA assertions>>_ (including content bindings), a single _<<C2PA claim>>,_ and a _claim signature._ A _C2PA Manifest_ is part of a _C2PA Manifest Store._
+The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the combination of one or more _<<_c2pa_assertion,C2PA assertions>>_ (including _<<_content_binding,content bindings>>_), a single _<<C2PA claim>>,_ and a _claim signature._ A _C2PA Manifest_ is part of a _C2PA Manifest Store._
 
 NOTE: A _C2PA Manifest_ can reference other _C2PA Manifests._
 
@@ -104,7 +104,7 @@ See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specifi
 
 ==== C2PA claim
 
-A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the content binding. If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
+A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the _<<_content_binding,content binding>>._ If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
 
 See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_claims++[Section 11, “Claims,”] of the C2PA technical specification.
 
@@ -123,6 +123,10 @@ See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specifi
 An _<<_actor,actor>>_ who consumes a _<<_c2pa_asset,C2PA asset>>_ with an associated _<<C2PA Manifest>>_ for the purpose of obtaining the provenance data from the _<<C2PA Manifest>>._
 
 NOTE: When this _<<_actor,actor>>_ is concerned with validating the identity assertions contained within a _<<C2PA Manifest>>,_ this role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-verifier++[W3C verifiable credentials data model].
+
+==== Content binding
+
+Information that associates digital content to a specific _<<C2PA Manifest>>_ associated with a specific _<<C2PA asset>>,_ either as a _hard binding_ or a _soft binding._
 
 === Concepts adapted from ToIP technical architecture
 
@@ -144,7 +148,7 @@ NOTE: TO DO: Consider adding a section adapted from W3C VC data model, which wou
 
 ==== Placeholder assertion
 
-A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the content binding assertion.
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_content_binding,content binding>>_ assertion.
 
 == Normative references
 
@@ -167,7 +171,7 @@ The identity assertion contains the following data fields:
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
 
-The content of `assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of assertions MUST include a content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
+The content of `assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of assertions MUST include a _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
 
 For each assertion listed in the `assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
 
@@ -204,7 +208,7 @@ identity = {
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3, “Hashed URIs,”] of the C2PA technical specification.
 
-An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below:
+An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[C`BO`R-Diag] is shown below:
 
 [source,json]
 ----
@@ -217,7 +221,7 @@ NOTE: TO DO: Prepare example.
 
 === Presenting the list of assertions for signature
 
-Prior to requesting the credential holder with the list of assertions for signature, the assertions to be signed MUST themselves be created. The choice of which assertions to reference is not specified, except that the list of assertions MUST include the same content-binding assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to requesting the credential holder with the list of assertions for signature, the assertions to be signed MUST themselves be created. The choice of which assertions to reference is not specified, except that the list of assertions MUST include the same _<<_content_binding,content binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
 
 IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
@@ -241,11 +245,11 @@ The `pad1` and `pad2` fields of an identity assertion MUST contain only zero-val
 
 === Interaction with data hash assertion
 
-IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion,”] of the C2PA technical specification. This process MAY be followed when using other content binding assertions.
+IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion,”] of the C2PA technical specification. This process MAY be followed when using other _<<_content_binding,content binding>>_ assertions.
 
 The C2PA technical specification explains the need for pre-computing the _<<_c2pa_asset,C2PA asset’s>>_ final file layout when using a data hash assertion as follows:
 
-> Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that content bindings will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
+> Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that _<<_content_binding,content bindings>>_ will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
 -- link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4: “Multiple step processing”]
 
 Similarly, the size of the identity assertion cannot be known until its signature is obtained. Changing the size of the identity assertion after file layout is completed would invalidate the file offsets contained within the data hash assertion.
@@ -260,7 +264,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_connecting_the_signature++[Section 11.3.2.3, “Connecting the signature”]
 5. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
 6. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
-7. The list of assertions (including the content binding assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
+7. The list of assertions (including the _<<_content_binding,content binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
@@ -299,7 +303,7 @@ An identity assertion MUST contain valid CBOR that satisfies the `identity` rule
 
 For each entry in the `assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that the `assertions` field contains at least one content binding assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing content binding.
+The validator MUST ensure that the `assertions` field contains at least one _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing _<<_content_binding,content binding>>_ assertion.
 
 The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
@@ -328,7 +332,7 @@ The `url` field for a status code MUST always be the label of the identity asser
 | Value        |   Meaning
 |`cca.identity.cbor.invalid` | The CBOR of the identity assertion is not valid.
 |`cca.identity.assertion.mismatch` | The identity assertion contains an assertion reference that could not be found in the _<<C2PA claim>>.
-|`cca.identity.content_binding_missing` | The identity assertion does not reference a content binding assertion.
+|`cca.identity.content_binding_missing` | The identity assertion does not reference a _<<_content_binding,content binding>>_ assertion.
 |`cca.identity.sig_type.invalid` | The `sig_type` of the identity assertion is not valid.
 |`cca.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
