@@ -36,6 +36,6 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Proofreading: Correct references to distributed identifiers to _decentralized identifiers._
 * Incorporate additional review feedback.
 
-*Pending merge*
+*13 December 2023*
 
 * Add xref:_conceptual_overview[xrefstyle=full]
