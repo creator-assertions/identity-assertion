@@ -39,3 +39,6 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *13 December 2023*
 
 * Add xref:_conceptual_overview[xrefstyle=full]
+* New wording regarding intended meaning of credential holder’s signature. Changes to:
+** xref:_conceptual_overview[xrefstyle=full]
+** xref:_verifiable_credential_for_actor[xrefstyle=full] (Removed wording carried over from C2PA 1.3 spec regarding interpretation of verifiable credential.)
