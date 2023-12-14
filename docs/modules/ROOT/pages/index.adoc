@@ -61,7 +61,7 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_subject,credential subject’s>>_ signature should generally be construed as reflective of the subject’s authorization of or active participation in the production of the _<<C2PA asset>>_ in which it appears.
+Each identity assertion instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_subject,credential subject’s>>_ signature should generally be construed as reflective of the subject’s authorization of or active participation in the production of the assertions concerning the _<<C2PA asset>>_ in which it appears.
 
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram:
 
