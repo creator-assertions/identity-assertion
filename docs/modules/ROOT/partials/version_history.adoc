@@ -52,3 +52,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Added new language in xref:_overview[xrefstyle=full] to clarify that the use of this assertion is optional.
 * Replace most references to xref:_content_binding[] with xref:_hard_binding[]. Add glossary entry for xref:_hard_binding[].
 * Add recommendation that xref:_c2pa_claim_generator[] independently validate the xref:_credential_subject[]'s signature before generating identity assertion. See xref:_creating_the_identity_assertion[xrefstyle=full].
+* Added xref:_validating_the_cose_signature[xrefstyle=full].
