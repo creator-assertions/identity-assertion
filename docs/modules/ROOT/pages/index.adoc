@@ -245,6 +245,8 @@ The `referenced_assertions` field MUST contain the same list of assertions that 
 
 The acceptable values for the `sig_type` and `signature` fields depend on the nature of credential used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
+The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_subject,credential subject>>_ before proceeding.
+
 If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting identity assertion exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_ If the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full] MUST be repeated with a larger _<<_placeholder_assertion,placeholder assertion>>._
 
 NOTE: Preferred/deterministic CBOR serialization of byte arrays uses a variable-length integer to specify the length of the encoded binary data. When the length goes from zero to one byte, or one to two bytes (etc.), the length of the resulting pad jumps by two bytes. This means that not all paddings can be expressed using a single padding field. For example, 24-byte and 26-byte pads can be created, but a 25-byte pad cannot. If this situation arises, the desired padding can be split between `pad1` and `pad2`. For example, to make a 25-byte pad, an implementation can encode 19 bytes into `pad1` (resulting in an encoded length of 20 bytes), and 4 bytes into `pad2` (resulting in 5 bytes.)
@@ -274,7 +276,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_connecting_the_signature++[Section 11.3.2.3, “Connecting the signature”]
 5. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
 6. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
-7. The list of referenced assertions (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_referenced_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
+7. The list of referenced assertions (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_referenced_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_subject,credential subject>>_ before proceeding.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
@@ -295,6 +297,7 @@ sequenceDiagram
     loop For each credential holder
     G->>H: Request signature over list of referenced assertions
     H->>G: Provide signature over list of referenced assertions
+    G->>G: Independently verify signature
     end
 
     G->>G: Replace placeholder assertions with final identity assertions

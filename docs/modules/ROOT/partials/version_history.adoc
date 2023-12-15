@@ -51,3 +51,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Renamed `assertions` field in identity assertion to `referenced_assertions`; also introduced the term _referenced assertions_ for the list of assertions signed by the _<<_credential_subject,credential subject>>._
 * Added new language in xref:_overview[xrefstyle=full] to clarify that the use of this assertion is optional.
 * Replace most references to xref:_content_binding[] with xref:_hard_binding[]. Add glossary entry for xref:_hard_binding[].
+* Add recommendation that xref:_c2pa_claim_generator[] independently validate the xref:_credential_subject[]'s signature before generating identity assertion. See xref:_creating_the_identity_assertion[xrefstyle=full].
