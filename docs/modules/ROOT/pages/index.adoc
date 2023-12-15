@@ -70,7 +70,7 @@ image::overview.drawio.svg[Identity assertion overview,width=680,height=922,alig
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of identity assertions.
 
-Each identity assertion contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>_ and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of assertions.
+Each identity assertion contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as *referenced assertions,* and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of *referenced assertions.*
 
 == Glossary
 
@@ -148,7 +148,7 @@ NOTE: TO DO: Consider adding a section adapted from W3C VC data model, which wou
 
 ==== Placeholder assertion
 
-A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_content_binding,content binding>>_ assertion.
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of identity assertion. A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_content_binding,content binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 == Normative references
 
@@ -166,22 +166,22 @@ include::partial$version_history.adoc[]
 
 The identity assertion contains the following data fields:
 
-* `assertions` contains a list of assertions
+* `referenced_assertions` contains a list of assertions that are referenced and signed by this _<<_credential_subject,credential subject>>_
 * `signature` contains the raw byte stream of the _<<_credential_subject,credential subject>>’s_ signature
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
 
-The content of `assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of assertions MUST include a _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
+The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of referenced assertions MUST include a _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings,”] of the C2PA technical specification.
 
-For each assertion listed in the `assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
+For each assertion listed in the `referenced_assertions` field of the identity assertion, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the identity assertion appears.
 
-The `assertions` entry of the identity assertion MUST NOT reference the same identity assertion itself.
+The `referenced_assertions` entry of the identity assertion MUST NOT reference the same identity assertion itself.
 
-NOTE: The list of assertions in the `assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+NOTE: The list of referenced assertions in the `referenced_assertions` field of the identity assertion is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the identity assertion may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
-The `assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
+The `referenced_assertions` entry of the identity assertion MUST NOT reference any assertion more than once.
 
-The `assertions` entry of an identity assertion MAY reference any other identity assertion. Since every assertion referenced by an identity assertion must not change once presented to the _<<_credential_subject,credential subject>>_ for signature, care must be taken to ensure that no cycle of references among identity assertions is created.
+The `referenced_assertions` entry of an identity assertion MAY reference any other identity assertion. Since every assertion referenced by an identity assertion must not change once presented to the _<<_credential_subject,credential subject>>_ for signature, care must be taken to ensure that no cycle of references among identity assertions is created.
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -198,7 +198,7 @@ The schema for this type is defined by the `identity` rule in the following http
 [source,cddl]
 ----
 identity = {
-  "assertions": [1* $hashed-uri-map],
+  "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; A string identifying the data type of the signature field that follows. If the value of this string is not declared in this specification under (TO DO), this structure is invalid.
   "signature": bstr, ; byte string of the signature
   "pad1": bstr, ; zero-filled byte string used for filling up space
@@ -219,19 +219,19 @@ NOTE: TO DO: Prepare example.
 
 == Creating the identity assertion
 
-=== Presenting the list of assertions for signature
+=== Presenting the list of referenced assertions for signature
 
-Prior to requesting the credential holder with the list of assertions for signature, the assertions to be signed MUST themselves be created. The choice of which assertions to reference is not specified, except that the list of assertions MUST include the same _<<_content_binding,content binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to requesting the credential holder with the list of referenced assertions for signature, the assertions to be signed MUST themselves be created. The choice of which assertions to reference is not specified, except that the list of referenced assertions MUST include the same _<<_content_binding,content binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
 
 IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
-The list of assertions that will be referenced by the identity assertion MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each identity assertion. This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+The list of referenced assertions MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each identity assertion. This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 === Creating the assertion
 
 Once the signature is obtained, the identity assertion can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.
 
-The `assertions` field MUST contain the same list of assertions that was presented to the _<<_credential_subject,credential subject>>_ for signature.
+The `referenced_assertions` field MUST contain the same list of assertions that was presented to the _<<_credential_subject,credential subject>>_ for signature.
 
 The acceptable values for the `sig_type` and `signature` fields depend on the nature of credential used and are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -264,13 +264,13 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_connecting_the_signature++[Section 11.3.2.3, “Connecting the signature”]
 5. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
 6. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
-7. The list of assertions (including the _<<_content_binding,content binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
+7. The list of referenced assertions (including the _<<_content_binding,content binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each identity assertion to be added, as described in xref:_presenting_the_list_of_referenced_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the placeholder assertion content MUST be replaced with the final assertion content incorporating that signature.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
 11. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
 
-These steps are also represented by the following sequence diagram, which is non-normative.
+These steps are also represented by the following sequence diagram, which is non-normative:
 
 [mermaid,width=100%]
 ....
@@ -283,8 +283,8 @@ sequenceDiagram
     G->>G: Create content bindings
     
     loop For each credential holder
-    G->>H: Request signature over list of assertions
-    H->>G: Provide signature over list of assertions
+    G->>H: Request signature over list of referenced assertions
+    H->>G: Provide signature over list of referenced assertions
     end
 
     G->>G: Replace placeholder assertions with final identity assertions
@@ -301,9 +301,9 @@ An identity assertion is valid only if the _<<C2PA Manifest>>_ in which the asse
 
 An identity assertion MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
-For each entry in the `assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that the `assertions` field contains at least one _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing _<<_content_binding,content binding>>_ assertion.
+The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_content_binding,content binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard Bindings”] of the C2PA technical specification. The `cca.identity.content_binding_missing` error code SHALL be used to report a missing _<<_content_binding,content binding>>_ assertion.
 
 The `sig_type` field of an identity assertion MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
@@ -357,11 +357,11 @@ The `credentialSubject` of this _https://www.w3.org/TR/vc-data-model/[W3C verifi
 
 As defined in link:++https://www.w3.org/TR/did-core/#resolution++[Section 7, “Resolution,”] of the W3C decentralized identifier specification, the result of _resolving_ a decentralized identifier is a _DID document,_ in this case a set of data describing the _<<_actor,actor>>_ whose _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential]_ was presented.
 
-The _<<C2PA claim generator>>_ prepares the list of _<<_c2pa_assertion,C2PA assertions>>_ to be presented to the _<<_credential_subject,credential subject>>,_ which MUST in turn respond with a *verifiable presentation* as defined in link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[Section 4.10, “Presentations,”] of the W3C verifiable credentials data model. Additional requirements for this presentation are stated in xref:_verifiable_presentation_requirements[xrefstyle=full].
+The _<<C2PA claim generator>>_ prepares the list of referenced _<<_c2pa_assertion,C2PA assertions>>_ to be presented to the _<<_credential_subject,credential subject>>,_ which MUST in turn respond with a *verifiable presentation* as defined in link:++https://www.w3.org/TR/vc-data-model/#presentations-0++[Section 4.10, “Presentations,”] of the W3C verifiable credentials data model. Additional requirements for this presentation are stated in xref:_verifiable_presentation_requirements[xrefstyle=full].
 
 NOTE: The interaction between the _<<C2PA claim generator>>_ and _<<_credential_subject,credential subject>>_ is outside the scope of this specification. An implementation MAY use a mechanism such as link:++https://openid.net/specs/openid-4-verifiable-presentations-1_0.html++[OpenID for verifiable presentations].
 
-The relationships among _<<_actor,actor,>>_ _verifiable credential,_ _DID document,_ _assertions,_ and the _verifiable presentation_ are illustrated in the following diagram, which is non-normative:
+The relationships among _<<_actor,actor,>>_ _verifiable credential,_ _DID document,_ _referenced assertions,_ and the _verifiable presentation_ are illustrated in the following diagram, which is non-normative:
 
 [mermaid,width=100%]
 ....
@@ -378,7 +378,7 @@ erDiagram
     struct assertionMethod
   }
 
-  ASSERTION["Other assertions"] {}
+  ASSERTION["Referenced assertions"] {}
 
   VP["Verifiable presentation"] {}
 
@@ -415,7 +415,7 @@ NOTE: TO DISCUSS: Do we wish to have any further restrictions on verification me
 
 ==== Verifiable presentation requirements
 
-NOTE: TO DO: Specify structure, including how list of assertions is expressed, for VP.
+NOTE: TO DO: Specify structure, including how list of referenced assertions is expressed, for VP.
 
 ==== Validating an identity assertion with a W3C verifiable presentation
 
@@ -426,9 +426,9 @@ NOTE: TO DO: Add status codes for reporting validation failures for each of thes
 * The identity assertion structure itself is valid as described in xref:_validation_method.
 * The `signature` field must contain a valid JSON-LD serialization of a W3C verifiable presentation.
 * The verifiable presentation must satisfy all requirements stated in xref:_verifiable_presentation_requirements.
-* The list of assertions in the verifiable presentation must match the assertions referenced in the `assertions` field of the identity assertion structure.
+* The list of referenced assertions in the verifiable presentation must match the assertions referenced in the `referenced_assertions` field of the identity assertion structure.
 * The DID document referenced in the verifiable presentation is successfully resolved and contains public key cryptographic material as required by xref:_did_document_requirements.
-* The `proof` in the verifiable presentation indicated a valid signature for the public key cryptographic material in the DID document and the list of assertions.
+* The `proof` in the verifiable presentation indicated a valid signature for the public key cryptographic material in the DID document and the list of referenced assertions.
 
 [IMPORTANT]
 .DID method support
@@ -445,7 +445,7 @@ Validators MAY wish to use a service such as the link:++https://github.com/decen
 
 === X.509 certificates and COSE signatures
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_c2pa_assertion,C2PA assertions>>._
+In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of referenced _<<_c2pa_assertion,C2PA assertions>>._
 
 The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
@@ -461,7 +461,7 @@ To generate the COSE signature for an identity assertion, the steps described in
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `assertions` field from the identity assertion.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the identity assertion.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 [NOTE]

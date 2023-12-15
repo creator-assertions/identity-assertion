@@ -41,10 +41,11 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Add xref:_conceptual_overview[xrefstyle=full]
 * New wording regarding intended meaning of credential holder’s signature. Changes to:
 ** xref:_conceptual_overview[xrefstyle=full]
-** xref:_verifiable_credential_for_actor[xrefstyle=full] (Removed wording carried over from C2PA 1.3 spec regarding interpretation of verifiable credential.)
+* Removed wording carried over from C2PA 1.3 spec regarding interpretation of verifiable credential.
 * Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].
 * Add xref:_content_binding[xrefstyle=full] to glossary
 
 *15 December 2023*
 
 * Minor proofreading edits.
+* Rename `assertions` field in identity assertion to `referenced_assertions`; also introduce the term _referenced assertions_ for the list of assertions signed by the _<<_credential_subject,credential subject>>._
