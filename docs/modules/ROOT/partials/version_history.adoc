@@ -48,4 +48,5 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *15 December 2023*
 
 * Minor proofreading edits.
-* Rename `assertions` field in identity assertion to `referenced_assertions`; also introduce the term _referenced assertions_ for the list of assertions signed by the _<<_credential_subject,credential subject>>._
+* Renamed `assertions` field in identity assertion to `referenced_assertions`; also introduced the term _referenced assertions_ for the list of assertions signed by the _<<_credential_subject,credential subject>>._
+* Added new language in xref:_overview[xrefstyle=full] to clarify that the use of this assertion is optional.

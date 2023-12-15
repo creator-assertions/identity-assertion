@@ -164,6 +164,8 @@ include::partial$version_history.adoc[]
 
 === Overview
 
+This specification defines a _<<C2PA assertion>>_ known as an *identity assertion* which MAY be used to bind one _<<_credential_subject,credential subject>>_ to a set of *referenced* _<<_c2pa_assertion,C2PA assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
+
 The identity assertion contains the following data fields:
 
 * `referenced_assertions` contains a list of assertions that are referenced and signed by this _<<_credential_subject,credential subject>>_
@@ -208,7 +210,7 @@ identity = {
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3, “Hashed URIs,”] of the C2PA technical specification.
 
-An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[C`BO`R-Diag] is shown below:
+An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below:
 
 [source,json]
 ----
