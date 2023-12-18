@@ -218,7 +218,7 @@ identity = {
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3, “Hashed URIs,”] of the C2PA technical specification.
 
-An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below:
+An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below, which is non-normative:
 
 [source,json]
 ----
@@ -438,10 +438,37 @@ The _DID method_ chosen SHOULD satisfy the following requirements, which are cho
 
 ==== DID document requirements
 
-The _DID document_ for the _<<_c2pa_actor,C2PA actor,>>_ which is located by resolving the _https://www.w3.org/TR/did-core/[W3C decentralized identifier]_ from the _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ MUST contain an `assertionMethod` field 
-as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification.
+The _DID document_ for the _<<_c2pa_actor,C2PA actor,>>_ which is located by resolving the _https://www.w3.org/TR/did-core/[W3C decentralized identifier]_ from the _https://www.w3.org/TR/vc-data-model/[W3C verifiable credential],_ and MUST confirm to the requirements stated in link:++https://www.w3.org/TR/did-core/#representations++[Section 6, “Representations,”] of the W3C decentralized identifier specification.
 
-As defined in link:++https://www.w3.org/TR/did-core/#verification-methods++[Section 5.2, “Verification methods,”] of the W3C decentralized identifier spec, a _verification method type_ defines how implementers can interpret the verification method map and associated parameters.
+In addition, the _DID document_ MUST contain an `assertionMethod` field as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification.
+
+An example of a compliant DID document is shown in the example below, which is non-normative:
+
+[source,json]
+----
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:example.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:example.com#key-0",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:example.com",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "0-e2i2_Ua1S5HbTYnVB0lj2Z2ytXu2-tYmDFf8f5NjU"
+      }
+    },
+  ],
+  "assertionMethod": [
+    "did:web:example.com#key-0",
+  ],
+}
+----
 
 NOTE: TO DISCUSS: Do we wish to have any further restrictions on verification methods beyond those specified in link:++https://www.w3.org/TR/did-core/#verification-material++[Section 5.2.1, “Verification material,”] of the DID spec? See also link:++https://www.w3.org/TR/did-spec-registries/#verification-method-types++[Section 6.1, “Verification method types,”] of the W3C DID specification registries document for a list of possible verification methods. Currently about 10 are listed.
 

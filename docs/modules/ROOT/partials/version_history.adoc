@@ -58,3 +58,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 
 * Clarify interaction between _<<C2PA Manifest>>_ validation and identity assertion validation. See opening paragraphs of xref:_validating_the_identity_assertion[xrefstyle=full].
 * Add example of identity assertion in CBOR-DIAG. See xref:_schema_and_example[xrefstyle=full].
+* Rewrite xref:_did_document_requirements[xrefstyle=full] and include an example of a compliant DID document.
