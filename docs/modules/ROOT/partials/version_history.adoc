@@ -57,3 +57,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *18 December 2023*
 
 * Clarify interaction between _<<C2PA Manifest>>_ validation and identity assertion validation. See opening paragraphs of xref:_validating_the_identity_assertion[xrefstyle=full].
+* Add example of identity assertion in CBOR-DIAG. See xref:_schema_and_example[xrefstyle=full].
