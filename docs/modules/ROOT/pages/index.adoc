@@ -421,7 +421,7 @@ erDiagram
   A ||--|| VP: "generates VP"
 ....
 
-Once the verifiable presentation has been obtained, the identity assertion can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
+Once the verifiable presentation has been obtained, the identity assertion can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_presentation` and the `signature` value MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec. Further requirements for the _verifiable presentation_ are described in xref:_verifiable_presentation_requirements[xrefstyle=full].
 
 NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
@@ -442,7 +442,7 @@ The _DID document_ for the _<<_c2pa_actor,C2PA actor,>>_ which is located by res
 
 In addition, the _DID document_ MUST contain an `assertionMethod` field as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification.
 
-An example of a compliant DID document is shown in the example below, which is non-normative:
+An example of a compliant DID document, which is non-normative, is shown below:
 
 [source,json]
 ----
@@ -474,7 +474,36 @@ NOTE: TO DISCUSS: Do we wish to have any further restrictions on verification me
 
 ==== Verifiable presentation requirements
 
-NOTE: TO DO: Specify structure, including how list of referenced assertions is expressed, for VP.
+When using a _W3C verifiable credential_ to represent the credential subject, the `signature` value of the identity assertion MUST be the _verifiable presentation_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec and also comply with the constraints described in this section.
+
+The `@context` property MUST contain the following URIs in the following sequence:
+
+* https://www.w3.org/2018/credentials/v1
+* (TBD: CAI identity spec URL context)
+
+The `type` property MUST contain the following type names:
+
+* `"VerifiablePresentation"`
+* `"ContentAuthenticityIdentityPresentation"`
+
+
+An example of a compliant verifiable presentation, which is non-normative, is shown below:
+
+[source,json]
+----
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "(TBD: CAI identity spec URL context)"
+  ],
+  "type": [
+    "VerifiablePresentation",
+    "ContentAuthenticityIdentityPresentation"
+  ],
+  "verifiableCredential": [{...}],
+  "proof": [{...}]
+}
+----
 
 ==== Validating an identity assertion with a W3C verifiable presentation
 
