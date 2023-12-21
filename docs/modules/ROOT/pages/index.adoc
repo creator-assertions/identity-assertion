@@ -605,6 +605,16 @@ Resolve the following topics before producing a 1.0 version of this spec:
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
 
+* Consider targeting VC 2.0 data model because:
+** Much cleaner and close to final form
+** Allows use of link:https://www.w3.org/TR/vc-data-model-2.0/#integrity-of-related-resources[related resources], which might be a good way to express referenced assertions
+** JSON-LD in VC 2.0 link:https://www.w3.org/TR/vc-data-model-2.0/#json-ld[doesn't require namespacing]
+** VC 2.0 has much stronger mechanisms for cryptographic proofs and (unlinkable) selective disclosure that we might want to adopt
+** VC 2.0 adds new sections on NIST-approved cryptography
+** VC 2.0 allows multiple proofs
+
+* Look at link:https://www.w3.org/TR/vc-bitstring-status-list[Status lists] for VCs (revocation mechanism)
+
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
 > In most W3C verifiable credential workflows, the information about the subject (e.g., the cryptographic keys) is fetched on demand at the time of validation. While that is an acceptable model, it does open up a possible attack vector by providing an attacker with an externally-visible signal about what the validator is validating. Therefore, this specification also supports having the information captured and embedded at the time of signature. This not only prevents leakage, but also makes it very clear what data the signer is asserting about the credential’s subject.

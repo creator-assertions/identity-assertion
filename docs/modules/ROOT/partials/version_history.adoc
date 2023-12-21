@@ -69,3 +69,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 ** xref:_identity_assertion[]
 ** xref:_referenced_assertions[]
 * Rewrite xref:_w3c_verifiable_credentials[xrefstyle=full] to describe the signature as a _xref:_w3c_verifiable_credential[]_ rather than a _verifiable presentation_
+* Add item in xref:_open_issues_discussion[xrefstyle=full] to consider targeting VC 2.0 spec instead of 1.1
