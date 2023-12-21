@@ -68,3 +68,4 @@ IMPORTANT: This version history reflects changes to this document made while in 
 ** xref:_w3c_decentralized_identifier_document[]
 ** xref:_identity_assertion[]
 ** xref:_referenced_assertions[]
+* Rewrite xref:_w3c_verifiable_credentials[xrefstyle=full] to describe the signature as a _xref:_w3c_verifiable_credential[]_ rather than a _verifiable presentation_
