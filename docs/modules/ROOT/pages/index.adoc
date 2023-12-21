@@ -72,6 +72,10 @@ The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contain
 
 Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
+=== Use cases and examples
+
+NOTE: TO DO: Add examples that describe a few commonly-expected use cases and how they would be represented with identity assertions.
+
 == Glossary
 
 === Concepts adapted from C2PA technical specification
