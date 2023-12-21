@@ -59,3 +59,12 @@ IMPORTANT: This version history reflects changes to this document made while in 
 * Clarify interaction between _<<C2PA Manifest>>_ validation and identity assertion validation. See opening paragraphs of xref:_validating_the_identity_assertion[xrefstyle=full].
 * Add example of identity assertion in CBOR-DIAG. See xref:_schema_and_example[xrefstyle=full].
 * Rewrite xref:_did_document_requirements[xrefstyle=full] and include an example of a compliant DID document.
+
+*20 December 2023*
+
+* Extend xref:_glossary[xrefstyle=full] to contain definitions for the following terms:
+** xref:_w3c_verifiable_credential[]
+** xref:_w3c_decentralized_identifier[]
+** xref:_w3c_decentralized_identifier_document[]
+** xref:_identity_assertion[]
+** xref:_referenced_assertions[]
