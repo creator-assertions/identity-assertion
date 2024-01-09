@@ -6,9 +6,15 @@ site:
 content:
   sources: 
   - url: .
-    branches: main
+    branches: HEAD
     start_path: docs
 ui: 
   bundle:
     url: https://local--voluble-treacle-74ce0d.netlify.app/ui-bundle.zip
     snapshot: true
+antora:
+  extensions:
+    - require: '@sntke/antora-mermaid-extension'
+      mermaid_initialize_options:
+        theme_variables:
+          font_family: Roboto,sans-serif

@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@antora/cli": "3.1.4",
-    "@antora/site-generator": "3.1.4"
+    "@antora/site-generator": "3.1.4",
+    "@sntke/antora-mermaid-extension": "^0.0.4"
   }
 }
