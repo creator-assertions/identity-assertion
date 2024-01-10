@@ -417,7 +417,7 @@ As defined in link:++https://www.w3.org/TR/did-core/#resolution++[Section 7, “
 
 The _<<C2PA claim generator>>_ prepares the list of _<<_referenced_assertions,referenced assertions>>_ to be presented to the _<<_credential_subject,credential subject>>,_ which MUST in turn respond with a new _<<_verifiable_credential,verifiable credential>>._ Additional requirements for this new credential are stated in xref:_verifiable_credential_requirements[xrefstyle=full].
 
-NOTE: The interaction between the _<<C2PA claim generator>>_ and _<<_credential_subject,credential subject>>_ is outside the scope of this specification.
+NOTE: The interaction between the _<<C2PA claim generator>>_ and _<<_credential_subject,credential subject>>_ is outside the scope of this specification. Claim generators MAY wish to use a protocol such as link:https://openid.net/sg/openid4vc/[OpenID for verifiable credentials] to obtain a compliant _<<W3C verifiable credential>>_.
 
 The relationships among _<<_actor,actor>>,_ _<<W3C verifiable credential>>,_ _<<W3C decentralized identifier document>>,_ and the list of _<<_referenced_assertions,referenced assertions>>_ are illustrated in the following diagram, which is non-normative:
 
