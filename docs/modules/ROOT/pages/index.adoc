@@ -29,7 +29,7 @@ _This section is non-normative._
 
 === Design goals
 
-This specification aims to allow _<<_credential_subject,credential subjects>>_ to document their involvement in _<<_c2pa_asset,C2PA assets>>_ produced by them or on their behalf, and _<<_c2pa_manifest_consumer,consumers>>_ of those _<<_c2pa_asset,C2PA assets>>_ to independently verify that those received _<<_c2pa_asset,C2PA assets>>_ were in fact produced by the named _<<_credential_subject,credential subjects>>_ and have not been tampered with.
+This specification aims to allow an _<<_actor,actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_c2pa_manifest_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the named _<<_actor,actor>>_ and has not been tampered with.
 
 It accomplishes this by drawing upon and extending existing work from two standards organizations.
 
@@ -39,7 +39,7 @@ The https://c2pa.org[Coalition for Content Provenance and Authenticity (C2PA)] h
 
 The C2PA technical specification allows other standards bodies to define additional metadata that can be incorporated into a _<<C2PA Manifest>>._ These statements come in the form of a _<<_c2pa_assertion,C2PA assertion>>._
 
-This specification describes a specific _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ which allows a _<<_credential_subject,credential subject>>_ to prove control over an digital identity and bind that identity to a _<<_c2pa_asset,C2PA asset>>_ produced by them or on their behalf.
+This specification describes a specific _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to allow an _<<_actor,actor>>_ to prove control over an digital identity and to bind that identity to a _<<_c2pa_asset,C2PA asset>>_ (and, at their option, one or more _<<_c2pa_assertion,C2PA assertions>>_) produced by them or on their behalf.
 
 === Trust over IP technical architecture
 
@@ -61,7 +61,7 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_subject,credential subject’s>>_ signature should generally be construed as reflective of the subject’s authorization of or active participation in the production of the assertions concerning the _<<C2PA asset>>_ in which it appears.
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_subject,credential subject>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_subject,credential subject’s>>_ signature should generally be construed as reflective of the subject’s authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
 
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
@@ -71,6 +71,8 @@ image::overview.drawio.svg[Identity assertion overview,width=680,height=922,alig
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
 Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
+
+NOTE: TO DO: Add example of multi-author scenario.
 
 === Use cases and examples
 
@@ -198,7 +200,7 @@ include::partial$version_history.adoc[]
 
 === Overview
 
-This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_credential_subject,credential subject>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
+This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_credential_subject,credential subject>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
@@ -212,6 +214,8 @@ The content of `referenced_assertions` is a list of assertions which is presente
 For each assertion listed in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 
 NOTE: The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+
+NOTE: TO DO: Add reference to multi-author diagram to be added in xref:_conceptual_overview[xrefstyle=full].
 
 The `referenced_assertions` entry of the *<<_identity_assertion,identity assertion>>* MUST NOT reference any assertion more than once.
 
@@ -272,11 +276,13 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 
 === Presenting the list of referenced assertions for signature
 
-Prior to requesting the credential holder with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. The choice of which assertions to reference is not specified, except that the list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to requesting the credential holder with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
 
-IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content. For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.
 
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST be presented to be signed by the _<<_credential_subject,credential subject>>_ corresponding to each *<<_identity_assertion,identity assertion>>.* This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+
+IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 === Creating the assertion
 
@@ -350,6 +356,8 @@ sequenceDiagram
 == Validating the identity assertion
 
 An *<<_identity_assertion,identity assertion>>* is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification and the process described in <<_validation_method>> has been completed with a successful result.
+
+NOTE: TO DO: Track upcoming distinction between well-formed and trusted manifest in C2PA technical specification. Possibly mirror that wording here as well.
 
 === Validation method
 
@@ -618,6 +626,10 @@ Resolve the following topics before producing a 1.0 version of this spec:
 ** VC 2.0 allows multiple proofs
 
 * Look at link:https://www.w3.org/TR/vc-bitstring-status-list[Status lists] for VCs (revocation mechanism)
+
+* It should be possible in some situations to use Zero Knowledge Proofs to anonymize the credential subject while still proving some facts about them (e.g. you don’t know their name but you know that they are a photographer that has been issued a digital credential by a professional association). we should chat about examples, but I’ve been thinking that redaction is not always the only thing we’d want to specify.
+
+* What happens if the VC (or VC in a VP) expires before manifest validation? What about if it is revoked? Does this signal the need for secure timestamps (RFC 3161 or similar)? Could the manifest's timestamp be reused here?
 
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
