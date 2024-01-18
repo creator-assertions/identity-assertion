@@ -66,13 +66,16 @@ Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
 .Overview of identity assertion
-image::overview.drawio.svg[Identity assertion overview,width=680,height=922,align="center"]
+image::overview.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
 Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_subject,credential subject>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
-NOTE: TO DO: Add example of multi-author scenario.
+This trust signal may be repeated any number of times to convey information specific to distinct _<<_credential_subject,credential subjects>>._ The following diagram, which is non-normative, illustrates two _<<_credential_subject,credential subjects>>,_ each independently signing different actions and metadata assertions:
+
+.Example with multiple identity assertions
+image::overview-multi-author.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
 
 === Use cases and examples
 
