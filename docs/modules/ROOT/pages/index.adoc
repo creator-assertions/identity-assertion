@@ -79,9 +79,20 @@ image::overview-multi-author.drawio.svg[Multiple identity assertion example,widt
 
 === Use cases and examples
 
-NOTE: TO DO: Add examples that describe a few commonly-expected use cases and how they would be represented with identity assertions.
+The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use-cases developed within the link:https://www.originproject.info/[Project Origin Alliance] and the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)] frameworks. Each use-case will be described using some generic personas to help make the flow clear.
 
-NOTE: TO DO: Review C2PA 1.x use cases and how those might be expressed in this assertion: https://c2pa.org/specifications/specifications/1.3/explainer/Explainer.html#_use_case_examples
+==== Enhancing clarity around provenance and edits for journalistic work
+
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the new organization in a Content Credentials-enabled viewer.
+
+==== Enhance the evidentiary value of critical footage
+
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of police violence during a protest. Jane's capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane's identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application. The Content Credentials-verified asset is then used to improve the chances of that footage being admissible in court proceedings, but Jane's identity is not shared.
+
+==== Protecting brand value for media publishers
+
+NOTE: TO DO: Write a similar use case for a celebrity/news media/sports use case.
+
 
 == Glossary
 
@@ -185,7 +196,7 @@ A _<<C2PA assertion>>_ that allows a _<<_credential_subject,credential subject>>
 
 ==== Placeholder assertion
 
-A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Referenced assertions
 
