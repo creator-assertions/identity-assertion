@@ -78,6 +78,8 @@ NOTE: TO DO: Add example of multi-author scenario.
 
 NOTE: TO DO: Add examples that describe a few commonly-expected use cases and how they would be represented with identity assertions.
 
+NOTE: TO DO: Review C2PA 1.x use cases and how those might be expressed in this assertion: https://c2pa.org/specifications/specifications/1.3/explainer/Explainer.html#_use_case_examples
+
 == Glossary
 
 === Concepts adapted from C2PA technical specification
@@ -630,6 +632,12 @@ Resolve the following topics before producing a 1.0 version of this spec:
 * It should be possible in some situations to use Zero Knowledge Proofs to anonymize the credential subject while still proving some facts about them (e.g. you don’t know their name but you know that they are a photographer that has been issued a digital credential by a professional association). we should chat about examples, but I’ve been thinking that redaction is not always the only thing we’d want to specify.
 
 * What happens if the VC (or VC in a VP) expires before manifest validation? What about if it is revoked? Does this signal the need for secure timestamps (RFC 3161 or similar)? Could the manifest's timestamp be reused here?
+
+* How does this assertion relate to attestation from C2PA 1.x specs?
+
+* Revisit the draft specification and the trust continuum including trust list hierarchies and credentials chains (graphs)
+
+* Revisit the insights from the trust chains (C2PA veracity scoring)
 
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
