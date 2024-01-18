@@ -455,7 +455,7 @@ erDiagram
   A ||--|| CVC: "generates new credential"
 ....
 
-Once the asset’s verifiable credential has been obtained, the *<<_identity_assertion,identity assertion>>* can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential` and the `signature` value MUST be the *asset’s* _<<W3C verifiable credential>>_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec.
+Once the asset’s verifiable credential has been obtained, the *<<_identity_assertion,identity assertion>>* can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential` and the `signature` value MUST be the *asset’s* _<<W3C verifiable credential>>_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec. Further requirements for the _verifiable credential_ are described in xref:_verifiable_credential_requirements[xrefstyle=full].
 
 NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
