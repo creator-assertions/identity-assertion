@@ -8,24 +8,28 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 11 January 2024* +
+*Pre-draft 19 January 2024* +
+Copyright © 2024, (organization to be named) +
 xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
 
-*Editors:*
+*Maintainers:*
 
 * mailto:scouten@adobe.com[Eric Scouten] (https://adobe.com[Adobe])
 
-include::partial$toc.adoc[]
-include::partial$status.adoc[]
 include::partial$license.adoc[]
+include::partial$toc.adoc[]
 
 :sectnums:
 
 == Introduction
 
 _This section is non-normative._
+
+=== Scope
+
+NOTE: TO DO: Write a scope document, which is required for CSL. This may replace the following "Design goals" section.
 
 === Design goals
 
@@ -83,7 +87,14 @@ NOTE: TO DO: Add examples that describe a few commonly-expected use cases and ho
 
 NOTE: TO DO: Review C2PA 1.x use cases and how those might be expressed in this assertion: https://c2pa.org/specifications/specifications/1.3/explainer/Explainer.html#_use_case_examples
 
-== Glossary
+== Normative references
+
+* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
+* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
+* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
+* https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
+
+== Terms and definitions
 
 === Concepts adapted from C2PA technical specification
 
@@ -190,13 +201,6 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 ==== Referenced assertions
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_subject,credential subject>>_ named in the *<<_identity_assertion,identity assertion>>.*
-
-== Normative references
-
-* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
-* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
-* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
-* https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
 include::partial$terms.adoc[]
 include::partial$version_history.adoc[]
