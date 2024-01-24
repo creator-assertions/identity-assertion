@@ -83,9 +83,31 @@ image::overview-multi-author.drawio.svg[Multiple identity assertion example,widt
 
 === Use cases and examples
 
-NOTE: TO DO: Add examples that describe a few commonly-expected use cases and how they would be represented with identity assertions.
+The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance] and the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)] frameworks. Each use case will be described using some generic personas to help make the flow clear.
 
-NOTE: TO DO: Review C2PA 1.x use cases and how those might be expressed in this assertion: https://c2pa.org/specifications/specifications/1.3/explainer/Explainer.html#_use_case_examples
+==== Enhancing clarity around provenance and edits for journalistic work
+
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
+
+==== Enhance the evidentiary value of critical footage
+
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
+
+==== Election integrity and protecting political campaigns from deepfakes
+
+Aarav is the director of social communications for a political candidate in an upcoming election. He feels concerned that in efforts to manipulate voters, bad actors will create deepfake videos to misrepresent the candidate. To protect the campaign, Aarav decides that all official communications will be created, produced, and published with Content Credentials-enabled tools. The identity assertion equips Aarav and his team with the ability to represent the campaign as the organizational owner of the content that they publish. Aarav encourages voters to verify any digital campaign content to ensure that the material has Content Credentials that link the assets to the campaign.
+
+==== Brand protection in digital marketing
+
+An advertising agency representing a popular sneaker brand wants to ensure that consumers are only purchasing the shoes through official channels. They have found several fraudulent campaigns online claiming to offer the shoes at a discount. To address these scams, the agency decides to incorporate Content Credentials into their creative process, using the identity assertion to represent the designer responsible for the campaign. Before the campaign goes live, the agency redacts the designer’s name and publishes the assets with Content Credentials using the identity assertion to represent the sneaker brand. Now consumers can refer to Content Credentials to identify legitimate promotional campaigns from the sneaker brand.
+
+==== Attribution for digital creators
+
+One morning, Charlie, an up-and-coming digital artist, woke up to find that one of their designs went viral on social media. Charlie felt upset to see their art detached from their name. Charlie had spent months working on their artwork and was disappointed not to receive credit or compensation for their work. Moving forward, Charlie decides to use the identity assertion to link their name, social media, and copyright information to the art they create. Now, when Charlie posts their content to social media platforms that display Content Credentials, viewers can easily link the artwork back to Charlie.
+
+==== Audio Sampling and Artistic Collaboration
+
+Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device configured with her identity and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
 
 == Normative references
 
@@ -196,7 +218,7 @@ A _<<C2PA assertion>>_ that allows a _<<_credential_subject,credential subject>>
 
 ==== Placeholder assertion
 
-A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Referenced assertions
 
@@ -220,6 +242,8 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of _<<_referenced_assertions,referenced assertions>>_ MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings,”] of the C2PA technical specification.
 
+IMPORTANT: A single signature from the _<<_credential_subject,credential subject>>_ covers the _list_ of assertions. An implementation MUST NOT present each assertion separately for signature.
+
 For each assertion listed in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 
 NOTE: The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
@@ -236,7 +260,7 @@ The *<<_identity_assertion,identity assertion>>* shall have a label of `cca.iden
 
 NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
-NOTE: TO DO: Where would things like social media accounts live? Or should that be a separate assertion?
+NOTE: TO DO: Describe where would things like social media accounts live.
 
 === Schema and example
 
@@ -620,11 +644,15 @@ _This section is non-normative._
 
 Resolve the following topics before producing a 1.0 version of this spec:
 
+
 * How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
-* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
+
+* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?) How does this change in a custodial wallet situation versus a user-controlled wallet?
+
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
+
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
 
 * Consider targeting VC 2.0 data model because:
