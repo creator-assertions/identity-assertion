@@ -83,15 +83,41 @@ The following is a non-exhaustive list of potential and general use cases for th
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
-A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the new organization in a Content Credentials-enabled viewer.
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
 
 ==== Enhance the evidentiary value of critical footage
 
-A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of police violence during a protest. Jane's capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane's identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application. The Content Credentials-verified asset is then used to improve the chances of that footage being admissible in court proceedings, but Jane's identity is not shared.
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane's capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane's identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application.
 
 ==== Protecting brand value for media publishers
 
 NOTE: TO DO: Write a similar use case for a celebrity/news media/sports use case.
+
+Primary value in protection against imitators or actors who would like to devalue the brand.
+
+Look at Publicis "dream campaign of the future."
+
+Review with Coleen.
+
+==== Non-news example
+
+
+==== Political example
+
+
+==== Advertising
+
+
+==== Digital creator and attribution
+
+Content published by artist goes viral and gets moved across media sites.
+
+My lodging next right, state prison picture.
+
+==== Audio sampling and reuse
+
+Get credit for audio sampling.
+
 
 
 == Glossary
