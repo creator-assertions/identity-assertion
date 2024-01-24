@@ -238,6 +238,8 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of _<<_referenced_assertions,referenced assertions>>_ MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings,”] of the C2PA technical specification.
 
+IMPORTANT: A single signature from the _<<_credential_subject,credential subject>>_ covers the _list_ of assertions. An implementation MUST NOT present each assertion separately for signature.
+
 For each assertion listed in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 
 NOTE: The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
@@ -254,7 +256,7 @@ The *<<_identity_assertion,identity assertion>>* shall have a label of `cca.iden
 
 NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
-NOTE: TO DO: Where would things like social media accounts live? Or should that be a separate assertion?
+NOTE: TO DO: Describe where would things like social media accounts live.
 
 === Schema and example
 
@@ -638,11 +640,15 @@ _This section is non-normative._
 
 Resolve the following topics before producing a 1.0 version of this spec:
 
+
 * How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
-* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?)
+
+* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?) How does this change in a custodial wallet situation versus a user-controlled wallet?
+
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
+
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
 
 * Consider targeting VC 2.0 data model because:
