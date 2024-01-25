@@ -225,7 +225,7 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_subject,credential subject>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
 include::partial$terms.adoc[]
-include::partial$version_history.adoc[]
+include::partial$version-history.adoc[]
 
 == Assertion definition
 
