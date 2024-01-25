@@ -1,7 +1,5 @@
 == Version history
 
-IMPORTANT: This version history reflects changes to this document made while in private review. It will be removed and reset when the spec becomes public.
-
 *27 November 2023*
 
 * Initial private review draft.
@@ -75,3 +73,11 @@ IMPORTANT: This version history reflects changes to this document made while in 
 *11 January 2024*
 
 * Minor edits throughout the document based on feedback received over past few weeks.
+
+*24 January 2024*
+
+* Add an example illustrating a multi-author scenario. See xref:_conceptual_overview[xrefstyle=full].
+* Add several new use cases and examples. See xref:_use_cases_and_examples[xrefstyle=full].
+* Minor edits and new discussion items throughout the document based on feedback received over past few weeks.
+* Transition to Community Specification License. See xref:_license[].
+* Move version history to end of document.

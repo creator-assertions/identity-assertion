@@ -2,4 +2,6 @@
 
 This specification is subject to the Community Specification License 1.0, available at https://github.com/CommunitySpecification/1.0.
 
-Additional information about this specification's scope and governance can be found at the project’s link:https://github.com/creator-assertions/identity-assertion[GitHub repository (creator-assertions/identity-assertion)]. The Community Specification License documents at the root of that repository are the authoritative governance documents for this specification.
+Additional information about this specification's scope and governance can be found at the project’s [line-through]#link:https://github.com/creator-assertions/identity-assertion[GitHub repository (creator-assertions/identity-assertion)]#. The Community Specification License documents at the root of that repository are the authoritative governance documents for this specification.
+
+NOTE: This repository is not yet public, but will be made public shortly.

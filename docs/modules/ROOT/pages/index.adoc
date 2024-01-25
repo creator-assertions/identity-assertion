@@ -8,8 +8,7 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Pre-draft 19 January 2024* +
-xref:_version_history[]
+*Pre-draft 24 January 2024* · xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
 
@@ -30,7 +29,7 @@ _This section is non-normative._
 
 This specification describes a _<<C2PA assertion>>_ that allows an _<<_actor,actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_c2pa_manifest_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the named _<<_actor,actor>>_ and has not been tampered with.
 
-IMPORTANT: For purposes of the Community Specification License, the link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document] at the root of this project’s GitHub repository is the governing document of this specification’s scope.
+IMPORTANT: For purposes of the Community Specification License, the [line-through]#link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document]# at the root of this project’s GitHub repository is the governing document of this specification’s scope. _This document is not yet public, but will be shortly._
 
 This specification draws upon and extends existing work from two standards organizations:
 
@@ -222,7 +221,6 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_subject,credential subject>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
 include::partial$terms.adoc[]
-include::partial$version-history.adoc[]
 
 == Assertion definition
 
@@ -675,3 +673,5 @@ Resolve the following topics before producing a 1.0 version of this spec:
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
 > In most W3C verifiable credential workflows, the information about the subject (e.g., the cryptographic keys) is fetched on demand at the time of validation. While that is an acceptable model, it does open up a possible attack vector by providing an attacker with an externally-visible signal about what the validator is validating. Therefore, this specification also supports having the information captured and embedded at the time of signature. This not only prevents leakage, but also makes it very clear what data the signer is asserting about the credential’s subject.
+
+include::partial$version-history.adoc[]
