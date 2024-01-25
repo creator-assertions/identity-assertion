@@ -8,18 +8,17 @@ The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Preliminary draft 11 January 2024* +
+*Pre-draft 19 January 2024* +
 xref:_version_history[]
 
 IMPORTANT: This is an early private review draft of this document. Please refer to the draft date above when providing feedback. See xref:_version_history[] for description of what has changed between private review drafts.
 
-*Editors:*
+*Maintainers:*
 
 * mailto:scouten@adobe.com[Eric Scouten] (https://adobe.com[Adobe])
 
-include::partial$toc.adoc[]
-include::partial$status.adoc[]
 include::partial$license.adoc[]
+include::partial$toc.adoc[]
 
 :sectnums:
 
@@ -27,11 +26,13 @@ include::partial$license.adoc[]
 
 _This section is non-normative._
 
-=== Design goals
+=== Scope
 
-This specification aims to allow an _<<_actor,actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_c2pa_manifest_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the named _<<_actor,actor>>_ and has not been tampered with.
+This specification describes a _<<C2PA assertion>>_ that allows an _<<_actor,actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_c2pa_manifest_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the named _<<_actor,actor>>_ and has not been tampered with.
 
-It accomplishes this by drawing upon and extending existing work from two standards organizations.
+IMPORTANT: For purposes of the Community Specification License, the link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document] at the root of this project’s GitHub repository is the governing document of this specification’s scope.
+
+This specification draws upon and extends existing work from two standards organizations:
 
 === C2PA technical specification
 
@@ -105,7 +106,14 @@ One morning, Charlie, an up-and-coming digital artist, woke up to find that one 
 
 Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device configured with her identity and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
 
-== Glossary
+== Normative references
+
+* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
+* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
+* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
+* https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
+
+== Terms and definitions
 
 === Concepts adapted from C2PA technical specification
 
@@ -213,15 +221,8 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_subject,credential subject>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
-== Normative references
-
-* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
-* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
-* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
-* https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
-
 include::partial$terms.adoc[]
-include::partial$version_history.adoc[]
+include::partial$version-history.adoc[]
 
 == Assertion definition
 
