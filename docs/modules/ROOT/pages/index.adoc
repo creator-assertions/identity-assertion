@@ -249,7 +249,7 @@ The `referenced_assertions` entry of an *<<_identity_assertion,identity assertio
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The *<<_identity_assertion,identity assertion>>* shall have a label of `cca.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
+The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
 NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
@@ -389,17 +389,17 @@ NOTE: TO DO: Track upcoming distinction between well-formed and trusted manifest
 
 IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
 
-An *<<_identity_assertion,identity assertion>>* MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cca.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
+An *<<_identity_assertion,identity assertion>>* MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
-For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cca.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings”] of the C2PA technical specification. The `cca.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
+The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
-The `sig_type` field of an *<<_identity_assertion,identity assertion>>* MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cca.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
+The `sig_type` field of an *<<_identity_assertion,identity assertion>>* MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* MUST contain a valid signature. The procedure for validating each signature type and corresponding status codes are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes. The `cca.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes. The `cawg.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
 === Status codes
 
@@ -412,7 +412,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`cca.identity.validated` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
+|`cawg.identity.validated` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
 |=======================
 
 ==== Failure codes
@@ -420,11 +420,11 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`cca.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
-|`cca.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>.
-|`cca.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
-|`cca.identity.sig_type.invalid` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not valid.
-|`cca.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
+|`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
+|`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>.
+|`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
+|`cawg.identity.sig_type.invalid` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not valid.
+|`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].

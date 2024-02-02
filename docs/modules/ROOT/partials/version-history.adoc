@@ -85,3 +85,4 @@
 *02 February 2024*
 
 * Transition from private draft to public site. See link:https://creator-assertions.github.io[Creator Assertions Working Group].
+* Replace `cca.\*` prefixes with `cawg.*`.
