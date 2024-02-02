@@ -40,7 +40,7 @@
 * New wording regarding intended meaning of credential holder’s signature. Changes to:
 ** xref:_conceptual_overview[xrefstyle=full]
 * Removed wording carried over from C2PA 1.3 spec regarding interpretation of verifiable credential.
-* Rewrite xref:_w3c_verifiable_credentials_and_verifiable_presentations[xrefstyle=full].
+* Rewrite xref:_w3c_verifiable_credentials[xrefstyle=full].
 * Add xref:_content_binding[xrefstyle=full] to glossary
 
 *15 December 2023*
@@ -60,7 +60,7 @@
 
 *20 December 2023*
 
-* Extend xref:_glossary[xrefstyle=full] to contain definitions for the following terms:
+* Extend xref:_terms_and_definitions[xrefstyle=full] to contain definitions for the following terms:
 ** xref:_w3c_verifiable_credential[]
 ** xref:_w3c_decentralized_identifier[]
 ** xref:_w3c_decentralized_identifier_document[]
