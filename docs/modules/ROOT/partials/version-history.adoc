@@ -81,3 +81,7 @@
 * Minor edits and new discussion items throughout the document based on feedback received over past few weeks.
 * Transition to Community Specification License. See xref:_license[].
 * Move version history to end of document.
+
+*02 February 2024*
+
+* Transition from private draft to public site. See link:https://creator-assertions.github.io[Creator Assertions Working Group].

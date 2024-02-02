@@ -1,14 +1,16 @@
-# Identity Assertion
+# Creator Assertions Working Group Identity Assertion
 
-TO DO: Add links to community spec documents.
+This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://creator-assertions.github.io/)'s identity assertion. A rendered version of this specification can be found [here](https://creator-assertions.github.io/identity/0.1-draft/index.html).
 
-## About this site
+## Governance
 
-This document is the source code for a public specification available at [(TEMPORARY SITE to be named later)](https://reliable-sprite-ac392c.netlify.app/identity/0.1-draft/).
+This specification is subject to the [Community Specification License 1.0](https://github.com/CommunitySpecification/1.0).
+
+## Site build process
 
 The site content is built using [Antora](https://antora.org), which takes Asciidoc (.adoc) plain text files and renders them to HTML and other formats.
 
-The primary content of this document is available in [docs/modules/ROOT/pages/index.adoc](https://github.com/content-authorship/identity/blob/main/docs/modules/ROOT/pages/index.adoc) in this repo.
+The primary content of this document is available in [docs/modules/ROOT/pages/index.adoc](https://github.com/creator-assertions/identity-assertion/blob/main/docs/modules/ROOT/pages/index.adoc) in this repo.
 
 ## Local preview
 
