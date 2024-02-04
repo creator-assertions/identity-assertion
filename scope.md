@@ -1,10 +1,10 @@
 # Scope
 
-This document outlines the scope of work undertaken by the Content Authenticity Initiative Identity Assertion Working Group.
+This document outlines the scope of work undertaken by the Creator Assertions Working Group’s Identity Assertion project.
 
 ## Objectives
 
-The objective of this Working Group is to document a new identity assertion specification.
+The objective of this project is to document a new identity assertion specification.
 
 The identity assertion should allow an actor (typically an individual human or an organization of humans) to document their relationship to a C2PA asset produced by them or on their behalf independently from the C2PA claim generator, and to allow consumers of a C2PA asset to independently verify that the received asset was in fact produced by the named actor and has not been tampered with.
 
@@ -28,7 +28,7 @@ TO DO: Define meeting notes (hosted in this repo?) and meeting logistics.
 
 ## Dependencies
 
-The identity assertion specification must align with the C2PA Technical Specification that is current as of the time of publication.
+The identity assertion specification must align with the C2PA Technical Specification that is current as of the time of publication. The specification may also describe compatibility with previous versions of the C2PA Technical Specification.
 
 ## About this document
 
