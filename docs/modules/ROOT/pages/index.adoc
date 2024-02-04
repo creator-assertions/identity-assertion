@@ -631,12 +631,14 @@ _This section is non-normative._
 * Think through async issues and online failure cases involved in verifying VC/DID document chains.
 ====
 
+include::partial$version-history.adoc[]
+
+[appendix]
 == Open issues / discussion
 
 _This section is non-normative._
 
 Resolve the following topics before producing a 1.0 version of this spec:
-
 
 * How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
@@ -671,5 +673,3 @@ Resolve the following topics before producing a 1.0 version of this spec:
 NOTE: TO DO: Review the following statement adapted from C2PA spec. I think it’s at odds with the use of DID documents, and should likely be removed.
 
 > In most W3C verifiable credential workflows, the information about the subject (e.g., the cryptographic keys) is fetched on demand at the time of validation. While that is an acceptable model, it does open up a possible attack vector by providing an attacker with an externally-visible signal about what the validator is validating. Therefore, this specification also supports having the information captured and embedded at the time of signature. This not only prevents leakage, but also makes it very clear what data the signer is asserting about the credential’s subject.
-
-include::partial$version-history.adoc[]

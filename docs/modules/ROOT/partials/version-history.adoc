@@ -1,4 +1,7 @@
+[appendix]
 == Version history
+
+_This section is non-normative._
 
 *27 November 2023*
 
