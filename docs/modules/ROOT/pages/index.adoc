@@ -2,7 +2,7 @@
 :toc: macro
 :toc-title:
 :sectanchors:
-:sectnums!:
+:sectnums:
 
 The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
@@ -10,14 +10,15 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_
 
 *Pre-draft 02 February 2024* · xref:_version_history[]
 
+[#maintainers]
 *Maintainers:*
 
 * mailto:scouten@adobe.com[Eric Scouten] (https://adobe.com[Adobe])
 
 include::partial$license.adoc[]
+include::partial$contributing.adoc[]
+include::partial$foreword.adoc[]
 include::partial$toc.adoc[]
-
-:sectnums:
 
 == Introduction
 

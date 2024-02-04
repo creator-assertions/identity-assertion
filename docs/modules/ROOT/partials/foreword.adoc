@@ -1,3 +1,4 @@
+[discrete]
 == Foreword
 
 Attention is drawn to the possibility that some of the elements of this document may be the subject of patent rights. No party shall not be held responsible for identifying any or all such patent rights.
@@ -6,7 +7,7 @@ Any trade name used in this document is information given for the convenience of
 
 This document was prepared by the Creator Assertions Working Group.
 
-Known patent licensing exclusions are available in the specification’s repository’s Notices.md file.
+Known patent licensing exclusions are available in the specification’s repository’s `notices.md` file.
 
 Any feedback or questions on this document should be directed to the link:https://github.com/creator-assertions/identity-assertion:[specifications repository (GitHub: creator-assertions/identity-assertion)].
 
