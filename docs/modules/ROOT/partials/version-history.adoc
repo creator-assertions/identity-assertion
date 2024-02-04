@@ -89,3 +89,9 @@ _This section is non-normative._
 
 * Transition from private draft to public site. See link:https://creator-assertions.github.io[Creator Assertions Working Group].
 * Replace `cca.\*` prefixes with `cawg.*`.
+
+*04 February 2024*
+
+* Added xref:_contributing[] and xref:_foreword[] sections.
+* Refined link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[`scope.md`] and link:https://github.com/creator-assertions/identity-assertion/blob/main/notices.md[`notices.md`] text in project repository.
+* Moved xref:_version_history[] and xref:_open_issues_discussion[] to appendix.
