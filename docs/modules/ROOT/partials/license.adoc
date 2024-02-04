@@ -1,3 +1,4 @@
+[discrete]
 == License
 
 This specification is subject to the link:https://github.com/CommunitySpecification/1.0[Community Specification License 1.0].
