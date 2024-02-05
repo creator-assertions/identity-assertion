@@ -75,6 +75,7 @@ Each *<<_identity_assertion,identity assertion>>* contains hashlink references t
 
 This trust signal may be repeated any number of times to convey information specific to distinct _<<_credential_subject,credential subjects>>._ The following diagram, which is non-normative, illustrates two _<<_credential_subject,credential subjects>>,_ each independently signing different actions and metadata assertions:
 
+[#multiple-identity-assertions]
 .Example with multiple identity assertions
 image::overview-multi-author.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
 
@@ -242,7 +243,7 @@ For each assertion listed in the `referenced_assertions` field of the *<<_identi
 
 NOTE: The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_subject,credential subjects>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
-NOTE: TO DO: Add reference to multi-author diagram to be added in xref:_conceptual_overview[xrefstyle=full].
+Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview.
 
 The `referenced_assertions` entry of the *<<_identity_assertion,identity assertion>>* MUST NOT reference any assertion more than once.
 
