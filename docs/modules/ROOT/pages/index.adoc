@@ -385,13 +385,9 @@ sequenceDiagram
 
 == Validating the identity assertion
 
-An *<<_identity_assertion,identity assertion>>* is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_validation++[Section 15, “Validation,”] of the C2PA technical specification and the process described in <<_validation_method>> has been completed with a successful result.
-
-NOTE: TO DO: Track upcoming distinction between well-formed and trusted manifest in C2PA technical specification. Possibly mirror that wording here as well.
-
 === Validation method
 
-IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a successful result before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
+IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
 
 An *<<_identity_assertion,identity assertion>>* MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
