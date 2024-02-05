@@ -125,8 +125,6 @@ A human or non-human (hardware or software) that is participating in the C2PA ec
 
 NOTE: An organization or group of _actors_ may also be considered an _actor_ in the C2PA ecosystem.
 
-NOTE: TO DO: Track upcoming definition change in C2PA spec.
-
 ==== C2PA asset
 
 A file or stream of data containing _digital content,_ _asset metadata,_ and a <<C2PA Manifest>>.
