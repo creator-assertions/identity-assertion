@@ -4,7 +4,7 @@
 :sectanchors:
 :sectnums:
 
-The https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
+The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
@@ -34,11 +34,13 @@ This specification draws upon and extends existing work from two standards organ
 
 === C2PA technical specification
 
-The https://c2pa.org[Coalition for Content Provenance and Authenticity (C2PA)] has developed a https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[technical specification] for providing content provenance and authenticity. It is designed to enable global, opt-in, adoption of digital provenance techniques through the creation of a rich ecosystem of digital provenance enabled applications for a wide range of individuals and organizations while meeting appropriate security requirements.
+The https://c2pa.org[Coalition for Content Provenance and Authenticity (C2PA)] has developed a link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[technical specification] for providing content provenance and authenticity. It is designed to enable global, opt-in, adoption of digital provenance techniques through the creation of a rich ecosystem of digital provenance enabled applications for a wide range of individuals and organizations while meeting appropriate security requirements.
 
 The C2PA technical specification allows other standards bodies to define additional metadata that can be incorporated into a _<<C2PA Manifest>>._ These statements come in the form of a _<<_c2pa_assertion,C2PA assertion>>._
 
 This specification describes a specific _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to allow an _<<_actor,actor>>_ to prove control over an digital identity and to bind that identity to a _<<_c2pa_asset,C2PA asset>>_ (and, at their option, one or more _<<_c2pa_assertion,C2PA assertions>>_) produced by them or on their behalf.
+
+IMPORTANT: This document references link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[version 2.0 of the C2PA technical specification], but it is also compatible with all 1.x versions of the specification. Where there is a meaningful difference between versions of the C2PA specification, those will be described here.
 
 === Trust over IP technical architecture
 
@@ -106,7 +108,7 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 
 == Normative references
 
-* https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html[C2PA technical specification, version 1.4]
+* https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[C2PA technical specification, version 2.0]
 * https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
 * https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
@@ -115,7 +117,7 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 
 === Concepts adapted from C2PA technical specification
 
-The following definitions are adapted from the link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification. This specification uses the prefix “C2PA” to denote data structures incorporated from that specification.
+The following definitions are adapted from the link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification. This specification uses the prefix “C2PA” to denote data structures incorporated from that specification.
 
 ==== Actor
 
@@ -139,13 +141,13 @@ The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the
 
 NOTE: A _C2PA Manifest_ can reference other _C2PA Manifests._
 
-See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_manifests++[Section 12, “Manifests,”] of the C2PA technical specification.
+See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_manifests++[Section 11, “Manifests,”] of the C2PA technical specification.
 
 ==== C2PA claim
 
 A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the _<<_content_binding,content binding>>._ If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
 
-See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_claims++[Section 11, “Claims,”] of the C2PA technical specification.
+See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_claims++[Section 10, “Claims,”] of the C2PA technical specification.
 
 ==== C2PA claim generator
 
@@ -155,7 +157,7 @@ The non-human (hardware or software) _<<_actor,actor>>_ that generates the _<<C2
 
 A data structure which represents a statement asserted by an _<<_actor,actor>>_ concerning the _<<C2PA asset>>._ This data is a part of the _<<C2PA Manifest>>._
 
-See link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_assertions++[Section 6, “Assertions,”] of the C2PA technical specification.
+See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_assertions++[Section 6, “Assertions,”] of the C2PA technical specification.
 
 ==== C2PA Manifest Consumer
 
@@ -167,13 +169,13 @@ NOTE: When this _<<_actor,actor>>_ is concerned with validating the *<<_identity
 
 Information that associates digital content to a specific _<<C2PA Manifest>>_ associated with a specific _<<C2PA asset>>,_ either as a _hard binding_ or a _soft binding._
 
-Content bindings are described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_binding_to_content++[Section 10, “Binding to content,”] of the C2PA technical specification.
+Content bindings are described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_binding_to_content++[Section 9, “Binding to content,”] of the C2PA technical specification.
 
 ==== Hard binding
 
 One or more cryptographic hashes that uniquely identifies either the entire _<<C2PA asset>>_ or a portion thereof.
 
-Hard bindings are described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings,”] of the C2PA technical specification.
+Hard bindings are described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
 === Concepts adapted from W3C verifiable credentials specification
 
@@ -234,7 +236,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
 
-The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of _<<_referenced_assertions,referenced assertions>>_ MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings,”] of the C2PA technical specification.
+The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_subject,credential subject>>_ for signature. This list of _<<_referenced_assertions,referenced assertions>>_ MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
 IMPORTANT: A single signature from the _<<_credential_subject,credential subject>>_ covers the _list_ of assertions. An implementation MUST NOT present each assertion separately for signature.
 
@@ -250,9 +252,9 @@ The `referenced_assertions` entry of an *<<_identity_assertion,identity assertio
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
+The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
-NOTE: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
+NOTE: TO DO: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
 NOTE: TO DO: Describe where would things like social media accounts live.
 
@@ -271,7 +273,7 @@ identity = {
 }
 ----
 
-The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3, “Hashed URIs,”] of the C2PA technical specification.
+The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
 
 An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below, which is non-normative:
 
@@ -303,7 +305,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 
 === Presenting the list of referenced assertions for signature
 
-Prior to requesting the credential holder with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to requesting the credential holder with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
 
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content. For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.
 
@@ -331,30 +333,30 @@ The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* 
 
 === Interaction with data hash assertion
 
-IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_data_hash++[Section 19.6, “Data hash assertion,”] of the C2PA technical specification. This process MAY be followed when using other _<<_hard_binding,hard binding>>_ assertions.
+IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_data_hash++[Section 18.5, “Data hash,”] of the C2PA technical specification. This process MAY be followed when using other _<<_hard_binding,hard binding>>_ assertions.
 
 The C2PA technical specification explains the need for pre-computing the _<<_c2pa_asset,C2PA asset’s>>_ final file layout when using a data hash assertion as follows:
 
 > Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that _<<_hard_binding,hard bindings>>_ will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
--- link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4: “Multiple step processing”]
+-- link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4: “Multiple step processing”]
 
 Similarly, the size of the *<<_identity_assertion,identity assertion>>* cannot be known until its signature is obtained. Changing the size of the *<<_identity_assertion,identity assertion>>* after file layout is completed would invalidate the file offsets contained within the data hash assertion.
 
 In this case, it is necessary to use a _<<_placeholder_assertion,placeholder assertion>>_ to reserve space for the content of the final *<<_identity_assertion,identity assertion>>* (including its signature) which will be created later.
 
-When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_a_claim++[Section 11.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
 
-1. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_creating_assertions++[Section 11.3.1, “Creating assertions.”] Any *<<_identity_assertion,identity assertion>>* that will be added to the claim MUST be represented during this step by an assertion using the same label as the final *<<_identity_assertion,identity assertion>>.* The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final *<<_identity_assertion,identity assertion>>.*
-2. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 11.3.2.1, “Adding assertions and redactions”]
-3. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_adding_ingredients++[Section 11.3.2.2, “Adding ingredients”]
-4. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_connecting_the_signature++[Section 11.3.2.3, “Connecting the signature”]
-5. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”] NOTE: Track possible upcoming change in C2PA spec regarding XMP.
-6. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_create_content_bindings++[Section 11.4.2, “Create content bindings”]
+1. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions.”] Any *<<_identity_assertion,identity assertion>>* that will be added to the claim MUST be represented during this step by an assertion using the same label as the final *<<_identity_assertion,identity assertion>>.* The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final *<<_identity_assertion,identity assertion>>.*
+2. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 10.3.2.1, “Adding assertions and redactions”]
+3. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_adding_ingredients++[Section 10.3.2.2, “Adding ingredients”]
+4. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_connecting_the_signature++[Section 10.3.2.3, “Connecting the signature”]
+5. If using C2PA 1.x process, link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”].
+6. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_create_content_bindings++[Section 10.4.1, “Create content bindings”]
 7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_subject,credential subject>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_list_of_referenced_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_subject,credential subject>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_subject,credential subject>>_ before proceeding.
-8. The remaining steps from link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
-9. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
-10. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time stamps”]
-11. link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
+8. The remaining steps from link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
+9. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
+10. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
+11. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
 
 These steps are also represented by the following sequence diagram, which is non-normative:
 
@@ -382,7 +384,7 @@ sequenceDiagram
 
 == Validating the identity assertion
 
-An *<<_identity_assertion,identity assertion>>* is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validation++[Section 16, “Validation,”] of the C2PA technical specification and the process described in <<_validation_method>> has been completed with a successful result.
+An *<<_identity_assertion,identity assertion>>* is valid only if the _<<C2PA Manifest>>_ in which the assertion is contained is valid as defined by the section titled link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_validation++[Section 15, “Validation,”] of the C2PA technical specification and the process described in <<_validation_method>> has been completed with a successful result.
 
 NOTE: TO DO: Track upcoming distinction between well-formed and trusted manifest in C2PA technical specification. Possibly mirror that wording here as well.
 
@@ -392,9 +394,9 @@ IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a succes
 
 An *<<_identity_assertion,identity assertion>>* MUST contain valid CBOR that satisfies the `identity` rule in xref:_schema_and_example[xrefstyle=full]. The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
 
-For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in the `assertions` entry of the _<<C2PA claim>>._ The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._ (For version 1 claims, the entry must appear in the `assertions` entry.) The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hard_bindings++[Section 10.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
+The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
 The `sig_type` field of an *<<_identity_assertion,identity assertion>>* MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
 
@@ -404,7 +406,7 @@ The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* 
 
 === Status codes
 
-The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_status_codes++[Section 16.1, “Status codes,”] of the C2PA technical specification.
+The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_status_codes++[Section 15.1, “Status codes,”] of the C2PA technical specification.
 
 The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.* It is omitted from the tables below.
 
@@ -573,11 +575,11 @@ The `sig_type` value for such an assertion MUST be `org.ietf.cose`. The `signatu
 
 To generate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described subsequently:
 
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time-stamps”]
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_hashing_2++[Section 14.1, “Hashing”]
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_digital_signatures++[Section 14.2, “Digital signatures”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures”]
 
 In each of the above sections, the following changes MUST be applied:
 
@@ -595,9 +597,9 @@ In each of the above sections, the following changes MUST be applied:
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
 
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validate_the_signature++[Section 16.4, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.” Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 16.5, “Validate the time-stamp”]
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 16.6, “Validate the credential revocation information”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.4, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.” Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.5, “Validate the time-stamp”]
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.6, “Validate the credential revocation information”]
 
 In each of the above sections, the following changes MUST be applied:
 
@@ -606,7 +608,7 @@ In each of the above sections, the following changes MUST be applied:
 
 == Trust model
 
-IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_trust_model++[Section 15, “Trust model,”] of the C2PA spec by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
+IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA spec by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
 
 [NOTE]
 TO DO: Add language here that clarifies that the *<<_identity_assertion,identity assertion>>* introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this *<<_identity_assertion,identity assertion>>.*
@@ -615,7 +617,7 @@ TO DO: Add language here that clarifies that the *<<_identity_assertion,identity
 .TO DO: Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
 ====
 * link:++https://c2pa.org/specifications/specifications/1.3/guidance/Guidance.html#_trust_model++[6.3. Trust model] in C2PA implementers guidance (version 1.3)
-* link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_trust_model++[15. Trust model] in C2PA technical specification
+* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[14. Trust model] in C2PA technical specification
 * link:++https://c2pa.org/specifications/specifications/1.0/security/Security_Considerations.html#_trust_model++[2.2 Trust model] in C2PA security considerations
 * link:++https://www.w3.org/TR/vc-data-model/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
 * link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
@@ -646,7 +648,7 @@ Resolve the following topics before producing a 1.0 version of this spec:
 
 * Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?) How does this change in a custodial wallet situation versus a user-controlled wallet?
 
-* Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
+* Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
 
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
