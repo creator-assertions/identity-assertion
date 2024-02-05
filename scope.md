@@ -22,9 +22,7 @@ This Working Group shall produce a version 1.0 of an identity assertion specific
 
 ## Meeting schedule and notes
 
-Meetings of the Identity Assertion Working Group are held on Mondays at 08:30 Pacific for 90 minutes until the 1.0 specification is approved. The group shall re-evaluate the meeting schedule as of the 1.0 specification release.
-
-TO DO: Define meeting notes (hosted in this repo?) and meeting logistics.
+See [CAWG: Meeting schedule](https://creator-assertions.github.io/#_meeting_schedule) for meeting schedule and notes from previous meetings.
 
 ## Dependencies
 
