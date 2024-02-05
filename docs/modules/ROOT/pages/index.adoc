@@ -253,7 +253,8 @@ The content of `signature` depends on the type of credential that is used. Valid
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
-NOTE: TO DO: Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
+[#describe-role-in-content]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/14[issue #14]): Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
 
 NOTE: TO DO: Describe where would things like social media accounts live.
 
