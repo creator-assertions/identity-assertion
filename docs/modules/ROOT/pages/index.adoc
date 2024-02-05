@@ -437,7 +437,8 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials
 
-IMPORTANT: TO DO: *Major discussion item:* I think there are reasonable cases for the content of the *<<_identity_assertion,identity assertion>>* to be a new Verifiable Credential and also for it to be a Verifiable Presentation. The VC path will resolve some of the redundant-chain-of-trust issues identified below, but may complicate the signing experience for wallet-based applications. Currently assuming Verifiable Credential, but this is subject to change.
+[#vc-vs-vp]
+IMPORTANT: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/16[issue #16]): *Major discussion item:* I think there are reasonable cases for the content of the *<<_identity_assertion,identity assertion>>* to be a new Verifiable Credential and also for it to be a Verifiable Presentation. The VC path will resolve some of the redundant-chain-of-trust issues identified below, but may complicate the signing experience for wallet-based applications. Currently assuming Verifiable Credential, but this is subject to change.
 
 ==== Verifiable credential overview
 
@@ -485,7 +486,8 @@ Once the asset’s verifiable credential has been obtained, the *<<_identity_ass
 
 NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
-NOTE: TO DO: Build an example of a compliant credential.
+[#compliant-credential-example]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/17[issue #17]): Build an example of a compliant credential.
 
 ==== DID method requirements
 
@@ -530,17 +532,20 @@ An example of a compliant _<<W3C decentralized identifier document>>_ is shown i
 }
 ----
 
-NOTE: TO DISCUSS: Do we wish to have any further restrictions on verification methods beyond those specified in link:++https://www.w3.org/TR/did-core/#verification-material++[Section 5.2.1, “Verification material,”] of the DID spec? See also link:++https://www.w3.org/TR/did-spec-registries/#verification-method-types++[Section 6.1, “Verification method types,”] of the W3C DID specification registries document for a list of possible verification methods. Currently about 10 are listed.
+[#vc-verification-methods]
+NOTE: TO DISCUSS (link:https://github.com/creator-assertions/identity-assertion/issues/18[issue #18]): Do we wish to have any further restrictions on verification methods beyond those specified in link:++https://www.w3.org/TR/did-core/#verification-material++[Section 5.2.1, “Verification material,”] of the DID spec? See also link:++https://www.w3.org/TR/did-spec-registries/#verification-method-types++[Section 6.1, “Verification method types,”] of the W3C DID specification registries document for a list of possible verification methods. Currently about 10 are listed.
 
 ==== Verifiable credential requirements
 
-NOTE: TO DO: Specify structure, including how list of _<<_referenced_assertions,referenced assertions>>_ is expressed in the verifiable credential.
+[#vc-structure]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/19[issue #19]): Specify structure, including how list of _<<_referenced_assertions,referenced assertions>>_ is expressed in the verifiable credential.
 
 ==== Validating an identity assertion with a W3C verifiable credential
 
 An *<<_identity_assertion,identity assertion>>* with `sig_type` of `org.w3.verifiable_credential` is only valid if the following conditions have been successfully verified:
 
-NOTE: TO DO: Add status codes for reporting validation failures for each of these conditions. Add links to relevant specs.
+[#vc-validation-failure-status-codes]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/20[issue #20]): Add status codes for reporting validation failures for each of these conditions. Add links to relevant specs.
 
 * The *<<_identity_assertion,identity assertion>>* structure itself is valid as described in xref:_validation_method.
 * The `signature` field must contain a valid JSON-LD serialization of a _<<W3C verifiable credential>>._
@@ -583,8 +588,9 @@ In each of the above sections, the following changes MUST be applied:
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
+[#review-x509-usage]
 [NOTE]
-.TO DO: Review C2PA spec for additional adaptions that might be relevant.
+.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/21[issue #21]): Review C2PA spec for additional adaptions that might be relevant.
 ====
 * Is the EKU usage still valid for this purpose?
 * Is the trust list the same?
@@ -607,12 +613,14 @@ In each of the above sections, the following changes MUST be applied:
 
 IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA spec by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
 
+[#define-trust-model]
 [NOTE]
-TO DO: Add language here that clarifies that the *<<_identity_assertion,identity assertion>>* introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this *<<_identity_assertion,identity assertion>>.*
-
-[NOTE]
-.TO DO: Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
+.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/22[issue #22]): Define the trust model.
 ====
+Add language here that clarifies that the *<<_identity_assertion,identity assertion>>* introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this *<<_identity_assertion,identity assertion>>.*
+
+Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
+
 * link:++https://c2pa.org/specifications/specifications/1.3/guidance/Guidance.html#_trust_model++[6.3. Trust model] in C2PA implementers guidance (version 1.3)
 * link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[14. Trust model] in C2PA technical specification
 * link:++https://c2pa.org/specifications/specifications/1.0/security/Security_Considerations.html#_trust_model++[2.2 Trust model] in C2PA security considerations
@@ -624,8 +632,9 @@ TO DO: Add language here that clarifies that the *<<_identity_assertion,identity
 
 _This section is non-normative._
 
+[#ux-guidance]
 [NOTE]
-.TO DO:
+.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/23[issue #23]):
 ====
 * Think through wallet-holder experience challenges, especially when batch-producing assets.
 * Think through async issues and online failure cases involved in verifying VC/DID document chains.
@@ -638,7 +647,7 @@ include::partial$version-history.adoc[]
 
 _This section is non-normative._
 
-Resolve the following topics before producing a 1.0 version of this spec:
+Open issues should now be raised as link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues]. The following issues have not yet been migrated:
 
 * How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
 ** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)

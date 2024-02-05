@@ -97,3 +97,4 @@ _This section is non-normative._
 * Moved xref:_version_history[] and xref:_open_issues_discussion[] to appendix.
 * Update references to C2PA technical specification from version 1.4 to 2.0.
 * Adopt C2PA 2.0 concept of “well-formed manifest” in xref:_validation_method[xrefstyle=full].
+* Translate many "to do" items to GitHub issues. See link:https://github.com/creator-assertions/identity-assertion/issues[Open issues].
