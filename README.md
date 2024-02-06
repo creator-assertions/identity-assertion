@@ -1,6 +1,6 @@
 # Creator Assertions Working Group Identity Assertion
 
-This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://creator-assertions.github.io/)'s identity assertion. A rendered version of this specification can be found [here](https://creator-assertions.github.io/identity/0.1-draft/index.html).
+This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://creator-assertions.github.io/)'s identity assertion. A rendered version of this specification can be found [here](https://creator-assertions.github.io/identity/).
 
 ## Governance
 
@@ -16,7 +16,7 @@ The primary content of this document is available in [docs/modules/ROOT/pages/in
 
 You can render the site of this content locally if you wish to test the appearance of changes you are making. To do this:
 
-1. Ensure that you have a current version of node.js installed ([installers are here](https://nodejs.org/en/download/)).
+1. Ensure that you have a current version of node.js installed. ([Installers are here.](https://nodejs.org/en/download/))
 2. Install Antora and other project dependencies.
 
 ```
