@@ -23,6 +23,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://github.com/creator-assertions/identity-assertion/blob/main/cs-contributorlicense.md'
+          path-to-document: 'https://github.com/creator-assertions/identity-assertion/blob/main/contributor-license.md'
           branch: 'cla-signatures'
           allowlist: scouten-adobe, andyparsons, lrosenthol, bot*
