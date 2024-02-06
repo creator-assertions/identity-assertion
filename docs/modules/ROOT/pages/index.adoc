@@ -656,8 +656,6 @@ _This section is non-normative._
 
 Open issues should now be raised as link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues]. The following issues have not yet been migrated:
 
-* Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?) How does this change in a custodial wallet situation versus a user-controlled wallet?
-
 * Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
 
