@@ -643,6 +643,10 @@ _This section is non-normative._
 * Think through async issues and online failure cases involved in verifying VC/DID document chains.
 ====
 
+[#wallet-ux-info]
+NOTE: (link:https://github.com/creator-assertions/identity-assertion/issues/27[Issue #27]): 
+What information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience
+
 include::partial$version-history.adoc[]
 
 [appendix]
