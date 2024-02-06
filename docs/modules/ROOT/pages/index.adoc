@@ -259,6 +259,9 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 [#describe-social-media]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/15[issue #15]): Describe where would things like social media accounts live.
 
+[#describe-actor-role]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/26[issue #26]): Describe credential holder’s role in relation to the asset.
+
 === Schema and example
 
 The schema for this type is defined by the `identity` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
@@ -648,9 +651,6 @@ include::partial$version-history.adoc[]
 _This section is non-normative._
 
 Open issues should now be raised as link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues]. The following issues have not yet been migrated:
-
-* How to express the credential holder’s role in relation to the manifest or specific actions in the manifest? The now-deprecated `stds.schema-org.CreativeWork` assertion offered many options.
-** Related: Describe how to allow other assertions to refer to _this_ assertion. (TO DO: Now that the identity assertion is countersigning a list of assertions, is this still necessary?)
 
 * Think through what information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience. This likely requires that the asset itself has a credential and a suitable credential schema, which will likely need to incorporate a summary of actions and ingredients. (Can a small thumbnail be included as well?) How does this change in a custodial wallet situation versus a user-controlled wallet?
 
