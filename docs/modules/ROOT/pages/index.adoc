@@ -645,7 +645,7 @@ _This section is non-normative._
 
 [#wallet-ux-info]
 NOTE: TO DO: (link:https://github.com/creator-assertions/identity-assertion/issues/27[Issue #27]): 
-What information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience
+What information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience.
 
 include::partial$version-history.adoc[]
 
@@ -656,7 +656,6 @@ _This section is non-normative._
 
 Open issues should now be raised as link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues]. The following issues have not yet been migrated:
 
-* Find a home for following statement, adapted from 1.3 C2PA spec: Since an identity assertion can contain personally identifiable information, there may be workflows where it is necessary to remove/redact an identity assertion. This can be accomplished by following the workflow described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_redaction_of_assertions++[Section 6.7, “Redaction of assertions,”] of the C2PA technical specification.
 * Is it appropriate to include proper methods of creating an identity attestation and the associated levels of assurance? E.g. ID confirmation proxy (via telco data, credit bureau, bankID, etc) as level 1, KYC-style document verification or mDL as level 2, and gov't-issued RFID chip confirmation level 3, as an example? 
 
 * Is there a requirement for an end-user (e.g. twitter scrolling end-user) to verify the veracity of the VP? Is there a requirement for twitter to be able to verify? By verify, I mean check the cryptography and confirm provenance.
