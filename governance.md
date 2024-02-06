@@ -1,4 +1,6 @@
-# Community Specification Governance Policy 1.0
+# Creator Assertions Working Group Governance Policy
+
+_Adapted from [Community Specification Governance Policy 1.0](https://github.com/CommunitySpecification/Community_Specification/blob/main/5._Governance.md) and [FINOS FDC3 Governance Policy](https://github.com/finos/FDC3/blob/master/GOVERNANCE.md)._
 
 This document provides the governance policy for specifications and other documents developed using the Community Specification process in a repository (each a “Working Group”). Each Working Group and must adhere to the requirements in this document.
 
@@ -6,11 +8,29 @@ This document provides the governance policy for specifications and other docume
 
 Each Working Group may include the following roles. Additional roles may be adopted and documented by the Working Group.
 
-**1.1. Maintainer.** “Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals. Each Working Group will designate one or more Maintainer for that Working Group. A Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants. 
+### 1.1. Participants
 
-**1.2. Editor.** “Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. Each Working Group will designate an Editor for that Working Group. A Working Group may select a new Editor upon Approval of the Working Group Participants.
+“Participants” are those that have made Contributions to the Working Group subject to the [Community Specification Contribution Policy 1.0](https://github.com/finos/standards-project-blueprint/blob/master/governance-documents/6._Contributing.md). The [Creator Assertions Working Group](https://creator-assertions.github.io) has the specific purpose of defining and releasing technical standards that extend the [Coalition for Content Provenance and Authenticity](https://c2pa.org) [technical specification](https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html) to describe additional assertions that allow content creators to express individual and organizational intent about their content. 
 
-**1.3. Participants.** “Participants” are those that have made Contributions to the Working Group subject to the Community Specification License.
+In practice, “participants” means people that attend and contribute to meetings, raise issues, pull requests (to submit patches to the standards projects), and provide editorial reviews. If you wish to become a participant, you are invited to:
+
+* [Read the CAWG contributing guide](https://creator-assertions.github.io/index.html#_contributing)
+* [File an issue for discussion](https://github.com/creator-assertions/identity-assertion/issues)
+* [File a pull request (suggested revision)](https://github.com/creator-assertions/identity-assertion/pulls) (NOTE: requires acceptance of the Community Specification License.)
+* [Attend a working group meeting](https://creator-assertions.github.io/index.html#_meeting_schedule)
+* [Contact one of the maintainers directly](https://creator-assertions.github.io/identity/0.1-draft/index.html#maintainers)
+
+### 1.2. Editors and Maintainers
+
+“Editors” are responsible for ensuring that the contents of the document accurately reflect the decisions that have been made by the group, and that the specification adheres to formatting and content guidelines. Each Working Group will designate an Editor for that Working Group. A Working Group may select a new Editor upon Approval of the Working Group Participants.
+
+“Maintainers” are responsible for organizing activities around developing, maintaining, and updating the specification(s) developed by the Working Group. Maintainers are also responsible for determining consensus and coordinating appeals. Each Working Group will designate one or more Maintainer for that Working Group. A Working Group may select a new or additional Maintainer(s) upon Approval of the Working Group Participants. 
+
+#### How do you become an Editor or Maintainer?
+
+Once you have signed the Contributor License Agreement, you can apply to become an **editor** or **maintainer** by [Contact one of the existing maintainers directly](https://creator-assertions.github.io/identity/0.1-draft/index.html#maintainers). Generally, the maintainers will look for both a history of contribution to CAWG and a commitment to investing sufficient time in the role from any prospective candidates before accepting them to either of those roles.
+
+If you are new to CAWG, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
 ## 2. Decision Making
 
