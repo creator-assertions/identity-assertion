@@ -1,5 +1,7 @@
 # Creator Assertions Working Group Identity Assertion
 
+Blah blah blah.
+
 This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://creator-assertions.github.io/)'s identity assertion. A rendered version of this specification can be found [here](https://creator-assertions.github.io/identity/).
 
 ## Governance
