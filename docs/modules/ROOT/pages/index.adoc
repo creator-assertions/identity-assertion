@@ -270,12 +270,14 @@ The schema for this type is defined by the `identity` rule in the following http
 ----
 identity = {
   "referenced_assertions": [1* $hashed-uri-map],
-  "sig_type": tstr .size (1..max-tstr-length), ; A string identifying the data type of the signature field that follows. If the value of this string is not declared in this specification under (TO DO), this structure is invalid.
+  "sig_type": tstr .size (1..max-tstr-length), ; A string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
   "pad1": bstr, ; zero-filled byte string used for filling up space
   ? "pad2": bstr, ; optional zero-filled byte string used for filling up space
 }
 ----
+
+The `sig_type` field MUST contain a value described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
 
