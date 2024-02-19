@@ -70,7 +70,7 @@ _This section is non-normative._
 ** xref:_identity_assertion[]
 ** xref:_referenced_assertions[]
 * Rewrite xref:_w3c_verifiable_credentials[xrefstyle=full] to describe the signature as a _xref:_w3c_verifiable_credential[]_ rather than a _verifiable presentation_
-* Add item in xref:_open_issues_discussion[xrefstyle=full] to consider targeting VC 2.0 spec instead of 1.1
+* Add item in [line-through]#Open issues and discussion# to consider targeting VC 2.0 spec instead of 1.1 _(since moved to link:https://github.com/creator-assertions/identity-assertion/issues/34[GitHub issue #34])_
 * Add a TO DO item calling for use cases and examples.
 
 *11 January 2024*
@@ -94,7 +94,7 @@ _This section is non-normative._
 
 * Added xref:_contributing[] and xref:_foreword[] sections.
 * Refined link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[`scope.md`] and link:https://github.com/creator-assertions/identity-assertion/blob/main/notices.md[`notices.md`] text in project repository.
-* Moved xref:_version_history[] and xref:_open_issues_discussion[] to appendix.
+* Moved xref:_version_history[] and [linethrough]#Open issues and discussion# to appendix. _(Open issues and discussion have since moved to link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues].)_
 * Update references to C2PA technical specification from version 1.4 to 2.0.
 * Adopt C2PA 2.0 concept of “well-formed manifest” in xref:_validation_method[xrefstyle=full].
 * Translate many "to do" items to GitHub issues. See link:https://github.com/creator-assertions/identity-assertion/issues[Open issues].
@@ -102,3 +102,7 @@ _This section is non-normative._
 *05 February 2024*
 
 * Refined description of roles in link:https://github.com/creator-assertions/identity-assertion/blob/main/governance.md[`governance.md`] in project repository.
+
+*19 February 2024*
+
+* Moved open issues and discussion section to link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues].
