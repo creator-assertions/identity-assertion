@@ -442,9 +442,6 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials
 
-[#vc-vs-vp]
-IMPORTANT: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/16[issue #16]): *Major discussion item:* I think there are reasonable cases for the content of the *<<_identity_assertion,identity assertion>>* to be a new Verifiable Credential and also for it to be a Verifiable Presentation. The VC path will resolve some of the redundant-chain-of-trust issues identified below, but may complicate the signing experience for wallet-based applications. Currently assuming Verifiable Credential, but this is subject to change.
-
 ==== Verifiable credential overview
 
 In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide its own _<<W3C verifiable credential>>,_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ MAY be an individual, group, or organization.
