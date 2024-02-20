@@ -106,3 +106,7 @@ _This section is non-normative._
 *19 February 2024*
 
 * Moved open issues and discussion section to link:https://github.com/creator-assertions/identity-assertion/issues[GitHub issues].
+
+*20 February 2024*
+
+* Promoted from pre-draft to draft status.
