@@ -110,3 +110,7 @@ _This section is non-normative._
 *20 February 2024*
 
 * Promoted from pre-draft to draft status.
+
+*26 February 2024*
+
+* Merged link:https://github.com/creator-assertions/identity-assertion/pull/45[PR #45: Remove discussion of using W3C verifiable presentations] per CAWG meeting.
