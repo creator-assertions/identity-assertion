@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_subject,credential subject>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.0 *Draft 28 February 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 28 February 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -57,7 +57,7 @@ NOTE: The ToIP definition of the term “verifiable identifier” is well-aligne
 
 This specification describes mechanisms to support two common individual and organizational identity mechanisms that fit the conceptual description of _<<ToIP verifiable identifier>>:_
 
-* https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C _(This will be added in a subsequent draft.)_
+* https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C
 * https://tools.ietf.org/html/rfc5280[X.509 certificates]
 
 === Conceptual overview
@@ -110,6 +110,8 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 == Normative references
 
 * https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[C2PA technical specification, version 2.0]
+* https://www.w3.org/TR/vc-data-model/[W3C verifiable credentials data model, version 1.1]
+* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
 == Terms and definitions
@@ -440,7 +442,132 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials
 
-IMPORTANT: This portion of the specification is still undergoing significant exploration and revision. It will be added in a subsequent version.
+==== Verifiable credential overview
+
+In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide its own _<<W3C verifiable credential>>,_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ This _<<_actor,actor>>_ MAY be an individual, group, or organization.
+
+IMPORTANT: The _<<W3C verifiable credential>>_ is not itself directly embedded in the *<<_identity_assertion,identity assertion>>,* but is instead used to create a new _<<W3C verifiable credential>>_ describing the _<<_credential_subject,credential subject’s>>_ role in the specific _<<C2PA asset>>_ being described.
+
+The `credentialSubject` of this _<<W3C verifiable credential>>_ MUST contain only a single `credentialSubject` and that `credentialSubject` shall have an `id` value, which MUST be a valid _https://www.w3.org/TR/did-core/[W3C decentralized identifier]._ Additional requirements for this _https://www.w3.org/TR/did-core/[W3C decentralized identifier]_ are stated in _xref:_did_method_requirements[xrefstyle=full]._
+
+As defined in link:++https://www.w3.org/TR/did-core/#resolution++[Section 7, “Resolution,”] of the W3C decentralized identifier specification, the result of _resolving_ a _<<W3C decentralized identifier>>_ is a _<<W3C decentralized identifier document>>,_ in this case a set of data describing the _<<_actor,actor>>_ whose _<<W3C verifiable credential>>_ was presented.
+
+The _<<C2PA claim generator>>_ prepares the list of _<<_referenced_assertions,referenced assertions>>_ to be presented to the _<<_credential_subject,credential subject>>,_ which MUST in turn respond with a new _<<_verifiable_credential,verifiable credential>>._ Additional requirements for this new credential are stated in xref:_verifiable_credential_requirements[xrefstyle=full].
+
+NOTE: The interaction between the _<<C2PA claim generator>>_ and _<<_credential_subject,credential subject>>_ is outside the scope of this specification. Claim generators MAY wish to use a protocol such as link:https://openid.net/sg/openid4vc/[OpenID for verifiable credentials] to obtain a compliant _<<W3C verifiable credential>>_.
+
+The relationships among _<<_actor,actor>>,_ _<<W3C verifiable credential>>,_ _<<W3C decentralized identifier document>>,_ and the list of _<<_referenced_assertions,referenced assertions>>_ are illustrated in the following diagram, which is non-normative:
+
+[mermaid,width=100%]
+....
+erDiagram
+  A[Actor] {
+    string private_key
+  }
+
+  AVC["Actor’s verifiable credential"] {
+    string credentialSubject_id "(did:method:xxx)"
+  }
+
+  DID_DOC["DID document"] {
+    struct assertionMethod
+  }
+
+  ASSERTION["Referenced assertions"] {}
+
+  CVC["Asset’s verifiable credential"] {}
+
+  A ||--|| AVC : "controls via private key"
+  AVC ||--|| DID_DOC : "references via DID method"
+  CVC||--o{ ASSERTION: "references"
+  CVC ||--|| AVC: "references"
+  A ||--|| CVC: "generates new credential"
+....
+
+Once the asset’s verifiable credential has been obtained, the *<<_identity_assertion,identity assertion>>* can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential` and the `signature` value MUST be the *asset’s* _<<W3C verifiable credential>>_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec. Further requirements for the _verifiable credential_ are described in xref:_verifiable_credential_requirements[xrefstyle=full].
+
+NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
+
+[#compliant-credential-example]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/17[issue #17]): Build an example of a compliant credential.
+
+==== DID method requirements
+
+As defined in link:++https://www.w3.org/TR/did-core/#methods++[Section 8, “Methods,”] of the W3C decentralized identifier spec, a _DID method_ defines how implementers can create, resolve, update, and deactivate _<<_w3c_decentralized_identifier,W3C decentralized identifiers>>,_ and _<<W3C decentralized identifier document>>._
+
+The _DID method_ chosen SHOULD satisfy the following requirements, which are chosen to align with the Trust Over IP concept of _<<_verifiable_identifier,verifiable identifier>>:_
+
+* The method for _DID resolution_ (see link:++https://www.w3.org/TR/did-core/#did-resolution++[Section 7.1, “DID Resolution,”] of the W3C decentralized identifiers specification) SHOULD be publicly specified.
+* The method for _DID resolution_ MUST support independent discovery and verification of cryptographic keys associated with the DID.
+
+==== DID document requirements
+
+The _<<W3C decentralized identifier document>>_ for the _<<_c2pa_actor,C2PA actor,>>_ which is located by resolving the _<<W3C decentralized identifier>>_ from the _<<W3C verifiable credential>>,_ and MUST confirm to the requirements stated in link:++https://www.w3.org/TR/did-core/#representations++[Section 6, “Representations,”] of the W3C decentralized identifier specification.
+
+In addition, the _<<W3C decentralized identifier document>>_ MUST contain an `assertionMethod` field as defined by link:++https://www.w3.org/TR/did-core/#assertion__[Section 5.3.2, “Assertion,”] of the W3C decentralized identifiers specification.
+
+An example of a compliant _<<W3C decentralized identifier document>>_ is shown in the example below, which is non-normative:
+
+[source,json]
+----
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:example.com",
+  "verificationMethod": [
+    {
+      "id": "did:web:example.com#key-0",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:example.com",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "0-e2i2_Ua1S5HbTYnVB0lj2Z2ytXu2-tYmDFf8f5NjU"
+      }
+    },
+  ],
+  "assertionMethod": [
+    "did:web:example.com#key-0",
+  ],
+}
+----
+
+[#vc-verification-methods]
+NOTE: TO DISCUSS (link:https://github.com/creator-assertions/identity-assertion/issues/18[issue #18]): Do we wish to have any further restrictions on verification methods beyond those specified in link:++https://www.w3.org/TR/did-core/#verification-material++[Section 5.2.1, “Verification material,”] of the DID spec? See also link:++https://www.w3.org/TR/did-spec-registries/#verification-method-types++[Section 6.1, “Verification method types,”] of the W3C DID specification registries document for a list of possible verification methods. Currently about 10 are listed.
+
+==== Verifiable credential requirements
+
+[#vc-structure]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/19[issue #19]): Specify structure, including how list of _<<_referenced_assertions,referenced assertions>>_ is expressed in the verifiable credential.
+
+==== Validating an identity assertion with a W3C verifiable credential
+
+An *<<_identity_assertion,identity assertion>>* with `sig_type` of `org.w3.verifiable_credential` is only valid if the following conditions have been successfully verified:
+
+[#vc-validation-failure-status-codes]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/20[issue #20]): Add status codes for reporting validation failures for each of these conditions. Add links to relevant specs.
+
+* The *<<_identity_assertion,identity assertion>>* structure itself is valid as described in xref:_validation_method.
+* The `signature` field must contain a valid JSON-LD serialization of a _<<W3C verifiable credential>>._
+* The _<<W3C verifiable credential>>_ must satisfy all requirements stated in xref:_verifiable_credential_requirements.
+* The list of  _<<_referenced_assertions,referenced assertions>>_ in the asset’s _<<W3C verifiable credential>>_ must match the assertions referenced in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* structure.
+* The _<<W3C decentralized identifier document>>_ referenced in the asset’s _<<W3C verifiable credential>>_ is successfully resolved and contains public key cryptographic material as required by xref:_did_document_requirements[].
+* The `proof` in the asset’s _<<W3C verifiable credential>>_ indicated a valid signature for the public key cryptographic material in the _<<W3C decentralized identifier document>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
+
+[IMPORTANT]
+.DID method support
+====
+This specification does not restrict the _DID methods_ that a _<<C2PA claim generator>>_ may use when generating an *<<_identity_assertion,identity assertion>>,* nor does it require a _<<C2PA Manifest Consumer>>_ to consume any particular _DID methods._
+
+It is RECOMMENDED that validators be prepared to resolve the following DID methods at a minimum:
+
+* https://w3c-ccg.github.io/did-method-web/[`did:web`]
+* https://trustoverip.github.io/tswg-did-method-webs-specification/[`did:webs`]
+
+Validators MAY wish to use a service such as the link:++https://github.com/decentralized-identity/universal-resolver++[DIF universal resolver] to enable interoperability with a wide variety of DID methods.
+====
 
 === X.509 certificates and COSE signatures
 
