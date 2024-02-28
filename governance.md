@@ -18,7 +18,7 @@ In practice, “participants” means people that attend and contribute to meeti
 * [File an issue for discussion](https://github.com/creator-assertions/identity-assertion/issues)
 * [File a pull request (suggested revision)](https://github.com/creator-assertions/identity-assertion/pulls) (NOTE: requires acceptance of the Community Specification License.)
 * [Attend a working group meeting](https://creator-assertions.github.io/index.html#_meeting_schedule)
-* [Contact one of the maintainers directly](https://creator-assertions.github.io/identity/0.1-draft/index.html#maintainers)
+* [Contact one of the maintainers directly](https://creator-assertions.github.io/identity/1.0-draft/index.html#maintainers)
 
 ### 1.2. Editors and Maintainers
 
@@ -28,7 +28,7 @@ In practice, “participants” means people that attend and contribute to meeti
 
 #### How do you become an Editor or Maintainer?
 
-Once you have signed the Contributor License Agreement, you can apply to become an **editor** or **maintainer** by [Contact one of the existing maintainers directly](https://creator-assertions.github.io/identity/0.1-draft/index.html#maintainers). Generally, the maintainers will look for both a history of contribution to CAWG and a commitment to investing sufficient time in the role from any prospective candidates before accepting them to either of those roles.
+Once you have signed the Contributor License Agreement, you can apply to become an **editor** or **maintainer** by [Contact one of the existing maintainers directly](https://creator-assertions.github.io/identity/1.0-draft/index.html#maintainers). Generally, the maintainers will look for both a history of contribution to CAWG and a commitment to investing sufficient time in the role from any prospective candidates before accepting them to either of those roles.
 
 If you are new to CAWG, but willing to make the investment of time, the maintainers can work with you to build up a history of contribution.
 
