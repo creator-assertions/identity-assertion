@@ -83,6 +83,8 @@ image::overview-multi-author.drawio.svg[Multiple identity assertion example,widt
 
 The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance] and the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)] frameworks. Each use case will be described using some generic personas to help make the flow clear.
 
+IMPORTANT: The identity assertion should not be construed to convey _ownership_ of a _<<C2PA asset>>._ Ownership and rights transfers are often conducted outside of the digital realm. There should be no expectation that such transactions could be accurately reflected and updated in this assertion.
+
 ==== Enhancing clarity around provenance and edits for journalistic work
 
 A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
@@ -93,7 +95,7 @@ A human rights defender Jane manages to capture footage containing Content Crede
 
 ==== Election integrity and protecting political campaigns from deepfakes
 
-Aarav is the director of social communications for a political candidate in an upcoming election. He feels concerned that in efforts to manipulate voters, bad actors will create deepfake videos to misrepresent the candidate. To protect the campaign, Aarav decides that all official communications will be created, produced, and published with Content Credentials-enabled tools. The identity assertion equips Aarav and his team with the ability to represent the campaign as the organizational owner of the content that they publish. Aarav encourages voters to verify any digital campaign content to ensure that the material has Content Credentials that link the assets to the campaign.
+Aarav is the director of social communications for a political candidate in an upcoming election. He feels concerned that in efforts to manipulate voters, bad actors will create deepfake videos to misrepresent the candidate. To protect the campaign, Aarav decides that all official communications will be created, produced, and published with Content Credentials-enabled tools. The identity assertion equips Aarav and his team with the ability to represent the campaign as the organizational author of the content that they publish. Aarav encourages voters to verify any digital campaign content to ensure that the material has Content Credentials that link the assets to the campaign.
 
 ==== Brand protection in digital marketing
 
