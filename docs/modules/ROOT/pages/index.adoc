@@ -475,7 +475,7 @@ In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
-* The validator SHALL maintain a trust list which SHALL be independent from the trust list used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”] The trust list for identity assertion signers need not include the C2PA Trust List.
+* The validator SHALL maintain a trust list which SHALL be independent from the trust list used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”] The trust list for identity assertion signers need not include the C2PA Trust List as defined in that section.
 
 == Trust model
 
