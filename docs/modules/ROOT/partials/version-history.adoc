@@ -119,3 +119,7 @@ _This section is non-normative._
 
 * Prepare 1.0-draft version.
 * Remove discussion of W3C VCs. (This section will be restored in a post-1.0 version.)
+
+*Pending merge*
+
+* Clarify usage of _<<_credential_holder,credential holder>>_ versus _<<_credential_subject,credential subject>>._
