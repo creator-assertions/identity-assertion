@@ -6,7 +6,7 @@
 
 The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
-This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document their role in the _<<C2PA asset>>’s_ lifecycle.
+This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
 Version 1.0 *Draft 28 February 2024* · xref:_version_history[]
 
@@ -62,7 +62,7 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the holder’s authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_credential_subject,credential subject’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
 
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
@@ -71,7 +71,7 @@ image::overview.drawio.svg[Identity assertion overview,width=680,height=878,alig
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
-Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_holder,credential holder>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
+Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
 This trust signal may be repeated any number of times to convey information specific to distinct _<<_credential_holder,credential holders>>._ The following diagram, which is non-normative, illustrates two _<<_credential_holder,credential holders>>,_ each independently signing different actions and metadata assertions:
 
@@ -228,7 +228,7 @@ include::partial$terms.adoc[]
 
 === Overview
 
-This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_credential_holder,credential holder>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
+This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_credential_subject,credential subject>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
@@ -313,7 +313,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 
 === Presenting the list of referenced assertions for signature
 
-Prior to requesting the credential holder with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to requesting the _<<_credential_holder,credential holder>>_ with the list of _<<_referenced_assertions,referenced assertions>>_ for signature, the assertions to be signed MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
 
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content. For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.
 
@@ -419,7 +419,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`cawg.identity.validated` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the credential holder to the _<<C2PA claim>>_, is validated.
+|`cawg.identity.validated` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated.
 |=======================
 
 ==== Failure codes
@@ -428,7 +428,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |=======================
 | Value        |   Meaning
 |`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
-|`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>.
+|`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.invalid` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
