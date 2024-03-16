@@ -503,20 +503,4 @@ Describe the trust signals that are intended to be conveyed by this assertion. A
 * link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
 ====
 
-== User experience
-
-_This section is non-normative._
-
-[#ux-guidance]
-[NOTE]
-.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/23[issue #23]):
-====
-* Think through wallet-holder experience challenges, especially when batch-producing assets.
-* Think through async issues and online failure cases involved in verifying VC/DID document chains.
-====
-
-[#wallet-ux-info]
-NOTE: TO DO: (link:https://github.com/creator-assertions/identity-assertion/issues/27[Issue #27]): 
-What information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience.
-
 include::partial$version-history.adoc[]
