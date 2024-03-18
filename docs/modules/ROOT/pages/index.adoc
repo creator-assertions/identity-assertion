@@ -384,6 +384,8 @@ An *<<_identity_assertion,identity assertion>>* MUST contain valid CBOR that sat
 
 For each entry in the `referenced_assertions` field, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._ (For version 1 claims, the entry must appear in the `assertions` entry.) The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
+The validator SHOULD verify that no entry in the `referenced_assertions` field is duplicated. The `cawg.identity.assertion.duplicate` error code SHALL be used to report violations of this rule.
+
 The validator MUST ensure that the `referenced_assertions` field contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
 The `sig_type` field of an *<<_identity_assertion,identity assertion>>* MUST contain one of the values described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.invalid` error code SHALL be used to report assertions that contain unrecognized values.
@@ -413,6 +415,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 | Value        |   Meaning
 |`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
+|`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.invalid` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
