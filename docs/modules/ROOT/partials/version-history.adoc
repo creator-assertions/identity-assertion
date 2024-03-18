@@ -7,3 +7,7 @@ _This section is non-normative._
 
 * Prepare 1.x-draft version, diverging from 1.0-draft.
 * Restore discussion of W3C VCs. (This section was removed in the 1.0-draft version.)
+
+*18 March 2024*
+
+* Merge with updated version 1.0-draft version of this specification.
