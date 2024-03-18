@@ -216,8 +216,8 @@ This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_asser
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
-* `tbs` (“to be signed”) contains a set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure contains:
-** `referenced_assertions` contains a list of other assertions selected by the credential subject. This is referred to as `tbs.referenced_assertions` throughout this specification.
+* `tbs` (“to be signed”) contains a set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
+** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `tbs.referenced_assertions` throughout this specification.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are zero-filled byte strings used to fill space
