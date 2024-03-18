@@ -123,3 +123,4 @@ _This section is non-normative._
 *18 March 2024*
 
 * Remove user experience section. (This section will be restored in a post-1.0 version.)
+* Remove W3C VC concepts from terms and definitions section. (This section will be restored in a post-1.0 version.)
