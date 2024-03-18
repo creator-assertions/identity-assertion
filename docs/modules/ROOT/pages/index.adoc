@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.0 *Draft 28 February 2024* · xref:_version_history[]
+*Version 1.0 Draft 18 March 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -173,22 +173,6 @@ Content bindings are described in link:++https://c2pa.org/specifications/specifi
 One or more cryptographic hashes that uniquely identifies either the entire _<<C2PA asset>>_ or a portion thereof.
 
 Hard bindings are described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
-
-=== Concepts adapted from W3C verifiable credentials specification
-
-The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
-
-==== W3C verifiable credential
-
-A tamper-evident credential that has authorship that can be cryptographically verified.
-
-==== W3C decentralized identifier
-
-A portable URL-based identifier, also known as a *DID,* associated with an entity. These identifiers are most often used in a _<<W3C verifiable credential>>_ and are associated with holders such that a _<<W3C verifiable credential>>_ itself can be easily ported from one repository to another without the need to reissue the _<<W3C verifiable credential>>_. An example of a DID is `did:example:123456abcdef`.
-
-==== W3C decentralized identifier document
-
-Also referred to as a *DID document,* this is a document that is accessible using a verifiable data registry and contains information related to a specific _<<W3C decentralized identifier>>,_ such as the associated repository and public key information.
 
 === Concepts adapted from ToIP technical architecture
 
@@ -506,21 +490,5 @@ Describe the trust signals that are intended to be conveyed by this assertion. A
 * link:++https://www.w3.org/TR/vc-data-model/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
 * link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
 ====
-
-== User experience
-
-_This section is non-normative._
-
-[#ux-guidance]
-[NOTE]
-.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/23[issue #23]):
-====
-* Think through wallet-holder experience challenges, especially when batch-producing assets.
-* Think through async issues and online failure cases involved in verifying VC/DID document chains.
-====
-
-[#wallet-ux-info]
-NOTE: TO DO: (link:https://github.com/creator-assertions/identity-assertion/issues/27[Issue #27]): 
-What information needs to be presented to wallet/credential holder so that the wallet can provide a suitable user experience.
 
 include::partial$version-history.adoc[]
