@@ -112,7 +112,7 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 == Normative references
 
 * https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[C2PA technical specification, version 2.0]
-* https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model v2.0]
+* https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model, version 2.0]
 * https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
@@ -164,7 +164,7 @@ See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifi
 
 An _<<_actor,actor>>_ who consumes a _<<_c2pa_asset,C2PA asset>>_ with an associated _<<C2PA Manifest>>_ for the purpose of obtaining the provenance data from the _<<C2PA Manifest>>._
 
-NOTE: When this _<<_actor,actor>>_ is concerned with validating the *<<_identity_assertion,identity assertions>>* contained within a _<<C2PA Manifest>>,_ this role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-verifier++[W3C verifiable credentials data model].
+NOTE: When this _<<_actor,actor>>_ is concerned with validating the *<<_identity_assertion,identity assertions>>* contained within a _<<C2PA Manifest>>,_ this role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
 
 ==== Content binding
 
@@ -180,7 +180,7 @@ Hard bindings are described in link:++https://c2pa.org/specifications/specificat
 
 === Concepts adapted from W3C verifiable credentials specification
 
-The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
+The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model-2.0/#terminology++[W3C verifiable credentials data model] specification, version 2.0. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
 
 ==== W3C verifiable credential
 
@@ -490,9 +490,9 @@ erDiagram
   A ||--|| CVC: "generates new credential"
 ....
 
-Once the asset’s verifiable credential has been obtained, the *<<_identity_assertion,identity assertion>>* can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential` and the `signature` value MUST be the *asset’s* _<<W3C verifiable credential>>_ serialized as described in link:++https://www.w3.org/TR/vc-data-model/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec. Further requirements for the _verifiable credential_ are described in xref:_verifiable_credential_requirements[xrefstyle=full].
+Once the asset’s verifiable credential has been obtained, the *<<_identity_assertion,identity assertion>>* can be formed. The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential` and the `signature` value MUST be the *asset’s* _<<W3C verifiable credential>>_ serialized as described in link:++https://www.w3.org/TR/vc-data-model-2.0/#json-ld++[Section 6.2, “JSON-LD,”] of the W3C verifiable credentials data model spec. Further requirements for the _verifiable credential_ are described in xref:_verifiable_credential_requirements[xrefstyle=full].
 
-NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
+NOTE: JSON-LD serialization is mandated as it is the most commonly used of the three syntaxes presented in link:++https://www.w3.org/TR/vc-data-model-2.0/#syntaxes++[Section 6, “Syntaxes,”] of the W3C verifiable credentials specification. It is also the one that aligns best with its extensibility model, which could be useful to some implementers.
 
 [#compliant-credential-example]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/17[issue #17]): Build an example of a compliant credential.
@@ -640,8 +640,8 @@ Describe the trust signals that are intended to be conveyed by this assertion. A
 * link:++https://c2pa.org/specifications/specifications/1.3/guidance/Guidance.html#_trust_model++[6.3. Trust model] in C2PA implementers guidance (version 1.3)
 * link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[14. Trust model] in C2PA technical specification
 * link:++https://c2pa.org/specifications/specifications/1.0/security/Security_Considerations.html#_trust_model++[2.2 Trust model] in C2PA security considerations
-* link:++https://www.w3.org/TR/vc-data-model/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
-* link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
+* link:++https://www.w3.org/TR/vc-data-model-2.0/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
+* link:++https://www.w3.org/TR/vc-use-cases/++[Verifiable Credentials Use Cases], W3C Working Group Note
 ====
 
 == User experience
