@@ -125,3 +125,7 @@ _This section is non-normative._
 * Remove user experience section. (This section will be restored in a post-1.0 version.)
 * Remove W3C VC concepts from terms and definitions section. (This section will be restored in a post-1.0 version.)
 * Clarify usage of _<<_credential_holder,credential holder>>_ versus _<<_credential_subject,credential subject>>._
+
+*Pending merge*
+
+* Remove `sig_type` field and use assertion label to determine credential type.
