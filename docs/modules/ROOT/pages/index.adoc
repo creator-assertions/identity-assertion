@@ -459,7 +459,7 @@ To generate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `tbs` field from the *<<_identity_assertion,identity assertion>>.*
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `tbs` field from the *<<_identity_assertion,identity assertion>>.* The `tbs` data structure MUST be serialized using as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding”,] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 [#review-x509-usage]
