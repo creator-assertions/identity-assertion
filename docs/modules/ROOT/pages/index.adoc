@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 18 March 2024* · xref:_version_history[]
+*Version 1.0 Draft 19 March 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -451,14 +451,6 @@ In each of the above sections, the following changes MUST be applied:
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
-[#review-x509-usage]
-[NOTE]
-.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/21[issue #21]): Review C2PA spec for additional adaptions that might be relevant.
-====
-* Is the EKU usage still valid for this purpose?
-* Is the trust list the same?
-====
-
 ==== Validating the COSE signature
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
@@ -471,6 +463,7 @@ In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
+* The validator SHALL maintain one or more trust lists which do not need to be the same as the trust lists used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
 
 == Trust model
 
