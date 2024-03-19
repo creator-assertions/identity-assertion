@@ -83,7 +83,7 @@ image::overview-multi-author.drawio.svg[Multiple identity assertion example,widt
 
 The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance] and the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)] frameworks. Each use case will be described using some generic personas to help make the flow clear.
 
-IMPORTANT: The identity assertion should not be construed to convey _ownership_ of a _<<C2PA asset>>._ Ownership and rights transfers are often conducted outside of the digital realm. There should be no expectation that such transactions could be accurately reflected and updated in this assertion.
+IMPORTANT: The identity assertion should not be construed to convey _ownership_ of a _<<C2PA asset>>._ Ownership and rights transfers often take place outside of the digital realm. It is outside the scope of this specification to describe such transfers. It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
