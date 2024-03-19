@@ -129,3 +129,4 @@ _This section is non-normative._
 *19 March 2024*
 
 * Close open issue regarding EKU requirements for X.509 credentials.
+* Clarify wording regarding prohibition on identity assertion self-references.
