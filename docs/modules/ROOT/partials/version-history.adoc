@@ -126,6 +126,11 @@ _This section is non-normative._
 * Remove W3C VC concepts from terms and definitions section. (This section will be restored in a post-1.0 version.)
 * Clarify usage of _<<_credential_holder,credential holder>>_ versus _<<_credential_subject,credential subject>>._
 
+*19 March 2024*
+
+* Close open issue regarding EKU requirements for X.509 credentials.
+* Clarify wording regarding prohibition on identity assertion self-references.
+
 *Pending merge*
 
 * Add language stating that this assertion is not intended to convey ownership of a C2PA asset.
