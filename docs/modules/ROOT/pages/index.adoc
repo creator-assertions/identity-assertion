@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 18 March 2024* · xref:_version_history[]
+*Version 1.0 Draft 19 March 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -227,13 +227,13 @@ IMPORTANT: A single signature from the _<<_credential_holder,credential holder>>
 
 For each assertion listed in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 
-NOTE: The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* may not refer to itself. The list of assertions may be further subsetted. For example, different _<<_credential_holder,credential holders>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+The list of _<<_referenced_assertions,referenced assertions>>_ in the `referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself. The list of assertions MAY be further subsetted. For example, different _<<_credential_holder,credential holders>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
 Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview.
 
 The `referenced_assertions` entry of the *<<_identity_assertion,identity assertion>>* MUST NOT reference any assertion more than once.
 
-The `referenced_assertions` entry of an *<<_identity_assertion,identity assertion>>* MAY reference any other *<<_identity_assertion,identity assertion>>.* Since every assertion referenced by an *<<_identity_assertion,identity assertion>>* must not change once presented to the _<<_credential_holder,credential holder>>_ for signature, care must be taken to ensure that no *<<_identity_assertion,identity assertion>>* references itself and that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
+The `referenced_assertions` entry of an *<<_identity_assertion,identity assertion>>* MAY reference any other *<<_identity_assertion,identity assertion>>.* Since every assertion referenced by an *<<_identity_assertion,identity assertion>>* MUST NOT change once presented to the _<<_credential_holder,credential holder>>_ for signature, care MUST be taken to ensure that no *<<_identity_assertion,identity assertion>>* references itself and that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -451,14 +451,6 @@ In each of the above sections, the following changes MUST be applied:
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
-[#review-x509-usage]
-[NOTE]
-.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/21[issue #21]): Review C2PA spec for additional adaptions that might be relevant.
-====
-* Is the EKU usage still valid for this purpose?
-* Is the trust list the same?
-====
-
 ==== Validating the COSE signature
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
@@ -471,6 +463,7 @@ In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `referenced_assertions` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
+* The validator SHALL maintain one or more trust lists which do not need to be the same as the trust lists used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
 
 == Trust model
 
