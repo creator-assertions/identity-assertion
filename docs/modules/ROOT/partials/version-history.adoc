@@ -130,3 +130,7 @@ _This section is non-normative._
 
 * Close open issue regarding EKU requirements for X.509 credentials.
 * Clarify wording regarding prohibition on identity assertion self-references.
+
+*Pending merge*
+
+* Clarify wording about zero-fill bytes in `pad1` and `pad2` fields.
