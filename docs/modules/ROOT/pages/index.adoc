@@ -219,7 +219,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 * `referenced_assertions` contains a list of assertions that are referenced and signed by this _<<_credential_holder,credential holder>>_
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
-* `pad1` and `pad2` are zero-value (`0x00`) byte strings used to fill space
+* `pad1` and `pad2` are zero-filled (binary `0x00` values) byte strings used to fill space
 
 The content of `referenced_assertions` is a list of assertions which is presented to the _<<_credential_holder,credential holder>>_ for signature. This list of _<<_referenced_assertions,referenced assertions>>_ MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
@@ -258,8 +258,8 @@ identity = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; A string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; zero-value (`0x00`) byte string used for filling up space
-  ? "pad2": bstr, ; optional zero-value (`0x00`) byte string used for filling up space
+  "pad1": bstr, ; zero-filled (binary `0x00` values) byte string used for filling up space
+  ? "pad2": bstr, ; optional zero-filled (binary `0x00` values) byte string used for filling up space
 }
 ----
 
