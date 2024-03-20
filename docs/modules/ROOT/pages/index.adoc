@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 19 March 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 20 March 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
@@ -448,7 +448,59 @@ The signature type is represented by the `sig_type` field and must be one of the
 
 === W3C verifiable credentials
 
-IMPORTANT: This portion of the specification is still undergoing significant exploration and revision. It will be added in a subsequent version.
+[IMPORTANT]
+.Assumptions in this section
+====
+This section assumes that the following pending pull requests will be merged:
+
+* link:https://github.com/creator-assertions/identity-assertion/pull/75[PR #75: Add top-level `tbs` map allowing more content to be signed by credential holder]
+* link:https://github.com/creator-assertions/identity-assertion/pull/82[PR #82: Use assertion label to describe credential type]
+====
+
+In some use cases, a _<<_credential_holder,credential holder>>_ in the system MAY wish to provide a _<<W3C verifiable credential>>,_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ The corresponding _<<_credential_subject,credential subject>>_ MAY be an individual, group, or organization.
+
+The assertion label for such an assertion MUST be `cawg.identity.vc`.
+
+The _<<_credential_holder,credential holder’s>>_ _<<W3C verifiable credential>>_ is not itself directly embedded in the *<<_identity_assertion,identity assertion>>,* but is instead used to issue a new _<<W3C verifiable credential>>_ describing the _<<_credential_subject,credential subject’s>>_ role in the specific _<<C2PA asset>>_ being described.
+
+The relationships among _<<_credential_holder,credential holder’s>>_ _<<W3C verifiable credential>>,_ _<<W3C decentralized identifier document>>,_ *identity assertion’s* _<<W3C verifiable credential>>,_ the `tbs` data structure, and the _<<_c2pa_asset,C2PA asset>>_ are illustrated in the following diagram, which is non-normative:
+
+[mermaid,width=100%]
+....
+erDiagram
+  CH["Credential holder"] {}
+  CHVC["Credential holder’s verifiable credential"] {}
+  TBS["`tbs` data structure"] {}
+  IVC["Identity assertion’s verifiable credential"] {}
+  ASSET["C2PA asset"] {}
+
+  CH ||--|| CHVC : "controls via private key"
+  IVC||--|| TBS: "references"
+  IVC ||--|| CHVC: "issued by"
+  TBS ||--|| ASSET: "describes"
+....
+
+==== Credential holder’s verifiable credential
+
+TO DO: Specify requirements for CH VC.
+
+* Needs to have discoverable `assertionMethod`
+* DID method recommendations/requirements?
+* Alignment with ToIP verifiable identifier
+
+==== Identity assertion’s verifiable credential
+
+TO DO: Specify requirements for IA VC.
+
+* Needs to have proof tying back to CH VC. (Is https://www.w3.org/TR/vc-data-integrity/ relevant?)
+
+==== Example of identity assertion verifiable credential
+
+TO DO: Create example of IA VC.
+
+==== Validating an identity assertion with verifiable credentials
+
+TO DO
 
 === X.509 certificates and COSE signatures
 
