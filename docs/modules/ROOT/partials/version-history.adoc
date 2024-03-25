@@ -15,3 +15,7 @@ _This section is non-normative._
 *19 March 2024*
 
 * Merge with updated version 1.0-draft version of this specification.
+
+*25 March 2024*
+
+* Merge with updated version 1.0-draft version of this specification.
