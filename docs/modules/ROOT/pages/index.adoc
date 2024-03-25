@@ -222,7 +222,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 ** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `tbs.referenced_assertions` throughout this specification.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
-* `pad1` and `pad2` are zero-filled (binary `0x00` values) byte strings used to fill space
+* `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The content of `tbs` is a data structure which is presented to the _<<_credential_holder,credential holder>>_ for signature. The list of _<<_referenced_assertions,referenced assertions>>_ contained within `tbs` MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
@@ -261,8 +261,8 @@ identity = {
   "tbs": $tbs-map, ; content to be signed by credential holder
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; zero-filled (binary `0x00` values) byte string used for filling up space
-  ? "pad2": bstr, ; optional zero-filled (binary `0x00` values) byte string used for filling up space
+  "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
+  ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
 }
 
 tbs-map = {
