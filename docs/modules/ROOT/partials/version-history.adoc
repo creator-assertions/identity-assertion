@@ -131,6 +131,6 @@ _This section is non-normative._
 * Close open issue regarding EKU requirements for X.509 credentials.
 * Clarify wording regarding prohibition on identity assertion self-references.
 
-*Pending merge*
+*25 March 2024*
 
 * Create a top-level `tbs` map which contains `referenced_assertions` and may be extended to include other material which will be signed by the credential holder.

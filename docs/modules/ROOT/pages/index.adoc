@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 19 March 2024* · xref:_version_history[]
+*Version 1.0 Draft 25 March 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
