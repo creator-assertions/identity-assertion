@@ -136,3 +136,4 @@ _This section is non-normative._
 * Create a top-level `tbs` map which contains `referenced_assertions` and may be extended to include other material which will be signed by the credential holder.
 * Add language stating that this assertion is not intended to convey ownership of a C2PA asset.
 * Clarify wording about zero-fill bytes in `pad1` and `pad2` fields.
+* Add requirement on validator to report duplicate assertion references if found.
