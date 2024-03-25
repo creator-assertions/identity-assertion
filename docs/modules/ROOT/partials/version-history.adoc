@@ -134,3 +134,4 @@ _This section is non-normative._
 *25 March 2024*
 
 * Create a top-level `tbs` map which contains `referenced_assertions` and may be extended to include other material which will be signed by the credential holder.
+* Add language stating that this assertion is not intended to convey ownership of a C2PA asset.
