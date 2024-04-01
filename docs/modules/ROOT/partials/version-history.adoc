@@ -137,3 +137,7 @@ _This section is non-normative._
 * Add language stating that this assertion is not intended to convey ownership of a C2PA asset.
 * Clarify wording about zero-fill bytes in `pad1` and `pad2` fields.
 * Add requirement on validator to report duplicate assertion references if found.
+
+*01 April 2024*
+
+* Change validation language to be more permissive of extra fields in CBOR map data structure.
