@@ -442,7 +442,16 @@ The *<<_identity_assertion,identity assertion>>* allows multiple signature types
 
 The signature type is represented by the `sig_type` field and must be one of the values described within this section.
 
-IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new sections to this specification defining new credential types and their corresponding `sig_type` values. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
+[IMPORTANT]
+.Credential types in minor version updates
+====
+Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
+
+1. Add new sections to this specification defining new credential types and their corresponding `sig_type` values.
+2. Mark existing sections of this specification defining existing credential types and their corresponding `sig_type` values as deprecated.
+
+Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
+====
 
 === W3C verifiable credentials
 
