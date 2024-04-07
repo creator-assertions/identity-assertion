@@ -472,21 +472,49 @@ The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential
 
 The _<<_credential_holder,credential holder’s>>_ _<<W3C verifiable credential>>_ is not itself directly embedded in the *<<_identity_assertion,identity assertion>>,* but is instead used to issue a new _<<W3C verifiable credential>>_ describing the _<<_credential_subject,credential subject’s>>_ role in the specific _<<C2PA asset>>_ being described.
 
-The relationships among _<<_credential_holder,credential holder’s>>_ _<<W3C verifiable credential>>,_ _<<W3C decentralized identifier document>>,_ *identity assertion’s* _<<W3C verifiable credential>>,_ the `tbs` data structure, and the _<<_c2pa_asset,C2PA asset>>_ are illustrated in the following diagram, which is non-normative:
+NOTE: TO DO: Write new descriptive text about data flow diagram.
+
+These steps are also represented by the following sequence diagram, which is non-normative:
 
 [mermaid,width=100%]
 ....
-erDiagram
-  CH["Credential holder"] {}
-  CHVC["Credential holder’s verifiable credential"] {}
-  TBS["`tbs` data structure"] {}
-  IVC["Identity assertion’s verifiable credential"] {}
-  ASSET["C2PA asset"] {}
+sequenceDiagram
+  autonumber
+  participant AT as Authoring tool
 
-  CH ||--|| CHVC : "controls via private key"
-  IVC||--|| TBS: "references"
-  IVC ||--|| CHVC: "issued by"
-  TBS ||--|| ASSET: "describes"
+  rect rgb(220, 220, 220)
+  note right of AT: Create preliminary asset
+  AT ->> AT: Generate asset without C2PA Manifest
+  create participant C2PA as C2PA library
+  AT ->> C2PA: Start generating C2PA Manifest
+  AT -->> C2PA: Assertions (actions, etc.)
+  AT -->> C2PA: Placeholder for identity assertion
+  C2PA ->> C2PA: Calculate final file layout<br/>(leaving placeholders for<br/>identity assertion and<br/>claim generator signature)
+  C2PA ->> AT: Preliminary C2PA Manifest
+  end
+
+  rect rgb(220, 220, 220)
+  note right of AT: Finalize identity assertion
+  AT ->> AT: Summarize Manifest contents
+  create participant W as Wallet
+  AT ->> W: Presentation request<br/>including description of asset
+  create actor Alice
+  W ->> Alice: Consent for signature
+  destroy Alice
+  Alice ->> W: Approved<br/>(including what to disclose)
+  destroy W
+  W ->> AT: W3C Verifiable Presentation<br/>describing Alice
+  end
+
+  rect rgb(220, 220, 220)
+  note right of AT: Finalize C2PA Manifest
+  AT ->> AT: Check validity of VP
+  AT ->> AT: Generate W3C Verifiable Credential<br/>describing asset, including VP
+  AT ->> C2PA: Update identity assertion<br/>placing asset VC in signature field
+  C2PA ->> C2PA: Update hash references<br/>to identity assertion
+  C2PA ->> C2PA: Generate final signature<br/>for C2PA Manifest
+  C2PA ->> AT: Final C2PA Manifest Store<br/>(embedded in asset if requested)
+  end
 ....
 
 ==== Credential holder’s verifiable credential
