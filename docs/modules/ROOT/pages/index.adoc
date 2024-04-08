@@ -218,7 +218,7 @@ This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_asser
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
-* `signer_payload` contains a set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
+* `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
 ** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `signer_payload.referenced_assertions` throughout this specification.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
