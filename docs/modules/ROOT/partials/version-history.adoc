@@ -141,3 +141,7 @@ _This section is non-normative._
 *01 April 2024*
 
 * Change validation language to be more permissive of extra fields in CBOR map data structure.
+
+*08 April 2024*
+
+* Rename `tbs` (to be signed) to `signer_payload`.

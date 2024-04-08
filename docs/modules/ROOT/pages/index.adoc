@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 01 April 2024* · xref:_version_history[]
+*Version 1.0 Draft 08 April 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -218,25 +218,25 @@ This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_asser
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
-* `tbs` (“to be signed”) contains a set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
-** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `tbs.referenced_assertions` throughout this specification.
+* `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
+** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `signer_payload.referenced_assertions` throughout this specification.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
-The content of `tbs` is a data structure which is presented to the _<<_credential_holder,credential holder>>_ for signature. The list of _<<_referenced_assertions,referenced assertions>>_ contained within `tbs` MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
+The content of `signer_payload` is a data structure which is presented to the _<<_credential_holder,credential holder>>_ for signature. The list of _<<_referenced_assertions,referenced assertions>>_ contained within `signer_payload` MUST include a _<<hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
-IMPORTANT: A single signature from the _<<_credential_holder,credential holder>>_ covers the entire `tbs` data structure, including the _list_ of assertions. An implementation MUST NOT present each assertion separately for signature.
+IMPORTANT: A single signature from the _<<_credential_holder,credential holder>>_ covers the entire `signer_payload` data structure, including the _list_ of assertions. An implementation MUST NOT present each assertion separately for signature.
 
-For each assertion listed in the `tbs.referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
+For each assertion listed in the `signer_payload.referenced_assertions` field of the *<<_identity_assertion,identity assertion>>,* an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `assertions` field of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 
-The list of _<<_referenced_assertions,referenced assertions>>_ in the `tbs.referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself. The list of assertions MAY be further subsetted. For example, different _<<_credential_holder,credential holders>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
+The list of _<<_referenced_assertions,referenced assertions>>_ in the `signer_payload.referenced_assertions` field of the *<<_identity_assertion,identity assertion>>* is necessarily a subset of the assertions listed in the `assertions` field of the _<<C2PA claim>>_ because the *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself. The list of assertions MAY be further subsetted. For example, different _<<_credential_holder,credential holders>>_ could attest to different assertions in a single _<<C2PA Manifest>>._
 
 Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview.
 
-The `tbs.referenced_assertions` entry of the *<<_identity_assertion,identity assertion>>* MUST NOT reference any assertion more than once.
+The `signer_payload.referenced_assertions` entry of the *<<_identity_assertion,identity assertion>>* MUST NOT reference any assertion more than once.
 
-The `tbs.referenced_assertions` entry of an *<<_identity_assertion,identity assertion>>* MAY reference any other *<<_identity_assertion,identity assertion>>.* Since every assertion referenced by an *<<_identity_assertion,identity assertion>>* MUST NOT change once presented to the _<<_credential_holder,credential holder>>_ for signature, care MUST be taken to ensure that no *<<_identity_assertion,identity assertion>>* references itself and that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
+The `signer_payload.referenced_assertions` entry of an *<<_identity_assertion,identity assertion>>* MAY reference any other *<<_identity_assertion,identity assertion>>.* Since every assertion referenced by an *<<_identity_assertion,identity assertion>>* MUST NOT change once presented to the _<<_credential_holder,credential holder>>_ for signature, care MUST be taken to ensure that no *<<_identity_assertion,identity assertion>>* references itself and that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
 
 The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -258,19 +258,19 @@ The schema for this type is defined by the `identity` rule in the following http
 [source,cddl]
 ----
 identity = {
-  "tbs": $tbs-map, ; content to be signed by credential holder
+  "signer_payload": $signer-payload-map, ; content to be signed by credential holder
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
   "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
   ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
 }
 
-tbs-map = {
+signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
 }
 ----
 
-IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `tbs-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
+IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 
 Possible values for the `sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -283,7 +283,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 [source,json]
 ----
 {
-  "tbs": {
+  "signer_payload": {
     "referenced_assertions": [
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
@@ -308,13 +308,13 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 
 == Creating the identity assertion
 
-=== Presenting the `tbs` data structure for signature
+=== Presenting the `signer_payload` data structure for signature
 
-Prior to presenting the _<<_credential_holder,credential holder>>_ with the `tbs` data structure for signature, the _<<_referenced_assertions,referenced assertions>>_ MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
+Prior to presenting the _<<_credential_holder,credential holder>>_ with the `signer_payload` data structure for signature, the _<<_referenced_assertions,referenced assertions>>_ MUST themselves be created. This process is described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
 
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself. The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content. For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.
 
-The `tbs` data structure MUST be presented to be signed by the _<<_credential_holder,credential holder>>_ corresponding to each *<<_identity_assertion,identity assertion>>.* This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+The `signer_payload` data structure MUST be presented to be signed by the _<<_credential_holder,credential holder>>_ corresponding to each *<<_identity_assertion,identity assertion>>.* This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
@@ -322,7 +322,7 @@ IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>
 
 Once the signature is obtained, the *<<_identity_assertion,identity assertion>>* can be created and added to the C2PA Manifest's assertion store, and then referenced in the _<<C2PA claim>>._ If a _<<_placeholder_assertion,placeholder assertion>>_ was previously added to the _<<_c2pa_claim,C2PA claim,>>_ its content MUST now be replaced with the final assertion content as described below.
 
-The `tbs` data structure MUST be unchanged from the data structure that was presented to the _<<_credential_holder,credential holder>>_ for signature.
+The `signer_payload` data structure MUST be unchanged from the data structure that was presented to the _<<_credential_holder,credential holder>>_ for signature.
 
 The values for the `sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -397,11 +397,11 @@ An *<<_identity_assertion,identity assertion>>* MUST contain a valid CBOR data s
 
 NOTE: Extra fields can be read and processed in non-validation scenarios.
 
-For each entry in `tbs.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._ (For version 1 claims, the entry must appear in the `assertions` entry.) The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+For each entry in `signer_payload.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._ (For version 1 claims, the entry must appear in the `assertions` entry.) The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
-The validator SHOULD verify that no entry in `tbs.referenced_assertions` is duplicated. The `cawg.identity.assertion.duplicate` error code SHALL be used to report violations of this rule.
+The validator SHOULD verify that no entry in `signer_payload.referenced_assertions` is duplicated. The `cawg.identity.assertion.duplicate` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that `tbs.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
+The validator MUST ensure that `signer_payload.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
 The validator MUST maintain a list of valid `sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `sig_type` values.
 
@@ -479,7 +479,7 @@ To generate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `tbs` field from the *<<_identity_assertion,identity assertion>>.* The `tbs` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding”,] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding”,] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 ==== Validating the COSE signature
@@ -492,7 +492,7 @@ To validate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `tbs` field from the *<<_identity_assertion,identity assertion>>.*
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 * The validator SHALL maintain one or more trust lists which do not need to be the same as the trust lists used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
 
