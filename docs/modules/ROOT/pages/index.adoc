@@ -464,17 +464,30 @@ The *<<_identity_assertion,identity assertion>>* allows multiple signature types
 
 The signature type is represented by the `sig_type` field and must be one of the values described within this section.
 
-=== W3C verifiable credentials
+=== W3C verifiable credential
 
-In some use cases, a _<<_credential_holder,credential holder>>_ in the system MAY wish to provide a _<<W3C verifiable credential>>,_ as it exists at that moment in time, to the _<<C2PA claim generator>>_ to have it associated with one or more _<<_c2pa-assertion,C2PA assertions>>._ The corresponding _<<_credential_subject,credential subject>>_ MAY be an individual, group, or organization.
+In some use cases, an _<<actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
 
-The `sig_type` value for such an assertion MUST be `org.w3.verifiable_credential`.
+* The identity of an _<<actor>>_ who wishes to document their relationship to the asset
+* Social media or other accounts that are related to the asset
 
-The _<<_credential_holder,credential holder’s>>_ _<<W3C verifiable credential>>_ is not itself directly embedded in the *<<_identity_assertion,identity assertion>>,* but is instead used to issue a new _<<W3C verifiable credential>>_ describing the _<<_credential_subject,credential subject’s>>_ role in the specific _<<C2PA asset>>_ being described.
+The `sig_type` value for such an assertion MUST be `cawg.w3c.vc`.
 
-NOTE: TO DO: Write new descriptive text about data flow diagram.
+The issuer is responsible for gathering information about the _<<actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
-These steps are also represented by the following sequence diagram, which is non-normative:
+In some scenarios, the issuer MAY be the _<<actor>>,_ but that is not required.
+
+==== Verifiable credential example
+
+_This section is non-normative._
+
+In the data flow diagram below, a software application ("Authoring tool") is acting on behalf of Alice, an _<<actor>>_ who wishes to document her role in producing a _<<C2PA asset>>_ using credentials held in a digital wallet that she controls.
+
+The authoring tool produces a preliminary _<<_c2pa_manifest,C2PA Manifest>>_ describing the _<<C2PA asset>>._ Once enough information is finalized to produce the `signer_payload`, that information is summarized and presented to Alice's wallet to request a Verifiable Presentation.
+
+Once she gives consent, the wallet generates a Verifiable Presentation that contains information that she wishes to disclose about herself (for example, her name and professional affiliations) and the `signer_payload` content. This Verifiable Presentation is signed on her behalf by her wallet and returned to the authoring tool.
+
+The authoring tool incorporates this Verifiable Presentation into a new _<<W3C verifiable credential>>_ that is unique to this _<<C2PA asset>>_. This becomes the `signature` field of the identity assertion, which is then fed back into the library that implements the C2PA Manifest generation. A final _<<C2PA Manifest>>_ can then be generated and embedded into the _<<C2PA asset>>_ or uploaded to cloud storage as Alice prefers.
 
 [mermaid,width=100%]
 ....
@@ -497,19 +510,19 @@ sequenceDiagram
   note right of AT: Finalize identity assertion
   AT ->> AT: Summarize Manifest contents
   create participant W as Wallet
-  AT ->> W: Presentation request<br/>including description of asset
+  AT ->> W: Presentation request
   create actor Alice
-  W ->> Alice: Consent for signature
+  W ->> Alice: Consent for<br/>signature
   destroy Alice
-  Alice ->> W: Approved<br/>(including what to disclose)
+  Alice ->> W: Approved
   destroy W
   W ->> AT: W3C Verifiable Presentation<br/>describing Alice
+  AT ->> AT: Check validity of VP
+  AT ->> AT: Generate W3C Verifiable Credential<br/>describing asset, including VP
   end
 
   rect rgb(220, 220, 220)
   note right of AT: Finalize C2PA Manifest
-  AT ->> AT: Check validity of VP
-  AT ->> AT: Generate W3C Verifiable Credential<br/>describing asset, including VP
   AT ->> C2PA: Update identity assertion<br/>placing asset VC in signature field
   C2PA ->> C2PA: Update hash references<br/>to identity assertion
   C2PA ->> C2PA: Generate final signature<br/>for C2PA Manifest
@@ -517,19 +530,9 @@ sequenceDiagram
   end
 ....
 
-==== Credential holder’s verifiable credential
+==== Creator identity assertion
 
-TO DO: Specify requirements for CH VC.
-
-* Needs to have discoverable `assertionMethod`
-* DID method recommendations/requirements?
-* Alignment with ToIP verifiable identifier
-
-==== Identity assertion’s verifiable credential
-
-The _<<_c2pa_claim_generator,C2PA claim generator>>_ MUST generate the `tbs` data structure as described in *TO DO: Xref tbs once merged* and present that to the _<<_credential_holder,credential holder>>_ for signature.
-
-The _<<_credential_holder,credential holder>>_ MUST issue a _new_ _<<_w3c_verifiable_credential,W3C verifiable credential>>_ which satisfies the following requirements:
+A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ which describes the _<<C2PA asset>>_ and satisfies the following requirements:
 
 * The credential MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model, version 2.0].
 * The `@context` field MUST contain at least the following entries:
@@ -538,7 +541,7 @@ The _<<_credential_holder,credential holder>>_ MUST issue a _new_ _<<_w3c_verifi
 * The `type` field MUST contain at least the following entries:
 ** `"VerifiableCredential"`
 ** `"CreatorIdentityAssertion"`
-* The `credentialSubject` field MUST contain a `tbs` entry, which MUST be the JSON serialization of the `tbs` data structure presented for signature. All bytestring entries in the `tbs` data structure (i.e. `hash` entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings. (TO DO: Specify Base-64 encoding options.)
+* The `credentialSubject` field MUST contain a `c2pa_asset` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. `hash` entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings. (TO DO: Specify Base-64 encoding options.)
 * The `credentialSubject` field MAY contain other entries. The meaning of any such entries is not defined in this specification.
 * The `issuer` field MUST exist.
 * A suitable `proof` field MUST exist and prove issuance of this credential by `issuer`. (TO DO: Review https://www.w3.org/TR/vc-data-integrity/.)
@@ -563,7 +566,7 @@ An example of the identity assertion verifiable credential is given below:
   ],
   "issuer": "did:example:2g55q912ec3476eba2l9812ecbfe",
   "credentialSubject": {
-    "tbs": {
+    "c2pa_asset": {
       "referenced_assertions": [
         {
           "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
@@ -578,7 +581,7 @@ An example of the identity assertion verifiable credential is given below:
           "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
         }
       ],
-      // TO DO: Add other members of `tbs` structure as they are defined.
+      // TO DO: Add other members of `signer_payload` structure as they are defined.
     }
   },
   "proof": // TO DO: Provide example
