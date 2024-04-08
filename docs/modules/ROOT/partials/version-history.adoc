@@ -145,3 +145,6 @@ _This section is non-normative._
 *08 April 2024*
 
 * Rename `tbs` (to be signed) to `signer_payload`.
+* Change `sig_type` value for X.509 to `cawg.x509.cose`.
+* Reserve `sig_type` values starting with `cawg.` for future CAWG specifications.
+* State that future versions of this specification may add new `sig_type` values without breaking the identity assertion format or requiring a major version change.
