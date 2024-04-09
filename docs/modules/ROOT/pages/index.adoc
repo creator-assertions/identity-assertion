@@ -259,15 +259,28 @@ The schema for this type is defined by the `identity` rule in the following http
 ----
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
-  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
   "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
   ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
 }
 
 signer-payload-map = {
+  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature 
   "referenced_assertions": [1* $hashed-uri-map],
+  ? "signer_info": tstr .size (1..max-tstr-length), ; optional information about the signer 
+  ? "claim_certificate_hash": bstr, ; optional hash of the leaf-certificate of the key used to sign the claim
+  ? "id_certificate_hash" : [1* $hashed-cert-uri-map], ; optional hash of certificate of other ID assertion signers
 }
+; The data structure used to store a reference to a URL within the same JUMBF and its hash.
+$hashed-cert-uri-map /= {
+  "url": url-regexp-type, ; JUMBF URI reference
+  ? "alg": tstr .size (1..max-tstr-length), ; A string identifying the cryptographic hash algorithm used to compute all hashes in this claim, taken from the C2PA hash algorithm identifier list. If this field is absent, the hash algorithm is taken from an enclosing structure as defined by that structure. If both are present, the field in this structure is used. If no value is present in any of these places, this structure is invalid; there is no default.
+  ? "hash": bstr, ;  optional.  If present, the byte string representing the hash of the public key used in the referenced ID assertion.
+}
+
+; with CBOR Head (#) and tail ($) are introduced in regexp, so not needed explicitly
+url-regexp-type  /= tstr .regexp "self#jumbf=[\\w\\d][\\w\\d\\.\/:-]+[\\w\\d]"
+
 ----
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
@@ -275,6 +288,50 @@ IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification M
 Possible values for the `sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
+There must be exactly one entry for each assertion in the claim, including the JUMBF URI of the ID assertion that is currently being created.
+
+Assertions can be referenced in two ways: If `hashed-uri-map.hash` is present, then the hash value should be set to the assertion-hash in the normal way and verifiers will check that the assertion-hash matches
+the value in `referenced_assertions`. 
+
+If `hashed-uri-map.hash` is not set, then verifiers will check the presence of the referenced assertion, but will not check the hash value. This option must be used for the ID assertion that is currently being created, because the hash is not yet known until the assertion is finalized.  
+
+NOTE: This specification requires all assertions be referenced in the `signer_payload` to guard against
+unauthorized additions of assertions to the Claim after the ID-assertion is signed.  ID-assertion creators are advised
+to also include the hash of the assertion wherever possible, because this also protects the referenced assertions against unauthorized modifications.  
+
+`claim_certificate_hash` (optional) is the hash of the leaf-certificate of the claim signing key.  ID-assertion-generators can set this field 
+to mitigate the threat of the authorized Claim Signature being stripped and replaced.  The hash is calculated over the leaf certificate of the Claim Signing 
+key using the same representation as used in the signature structure (i.e.,, DER for X.509).  
+
+`id_certificate_hash` (optional) is used when more than one ID-assertion is present in a Claim. 
+If more than one ID-assertion is present in a Claim, ID-assertion creators are advised to ensure 
+that later-created ID-assertions reference earlier-created assertions by including the hash of the assertion in `referenced-assertions`; this ensures that an ID assertion cannot be removed or 
+replaced without invalidating the later-created ID-assertion. However, this does not prevent a later-created ID assertion being replaced, because the hash of the later-created ID assertion is not yet known and cannot be set.
+To guard against later-generated ID-assertions being replaced, an ID-assertion creator can set an 
+entry in `id_certificate_hash` to the hash of the _certificate_ of the later-created ID assertion.  
+If this field is set, verifiers will ensure that the referenced ID assertion is signed with 
+the key that was authorized by the earlier-created ID assertion.  
+
+[NOTE]  
+====
+When ID assertions are employed, a Claim will contain two or more digital signatures from two or more entities with (possibly) 
+different levels of trust.  For some scenarios, stripping a Claim Signature and replacing it with a signature from a different Claim 
+Generator can result in misinterpretation, so this specification contains protections that ID assertion generators can use to guard
+against such attacks.
+
+It will generally not be possible for an attacker to strip and replace an ID assertion without invalidating the Manifest because the ID 
+assertion is hashed and included in the Claim Signature.  Unfortunately, it is not possible to incorporate the hash of the Claim signature in the ID assertion 
+to prevent Claim Signature stripping because the Claim Signature hash is not known at the time the ID assertion is signed.  To enable bidirectional ID-assertion binding, the 
+ID assertion generator can optionally include the hash of the Claim Signature signing key certificate.  If this is present, validators will
+check that the Claim Signature has been issued by the authorized Claim Generator.
+
+Similarly, when a Manifest contains more than one ID assertion, ID assertions that are signed later can include the hash of ID-assertions 
+generated earlier by means of an entry in the `referenced_assertions` array.  This guards against earlier ID assertions being 
+stripped and replaced, but does not protect against later generated ID assertions being replaced without the knowledge or 
+authorization of earlier ID assertion generators.  To guard against the latter attack, each ID assertion can include the hash of the certificate
+for ID assertions that will be generated later. 
+====
+
 
 ==== Example
 
