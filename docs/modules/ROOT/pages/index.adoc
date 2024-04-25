@@ -220,6 +220,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_. This structure is a CBOR key-value map that contains:
 ** `referenced_assertions` _(required)_ contains a list of other assertions selected by the credential subject. This is referred to as `signer_payload.referenced_assertions` throughout this specification.
+** `role` _(optional)_ contains a description of the credential subject’s relationship to the _<<C2PA asset>>._ Possible role values are described in xref:_credential_subject_roles[xrefstyle=full].
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
@@ -242,14 +243,31 @@ The content of `signature` depends on the type of credential that is used. Valid
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`. More than one *<<_identity_assertion,identity assertion>>* may appear in a _<<C2PA claim>>;_ if this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
-[#describe-role-in-content]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/14[issue #14]): Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
-
 [#describe-social-media]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/15[issue #15]): Describe where would things like social media accounts live.
 
-[#describe-actor-role]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/26[issue #26]): Describe credential holder’s role in relation to the asset.
+==== Credential subject roles
+
+The _<<_credential_holder,credential holder>>_ MAY choose to describe the relationship of the _<<_credential_subject,credential subject>>_ to the _<<C2PA asset>>_ by adding a `role` field to `signer_payload`.
+
+The following values for `role` are defined. It is recommended that the value of `role` be one of the following values and that any user experience that presents the content of an *<<_identity_assertion,identity assertion>>* be prepared to describe these roles in the same human language as the surrounding interface:
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |  Meaning
+| `cawg.creator` | The _<<_credential_subject,credential subject>>_ is a primary creator/author of this _<<C2PA asset>>._
+| `cawg.contributor` | The _<<_credential_subject,credential subject>>_ is a secondary creator/author of this _<<C2PA asset>>._
+| `cawg.editor` | The _<<_credential_subject,credential subject>>_ is an editor of this _<<C2PA asset>>._
+| `cawg.producer` | The _<<_credential_subject,credential subject>>_ is a producer of this _<<C2PA asset>>._
+| `cawg.publisher` | The _<<_credential_subject,credential subject>>_ is a publisher of this _<<C2PA asset>>._
+| `cawg.reviewer` | The _<<_credential_subject,credential subject>>_ is a reviewer of this _<<C2PA asset>>._
+| `cawg.sponsor` | The _<<_credential_subject,credential subject>>_ has supported or sponsored the creation of this _<<C2PA asset>>._
+| `cawg.translator` | The _<<_credential_subject,credential subject>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
+|=======================
+
+Other values for `role` MAY be used with the understanding that they may not be well understood by *<<_identity_assertion,identity assertion>>* consumers. Values for `role` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
+
+IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `role` using the `cawg.` prefix.
 
 === CBOR schema
 
@@ -267,6 +285,7 @@ identity = {
 
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
+  ? "role": tstr .size (1..max-tstr-length), ; a string defining the credential subject's relationship to this C2PA asset
 }
 ----
 
@@ -275,6 +294,8 @@ IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification M
 Possible values for the `sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
+
+Possible values for the `signer_payload.role` field are provided in xref:_credential_subject_roles[xrefstyle=full].
 
 ==== Example
 
@@ -298,6 +319,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
         "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
       }
     ],
+    "role": "cawg.creator",
   },
   "sig_type": "cawg.x509.cose",
   "signature": b64'....', // COSE signature
