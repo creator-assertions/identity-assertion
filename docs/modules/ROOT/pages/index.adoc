@@ -498,13 +498,49 @@ In each of the above sections, the following changes MUST be applied:
 
 == Trust model
 
-IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA spec by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
+IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
+
+=== Digital trust introduction
+
+_This section is non-normative._
+
+Digital trust is typically described using a _trust triangle_ as shown in the following diagram:
+
+.Basic trust triangle
+image::trust-model/basic-trust-triangle.drawio.svg[Basic trust triangle,width=400,height=130,align="center"]
+
+The three roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _credential holder_ establishes a relationship with a _credential issuer._ If the issuer trusts the credential holder, it will then issue a digital credential which makes statements about the credential holder and is signed by the issuer.
+
+Later, the _credential holder_ can then present this credential to a _verifier_ (also often known as a “relying party”). If the verifier has an existing trust relationship with the credential issuer, then the verifier can choose to trust the credential and the statements made within it.
+
+This pattern can be repeated if there is not a direct trust relationship between the _verifier_ and _issuer._ The issuer itself might have a credential that is issued by another _issuer_ that is known to the _verifier_ as shown in the following diagram:
+
+.Transitive trust triangle
+image::trust-model/transitive-trust-triangle.drawio.svg[Transitive trust triangle,width=570,height=220,align="center"]
+
+In this scenario, _issuer 2_ is playing a dual role as credential holder and credential issuer. The _verifier_ does not have a direct relationship with the issuer of the credentials that were presented (_issuer 2_). However, it can inspect _issuer 2’s_ credentials and find that they were issued by _issuer 1,_ with whom it does have a direct relationship. Based on the nature of that relationship, it may choose to extend *transitive trust* to _issuer 2_ and thus to the credential that _issuer 2_ issued.
+
+Web browsers provide a well-known example of transitive trust. Browsers have direct relationships with relatively few root trust anchors. Those anchors, known as _root certificate authorities,_ in turn issue credentials to _certificate authorities_ who then issue credentials to individual web site operators who then sign the content presented to a browser. This pattern may be repeated with multiple layers of intermediate certificate authorities. The web browser evaluates this entire chain of credentials when deciding whether to present a web site as trusted or not.
+
+=== Trust scenarios in identity assertion
+
+Add language here that clarifies that the *<<_identity_assertion,identity assertion>>* introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this *<<_identity_assertion,identity assertion>>.*
+
+(adaptation for C2PA asset as credential subject)
+
+(scenarios from IIW as to who is issuer)
+
+=== Threats to trust model
+
+(work in various issues described so far)
+
+
+
 
 [#define-trust-model]
 [NOTE]
 .TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/22[issue #22]): Define the trust model.
 ====
-Add language here that clarifies that the *<<_identity_assertion,identity assertion>>* introduces a second trust triangle, distinct from the trust triangle including the _claim generator,_ that enables the C2PA Manifest Consumer to make trust decisions regarding the _actor_ whose credential was used to generate the signature in this *<<_identity_assertion,identity assertion>>.*
 
 Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
 
