@@ -148,3 +148,7 @@ _This section is non-normative._
 * Change `sig_type` value for X.509 to `cawg.x509.cose`.
 * Reserve `sig_type` values starting with `cawg.` for future CAWG specifications.
 * State that future versions of this specification may add new `sig_type` values without breaking the identity assertion format or requiring a major version change.
+
+*Pending merge*
+
+* Define xref:_trust_model[xrefstyle=full].
