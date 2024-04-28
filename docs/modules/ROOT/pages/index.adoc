@@ -625,6 +625,69 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 
 === Threats to trust model
 
+_This section is non-normative._
+
+This section enumerates a number of potential attacks on the *<<_identity_assertion,identity assertion>>* trust model. If concrete guidance to mitigate or prevent a specific attack is available, that guidance should be incorporated as specific normative requirements elsewhere in this specification and referenced here.
+
+==== Replay attacks
+
+* Could an attacker extract the *<<_identity_assertion,identity assertion>>* out of one _<<_c2pa_asset,C2PA asset>>_ and embed it into another _<<_c2pa_asset,C2PA asset>>?_
+* Is there anything that makes the *<<_identity_assertion,identity assertion>>* unique to that _<<_c2pa_asset,C2PA asset>>?_
+* Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do any checks to make sure that a replay attack is not occurring?
+
+An attacker could, in theory, extract an *<<_identity_assertion,identity assertion>>* and place it into a new _<<C2PA Manifest>>_ as part of an unrelated _<<_c2pa_asset,C2PA asset>>._
+
+To prevent this attack, a valid *<<_identity_assertion,identity assertion>>* must contain a `signer_payload.referenced_assertions` include a _<<_hard_binding,hard binding>>_ assertion that properly describes the _<<_c2pa_asset,C2PA asset>>._ A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should detect that the _<<_hard_binding,hard binding>>_ assertion referenced by the original *<<_identity_assertion,identity assertion>>* does not match the attacker’s _<<_c2pa_asset,C2PA asset>>_ and fail validation.
+
+==== Name collisions
+
+* How do we differentiate between two John Does registered to the same identity provider?
+* How do we differentiate between two John Does registered to _different_ identity providers?
+* How do we differentiate between anonymous reporters who need to remain anonymous at a technical level?
+* How do we differentiate between anonymous reporters in the UI? If we allow them to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an "anonymous" user who asks to be identified as “Barack Obama” to the end-user.
+* Is the end user required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Do end users need to keep a “phone book” of serial numbers that they trust?
+
+Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_actor,actors>>_ and to meaningfully expose that differentiation in user experience.
+
+NOTE: TO DO (add new GH issue): Think through identity presentation so as to provide meaningful differentiation between similarly-named _<<_actor,actors>>._
+
+==== Parsing and validation errors
+
+Any content including, but not limited to the _<<_named_actor,named actor’s>>_ identity, could be subject to a number of parsing or validation attacks:
+
+* *Injection of code* (HTML, JavaScript, etc.) into a text field so that the attacker can attempt to control what is displayed to the end user. _Does the specification support markup in the text fields? Should all fields be considered unicode strings?_
+* *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
+* *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
+
+NOTE: TO DO (add new GH issue): Refine discussion of above items and add specific guidance.
+
+==== Homoglyph and typo-squatting attacks
+
+An attacker could use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
+
+NOTE: TO DO (add new GH issue): Discuss and add guidance.
+
+==== Validation of credential status
+
+* Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do real-time checks to ensure that the _<<_named_actor,named actor’s>>_ credential is still considered valid? What harms or risks may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status?
+* If a bad actor makes it into the system, then how does that ID get blocked? Is there an OCSP,CRL, bad actor database, etc.? If so, what is the governance for such a list and who maintains it?
+* What if the bad actor is in an ingredient and not the primary piece of content?
+* What is displayed to the end-user in both the primary content and ingredient scenarios?
+
+NOTE: TO DO (add new GH issue): Discuss and add guidance.
+
+==== Compromise of private key material
+
+In practice, the _<<_credential_holder,credential holder’s>>_ signing keys will be issued to systems that perform *<<_identity_assertion,identity assertion>>* signing operations. These systems may make these operations available to end users and/or be deployed to user-owned platforms (e.g., mobile phones). Issuance or disclosure of signing keys to malicious actors enables attackers to create claim signatures on arbitrary assets using the compromised identity. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity.
+
+It is therefore important that systems that manage *<<_identity_assertion,identity assertion>>* signing keys adhere to security and key management best practices. This includes leveraging platform-specific features (e.g., hardware security modules and cloud key management services), minimizing key reuse, and revoking keys when compromise is suspected. For more information on key management, see the link:https://csrc.nist.gov/Projects/Key-Management/Key-Management-Guidelines[NIST Key Management Guidelines].
+
+Some *<<_identity_assertion,identity assertion>>* generation and signing systems may be exposed to untrusted users. Exploitation or misuse of these systems may allow attackers to create *<<_identity_assertion,identity assertion>>* signatures on arbitrary assets using identities provided by the system. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity. The impact of such an attack may be amplified if identities are shared between users, and/or if the attack goes undetected for an extended period of time.
+
+*<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
+
+
+
 [#define-threat-model]
 [NOTE]
 .TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/97[issue #97]): Define the threat model.
