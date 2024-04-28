@@ -220,7 +220,7 @@ include::partial$terms.adoc[]
 
 === Overview
 
-This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_named_actor,named actor>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
+This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_named_actor,named actor>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described by those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
