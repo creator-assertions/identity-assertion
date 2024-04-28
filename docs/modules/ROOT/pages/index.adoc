@@ -534,7 +534,7 @@ The `signature` in an *<<_identity_assertion,identity assertion>>* could be cons
 
 IMPORTANT: “Content Credential” is a trademarked term that refers to _<<_c2pa_manifest,C2PA Manifests>>_ and MUST NOT be used in reference to *<<_identity_assertion,identity assertion>>* signatures.
 
-A _<<C2PA Manifest Consumer>>_ SHOULD maintain a list of trust relationships that is is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>.*
+A _<<C2PA Manifest Consumer>>_ SHOULD maintain a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>.*
 
 There are several possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
 
