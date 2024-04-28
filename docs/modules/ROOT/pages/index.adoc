@@ -166,8 +166,6 @@ See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifi
 
 An _<<_actor,actor>>_ who consumes a _<<_c2pa_asset,C2PA asset>>_ with an associated _<<C2PA Manifest>>_ for the purpose of obtaining the provenance data from the _<<C2PA Manifest>>._
 
-NOTE: When this _<<_actor,actor>>_ is concerned with validating the *<<_identity_assertion,identity assertions>>* contained within a _<<C2PA Manifest>>,_ this role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-verifier++[W3C verifiable credentials data model].
-
 ==== Content binding
 
 Information that associates digital content to a specific _<<C2PA Manifest>>_ associated with a specific _<<C2PA asset>>,_ either as a _hard binding_ or a _soft binding._
@@ -199,6 +197,12 @@ The _<<_actor,actor>>_ that has control (specifically signature authority) over 
 ==== Identity assertion
 
 A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over an digital identity and bind the identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
+
+==== Identity assertion consumer
+
+A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of any *_<<_identity_assertion,identity assertions>>* contained within the _<<C2PA Manifest>>._
+
+NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-verifier++[W3C verifiable credentials data model].
 
 ==== Named actor
 
@@ -534,7 +538,7 @@ The `signature` in an *<<_identity_assertion,identity assertion>>* could be cons
 
 IMPORTANT: “Content Credential” is a trademarked term that refers to _<<_c2pa_manifest,C2PA Manifests>>_ and MUST NOT be used in reference to *<<_identity_assertion,identity assertion>>* signatures.
 
-A _<<C2PA Manifest Consumer>>_ SHOULD maintain a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>.*
+An _<<_identity_asertion_consumer,identity assertion consumer>>_ SHOULD maintain a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>.*
 
 There are several possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
 
@@ -551,10 +555,10 @@ The _<<_credential_holder,credential holder>>_ uses this signature authority dir
 .Named actor as issuer
 image::trust-model/named-actor-as-issuer.drawio.svg[Named actor as issuer,width=570,height=240,align="center"]
 
-In this scenario, the _<<C2PA Manifest Consumer>>_ SHOULD make its trust decision based on the following predicates:
+In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
 . Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-. Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<C2PA Manifest Consumer>>_ trust the _credential issuer_ to issue valid signature credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+. Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 
 ==== Named actor without signature authority
@@ -594,15 +598,15 @@ In this scenario, the _issuer_ of the _asset-specific credential_ is not the _<<
 .Named actor without signature authority
 image::trust-model/no-signature-authority.drawio.svg[Named actor without signature authority,width=570,height=320,align="center"]
 
-In this scenario, the _<<C2PA Manifest Consumer>>_ SHOULD make its trust decision based on the following predicates:
+In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
-. Does the _<<C2PA Manifest Consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<C2PA Manifest Consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?) If so, proceed to step 2.
+.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?) If so, proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
-. Does the _<<C2PA Manifest Consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
 .. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<C2PA Manifest Consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+.. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 .. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 
 ==== Identity assertion generator directly attests to identity
@@ -612,11 +616,11 @@ In this scenario, the *<<_identity_assertion,identity assertion>> generator* may
 .Identity assertion generator as issuer
 image::trust-model/ia-generator-as-issuer.drawio.svg[Named actor as issuer,width=570,height=270,align="center"]
 
-In this scenario, the _<<C2PA Manifest Consumer>>_ SHOULD make its trust decision based on the following predicates:
+In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
-. Does the _<<C2PA Manifest Consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to have verified the identity of the _<<_named_actor,named actor>>_ and accurately reflect that identity into the *<<_identity_assertion,identity assertion>>?*
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to have verified the identity of the _<<_named_actor,named actor>>_ and accurately reflect that identity into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator* for identity verification? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer_ for identity verification? (In other words, does the _<<C2PA Manifest Consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials for identity verification?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer_ for identity verification? (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials for identity verification?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 .. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 
 === Threats to trust model
