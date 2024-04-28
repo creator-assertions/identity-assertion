@@ -686,20 +686,8 @@ Some *<<_identity_assertion,identity assertion>>* generation and signing systems
 
 *<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
 
+==== Re-signing by an adversarial claim generator
 
-
-[#define-threat-model]
-[NOTE]
-.TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/97[issue #97]): Define the threat model.
-====
-
-Describe the trust signals that are intended to be conveyed by this assertion. Adapt from or possibly reference the following documents:
-
-* link:++https://c2pa.org/specifications/specifications/1.3/guidance/Guidance.html#_trust_model++[6.3. Trust model] in C2PA implementers guidance (version 1.3)
-* link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[14. Trust model] in C2PA technical specification
-* link:++https://c2pa.org/specifications/specifications/1.0/security/Security_Considerations.html#_trust_model++[2.2 Trust model] in C2PA security considerations
-* link:++https://www.w3.org/TR/vc-data-model/#ecosystem-overview++[1.2 Ecosystem Overview] in W3C verifiable credentials spec
-* link:++https://www.w3.org/TR/vc-data-model/#use-cases-and-requirements++[1.3 Use Cases and Requirements] in W3C verifiable credentials spec
-====
+NOTE: TO DO: Update following discussion based on link:https://github.com/creator-assertions/identity-assertion/issues/95[#95: Security fixes to identity map] and subsequent related discussion in link:https://github.com/creator-assertions/identity-assertion/issues/97[#97: Create a CAWG identity threat model].
 
 include::partial$version-history.adoc[]
