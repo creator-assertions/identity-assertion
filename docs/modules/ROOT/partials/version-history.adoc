@@ -149,6 +149,10 @@ _This section is non-normative._
 * Reserve `sig_type` values starting with `cawg.` for future CAWG specifications.
 * State that future versions of this specification may add new `sig_type` values without breaking the identity assertion format or requiring a major version change.
 
+*29 April 2024*
+
+* Restructure xref:_overview[xrefstyle=full].
+
 *Pending merge*
 
 * Define xref:_trust_model[xrefstyle=full].
