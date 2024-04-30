@@ -233,7 +233,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 * `sig_type` defines the data type of signature
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
-The `signer_payload` field is a structure of type `signer-payload-map` which signed by the _<<_credential_holder,credential holder>>_. It contains the following fields:
+The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_. It contains the following fields:
 
 * `referenced_assertions` is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertions>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 
