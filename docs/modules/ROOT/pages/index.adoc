@@ -10,6 +10,20 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_
 
 *Version 1.0 Draft 29 April 2024* · xref:_version_history[]
 
+[IMPORTANT]
+.Implementor’s draft
+====
+This is a draft version of this specification. Implementors MAY begin using this specification,  with the following understanding:
+
+Between the current draft version and the working group’s approval of a 1.0 final specification:
+
+* The CAWG commits to the stability of xref:_assertion_definition[xrefstyle=full], except that:
+** _Optional_ fields may be added to or removed from `signer_payload` before the 1.0 final version is approved.
+* The CAWG commits to the stability of xref:_x_509_certificates_and_cose_signatures[xrefstyle=full].
+* The CAWG _MAY_ add support for W3C verifiable credentials before the 1.0 final version is approved.
+* The CAWG may refine terminology throughout the specification as it completes the work on xref:_trust_model[xrefstyle=full].
+====
+
 [#maintainers]
 *Maintainers:*
 
