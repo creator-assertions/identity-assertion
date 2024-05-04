@@ -626,20 +626,6 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 .. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 .. If no such revocation has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 
-==== Identity assertion generator directly attests to identity
-
-In this scenario, the *<<_identity_assertion,identity assertion>> generator* may have performed an independent verification of the identity of a _<<_named_actor,named actor>>_ and is willing to directly attest to that identity without the use of an intervening credential. This scenario is depicted in the following diagram, which is non-normative:
-
-.Identity assertion generator as issuer
-image::trust-model/ia-generator-as-issuer.drawio.svg[Named actor as issuer,width=570,height=270,align="center"]
-
-In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
-
-. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to have verified the identity of the _<<_named_actor,named actor>>_ and accurately reflect that identity into the *<<_identity_assertion,identity assertion>>?*
-.. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator* for identity verification? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer_ for identity verification? (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials for identity verification?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
-
 === Threats to trust model
 
 _This section is non-normative._
