@@ -524,7 +524,7 @@ Digital trust is typically described using a _trust triangle_ as shown in the fo
 .Basic trust triangle
 image::trust-model/basic-trust-triangle.drawio.svg[Basic trust triangle,width=400,height=130,align="center"]
 
-The three roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _credential holder_ establishes a relationship with a _credential issuer._ If the issuer trusts the credential holder, it will then issue a digital credential which makes statements about the credential holder and is signed by the issuer.
+The three roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _credential holder_ establishes a relationship with a _credential issuer._ If the issuer trusts the credential holder, it will then issue a digital credential which makes statements about the _credential subject_ (which may or may not be the same actor as the _credential holder_) and is signed by the issuer.
 
 Later, the _credential holder_ can then present this credential to a _verifier_ (also often known as a “relying party”). If the verifier has an existing trust relationship with the credential issuer, then the verifier can choose to trust the credential and the statements made within it.
 
@@ -543,9 +543,12 @@ The `signature` in an *<<_identity_assertion,identity assertion>>* could be cons
 
 IMPORTANT: “Content Credential” is a trademarked term that refers to _<<_c2pa_manifest,C2PA Manifests>>_ and MUST NOT be used in reference to *<<_identity_assertion,identity assertion>>* signatures.
 
-An _<<_identity_asertion_consumer,identity assertion consumer>>_ SHOULD maintain a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>.*
+For each form of credential that an _<<_identity_asertion_consumer,identity assertion consumer>>_ is prepared to accept, it SHOULD maintain:
 
-There are several possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
+1. a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>,* and
+2. one or more mechanisms to check for credentials that have been revoked by the _issuer._
+
+There are a few possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
 
 IMPORTANT: The trust decisions described in the scenarios should only be evaluated once the *<<_identity_assertion,identity assertion>>* and the signature material within have been successfully validated as described in xref:_validating_the_identity_assertion[xrefstyle=full].
 
@@ -563,8 +566,12 @@ image::trust-model/named-actor-as-issuer.drawio.svg[Named actor as issuer,width=
 In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
 . Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-. Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+. Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?)
+.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If the transitive trust relationship exists and the credential has not been revoked, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+
+NOTE: The direct trust relationship case is possible, but relatively uncommon.
 
 ==== Named actor without signature authority
 
@@ -607,12 +614,17 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?) If so, proceed to step 2.
+.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
+.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If the transitive trust relationship exists and the credential has not been revoked, proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
-.. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-.. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, proceed to step 3.
+.. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, proceed to step 3.
+.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+. Has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential?
+.. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If no such revocation has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 
 ==== Identity assertion generator directly attests to identity
 
