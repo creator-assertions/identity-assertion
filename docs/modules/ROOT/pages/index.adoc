@@ -689,6 +689,10 @@ Some *<<_identity_assertion,identity assertion>>* generation and signing systems
 
 *<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
 
+==== Tampering with identity assertion
+
+NOTE: TO DO: Write new section describing potential attacks on the content of the identity assertion itself. Signature within IA should protect against `signer_payload` modifications and C2PA hash-link references should protect against substitution of a new identity assertion.
+
 ==== Re-signing by an adversarial claim generator
 
 NOTE: TO DO: Update following discussion based on link:https://github.com/creator-assertions/identity-assertion/issues/95[#95: Security fixes to identity map] and subsequent related discussion in link:https://github.com/creator-assertions/identity-assertion/issues/97[#97: Create a CAWG identity threat model].
