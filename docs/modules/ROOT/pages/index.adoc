@@ -226,8 +226,8 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 
 * `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertions>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credential_signatures_and_validation_methods[xrefstyle=full].
-* `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
-* `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid avoid creating an unwanted association between the _<<_credential_subject,credential subject>>_ footnote:[TO DO: Replace _credential subject_ with _named actor_ if corresponding PR lands.] with an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
+* `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
+* `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_credential_subject,credential subject>>_ footnote:[TO DO: Replace _credential subject_ with _named actor_ if corresponding PR lands.] with an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
@@ -272,8 +272,13 @@ identity = {
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
-  ? "expected_claim": bstr, ; byte string containing hash of partial claim
-  ? "expected_claim_generator: bstr, ; byte string containing hash of expected claim signer credential
+  ? "expected_claim": $hash-map, ; byte string containing hash of partial claim
+  ? "expected_claim_generator: $hash-map, ; byte string containing hash of expected claim signer credential
+}
+
+hash-map = {
+  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute all hashes in this claim, taken from the C2PA hash algorithm identifier list
+  "hash": bstr, ;  byte string containing the hash value
 }
 ----
 
@@ -330,11 +335,14 @@ IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>
 If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim` value in `signer_payload`, it MUST be computed as follows:
 
 . Create a valid _<<C2PA claim>>_ data structure that includes completed references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertion>>.*
-. For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with 32 zero-value (`0x00`) bytes.
+. For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
 . Serialize the _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-. Compute a SHA-256 hash of the serialized _<<C2PA claim>>_ data structure.
+. Compute a hash of the serialized _<<C2PA claim>>_ data structure using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
-The resulting hash should be used as the `expected_claim` value.
+The `expected_claim` value SHOULD contain a CBOR map with the following fields:
+
+* `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
+* `hash` value containing the computed hash of the serialized _<<C2PA claim>>_ data structure.
 
 IMPORTANT: Since this algorithm replaces the `hash` value for exactly one *<<_identity_assertion,identity assertion>>,* this implies that only one *<<_identity_assertion,identity assertion>>* per _<<C2PA Manifest>>_ may provide an `expected_claim` value and that this *<<_identity_assertion,identity assertion>>* MAY NOT be referenced by any other *<<_identity_assertion,identity assertion>>.*
 
@@ -344,9 +352,14 @@ If the *<<_identity_assertion,identity assertion>> generator* chooses to include
 
 . Identify signing certificate chain that will be used for the expected _<<C2PA claim generator>>._ This chain should include certificates for all intermediate certificate authorities.
 . Serialize this signing certificate chain as either a CBOR byte string (single certificate) or CBOR array of byte strings (certificate chain) as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-. Compute a SHA-256 hash of the serialized certificate chain.
+. Compute a hash of the serialized certificate chain using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
 The resulting hash should be used as the `expected_claim_generator` value.
+
+The `expected_claim_generator` value SHOULD contain a CBOR map with the following fields:
+
+* `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
+* `hash` value containing the computed hash of the serialized certificate chain.
 
 === Creating the assertion
 
@@ -444,7 +457,7 @@ The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* 
 If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim` value in `signer_payload`, it MUST be validated as follows:
 
 . Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
-. Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with 32 zero-value (`0x00`) bytes.
+. Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a SHA-256 hash of the serialized _<<C2PA claim>>_ data structure.
 
