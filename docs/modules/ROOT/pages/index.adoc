@@ -271,11 +271,6 @@ signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
 }
-
-hash-map = {
-  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute all hashes in this claim, taken from the C2PA hash algorithm identifier list
-  "hash": bstr, ;  byte string containing the hash value
-}
 ----
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
