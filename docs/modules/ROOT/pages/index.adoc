@@ -263,8 +263,8 @@ The schema for this type is defined by the `identity` rule in the following http
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
   "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
-  ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
+  "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
+  ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
 }
 
 signer-payload-map = {
