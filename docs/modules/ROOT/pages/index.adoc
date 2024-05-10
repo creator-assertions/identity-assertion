@@ -71,7 +71,7 @@ The *<<_identity_assertion,identity assertion>>* should be thought of as a trust
 [NOTE]
 .Example of trust signal scope with one identity assertion
 ====
-The diagram that follows, with one _<<C2PA Manifest>>_ containing one identity assertion, is intended to illustrate the most basic example of the two trust signals available and how they interesect:
+The diagram that follows, with one _<<C2PA Manifest>>_ containing one *<<_identity_assertion,identity assertion>>,* is intended to illustrate the most basic example of the two trust signals available and how they interesect:
 
 .Overview of identity assertion
 image::overview/single-ia-trust-bubbles.drawio.svg[Single identity assertion trust example,width=240,height=400,align="center"]
@@ -84,7 +84,7 @@ This example shows *<<_identity_assertion,identity assertion 1>>* using the _<<_
 * the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
 * any other information in `signer_payload`.
 
-The yellow-colored circle demonstrates the limit of *<<_identity_assertion,identity assertion’s>>* trust signal.
+The yellow-colored circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
 
 Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator’s>>_ signature to seal:
 
@@ -96,11 +96,42 @@ Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator
 The teal-colored circle demonstrates the limit of the _<<_c2pa_claim,C2PA claim’s>>_ trust signal.
 ====
 
-The *<<_identity_assertion,identity assertion>>* may be repeated any number of times to convey information specific to distinct _<<_credential_holder,credential holders>>._ The following diagram, which is non-normative, illustrates two _<<_credential_holder,credential holders>>,_ each independently signing different actions and metadata assertions:
+The *<<_identity_assertion,identity assertion>>* may be repeated any number of times to convey information specific to distinct _<<_credential_holder,credential holders>>._
 
-[#multiple-identity-assertions]
-.Example with multiple identity assertions
-image::overview/multi-author-block-diagram.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
+[NOTE]
+.Example of trust signal scope with two non-overlapping identity assertions
+====
+The diagram that follows, with one _<<C2PA Manifest>>_ extends the previous example by showing how two containing two *<<_identity_assertion,identity assertions>>* could be used to describe distinct assertions attested to by two distinct _<<_actor,actors>>._
+
+.Two non-overlapping identity assertions
+image::overview/non-overlapping-trust-bubbles.drawio.svg[Two non-overlapping identity assertions example,width=400,height=400,align="center"]
+
+In this example, *<<_identity_assertion,identity assertion 1>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* A1 and A2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The yellow-colored circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
+
+In this example, *<<_identity_assertion,identity assertion 2>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* A3, A4, and A5,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The blue-colored circle demonstrates the limit of *<<_identity_assertion,identity assertion 2’s>>* trust signal.
+
+Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator’s>>_ signature to seal:
+
+* A1, A2, A3, A4, A5, and A6,
+* identity assertion 1,
+* identity assertion 2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in the claim data structure.
+
+The teal-colored circle demonstrates the limit of the _<<_c2pa_claim,C2PA claim’s>>_ trust signal.
+====
 
 === Use cases and examples
 
