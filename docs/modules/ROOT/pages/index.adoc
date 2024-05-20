@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 29 April 2024* · xref:_version_history[]
+*Version 1.0 Draft 20 May 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -69,7 +69,7 @@ The _<<_credential_holder,credential holder’s>>_ signature should generally be
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
 .Overview of identity assertion
-image::overview.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
+image::overview/single-author-block-diagram.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
@@ -81,7 +81,7 @@ This trust signal may be repeated any number of times to convey information spec
 
 [#multiple-identity-assertions]
 .Example with multiple identity assertions
-image::overview-multi-author.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
+image::overview/multi-author-block-diagram.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
 
 === Use cases and examples
 
@@ -230,14 +230,12 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
-* `sig_type` defines the data type of signature
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_. It contains the following fields:
 
-* `referenced_assertions` is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertions>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
-
-The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+* `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
+* `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credential_signatures_and_validation_methods[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
@@ -274,20 +272,20 @@ The schema for this type is defined by the `identity` rule in the following http
 ----
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
-  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
-  ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
+  "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
+  ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
 }
 
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
+  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
 }
 ----
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 
-Possible values for the `sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+Possible values for the `signer_payload.sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
 
@@ -299,6 +297,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 ----
 {
   "signer_payload": {
+    "sig_type": "cawg.x509.cose",
     "referenced_assertions": [
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
@@ -339,7 +338,7 @@ Once the signature is obtained, the *<<_identity_assertion,identity assertion>>*
 
 The `signer_payload` data structure MUST be unchanged from the data structure that was presented to the _<<_credential_holder,credential holder>>_ for signature.
 
-The values for the `sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+The values for the `signer_payload.sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 
@@ -418,7 +417,7 @@ The validator SHOULD verify that no entry in `signer_payload.referenced_assertio
 
 The validator MUST ensure that `signer_payload.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
-The validator MUST maintain a list of valid `sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `sig_type` values.
+The validator MUST maintain a list of valid `signer_payload.sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `signer_payload.sig_type` values.
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* MUST contain a valid signature. The procedure for validating each signature type and corresponding status codes are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -447,7 +446,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
-|`cawg.identity.sig_type.unknown` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
+|`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
 
@@ -457,17 +456,17 @@ NOTE: Additional failure codes relating to specific signature types are defined 
 
 The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<ToIP verifiable identifier>>_ and corresponding signature can be used in any single assertion.
 
-The signature type is represented by the `sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
+The signature type is represented by the `signer_payload.sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
 
-Other specifications MAY define additional `sig_type` values and the corresponding definition of `signature` with the understanding that some *<<_identity_assertion,identity assertion>>* validators may not be prepared to understand such assertions. Values of `sig_type` that begin with the prefix `cawg.` are reserved for use of the Creator Assertions Working Group and MUST NOT be used in any specification not produced by this group.
+Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature` with the understanding that some *<<_identity_assertion,identity assertion>>* validators may not be prepared to understand such assertions. Values of `signer_payload.sig_type` that begin with the prefix `cawg.` are reserved for use of the Creator Assertions Working Group and MUST NOT be used in any specification not produced by this group.
 
 [IMPORTANT]
 .Credential types in minor version updates
 ====
 Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 
-1. Add new sections to this specification defining new credential types and their corresponding `sig_type` values.
-2. Mark existing sections of this specification defining existing credential types and their corresponding `sig_type` values as deprecated.
+1. Add new sections to this specification defining new credential types and their corresponding `signer_payload.sig_type` values.
+2. Mark existing sections of this specification defining existing credential types and their corresponding `signer_payload.sig_type` values as deprecated.
 
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
@@ -480,7 +479,7 @@ IMPORTANT: This portion of the specification is still undergoing significant exp
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
 
-The `sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
 ==== Generating the COSE signature
 
@@ -494,7 +493,7 @@ To generate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding”,] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 ==== Validating the COSE signature
