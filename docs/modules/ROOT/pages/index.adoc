@@ -303,7 +303,6 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
       }
     ],
   },
-  "sig_type": "cawg.x509.cose",
   "signature": b64'....', // COSE signature
   "pad1": b64'....', // zero-filled pad buffer
   "pad2": b64'....'  // zero-filled pad buffer
