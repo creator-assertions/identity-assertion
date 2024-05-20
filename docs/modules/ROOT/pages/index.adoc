@@ -67,7 +67,7 @@ Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
 .Overview of identity assertion
-image::overview.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
+image::overview/single-author-block-diagram.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
@@ -77,7 +77,7 @@ This trust signal may be repeated any number of times to convey information spec
 
 [#multiple-identity-assertions]
 .Example with multiple identity assertions
-image::overview-multi-author.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
+image::overview/multi-author-block-diagram.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
 
 === Use cases and examples
 
