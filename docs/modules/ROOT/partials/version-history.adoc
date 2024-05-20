@@ -152,3 +152,7 @@ _This section is non-normative._
 *29 April 2024*
 
 * Restructure xref:_overview[xrefstyle=full].
+
+*20 May 2024*
+
+* Move `sig_type` into `signer_payload`.
