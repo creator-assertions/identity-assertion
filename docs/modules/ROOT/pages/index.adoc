@@ -62,7 +62,7 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the zzz_<<_credential_subject,credential subject’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
 
 Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
@@ -97,13 +97,13 @@ Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator
 The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
 ====
 
-The *<<_identity_assertion,identity assertion>>* may be repeated any number of times to convey information specific to distinct _<<_credential_holder,credential holders>>._
+The *<<_identity_assertion,identity assertion>>* may be repeated any number of times to convey information specific to distinct _<<_named-actor,named actors>>._
 
 [#trust-signal-scope-two-ias]
 .Trust signal scope with two non-overlapping identity assertions
 [example]
 ====
-The diagram that follows extends xref:trust-signal-scope-one-ia[xrefstyle=full], by showing how two *<<_identity_assertion,identity assertions>>* could be used to describe distinct assertions attested to by two distinct _<<_actor,actors>>:_
+The diagram that follows extends xref:trust-signal-scope-one-ia[xrefstyle=full], by showing how two *<<_identity_assertion,identity assertions>>* could be used to describe distinct assertions attested to by two distinct _<<_named_actor,named actors>>:_
 
 .Two non-overlapping identity assertions
 image::overview/non-overlapping-trust-bubbles.drawio.svg[Two non-overlapping identity assertions example,width=400,height=400,align="center"]
