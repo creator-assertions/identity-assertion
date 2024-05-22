@@ -469,7 +469,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim`
 . Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
 . Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-. Compute a SHA-256 hash of the serialized _<<C2PA claim>>_ data structure.
+. Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_claim.alg`.
 
 The resulting hash MUST exactly match the value present in `expected_claim`. The `cawg.identity.expected_claim.mismatch` error code SHALL be used to report assertions that contain other values.
 
@@ -479,7 +479,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_
 
 . Locate the end-entity signing certificate that is present in the _<<C2PA claim>>_ signature. It can be located as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
 . Identify the CBOR bytes specific to this signing certifcate. If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-. Compute a SHA-256 hash of the serialized end-entity certificate.
+. Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.
 
 The resulting hash MUST exactly match the value present in `expected_claim_generator`. The `cawg.identity.expected_claim_generator.mismatch` error code SHALL be used to report assertions that contain other values.
 
