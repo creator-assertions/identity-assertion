@@ -471,7 +471,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim`
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_claim.alg`.
 
-The resulting hash MUST exactly match the value present in `expected_claim`. The `cawg.identity.expected_claim.mismatch` error code SHALL be used to report assertions that contain other values.
+The resulting hash MUST exactly match the value present in `expected_claim.hash`. The `cawg.identity.expected_claim.mismatch` error code SHALL be used to report assertions that contain other values.
 
 ==== Calculating the `expected_claim_generator` value
 
