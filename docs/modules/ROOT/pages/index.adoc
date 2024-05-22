@@ -481,7 +481,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_
 . Identify the CBOR bytes specific to this signing certifcate. If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.
 
-The resulting hash MUST exactly match the value present in `expected_claim_generator`. The `cawg.identity.expected_claim_generator.mismatch` error code SHALL be used to report assertions that contain other values.
+The resulting hash MUST exactly match the value present in `expected_claim_generator.hash`. The `cawg.identity.expected_claim_generator.mismatch` error code SHALL be used to report assertions that contain other values.
 
 === Status codes
 
