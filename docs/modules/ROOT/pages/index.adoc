@@ -287,7 +287,7 @@ signer-payload-map = {
 }
 
 hash-map = {
-  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute all hashes in this claim, taken from the C2PA hash algorithm identifier list
+  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
   "hash": bstr, ;  byte string containing the hash value
 }
 ----
