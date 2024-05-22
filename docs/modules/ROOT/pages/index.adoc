@@ -344,7 +344,7 @@ IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>
 
 If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim` value in `signer_payload`, it MUST be computed as follows:
 
-. Create a valid _<<C2PA claim>>_ data structure that includes completed references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertion>>.*
+. Create a valid _<<C2PA claim>>_ data structure that includes completed references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertions>>.*
 . For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
 . Serialize the _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
