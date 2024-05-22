@@ -283,7 +283,7 @@ signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
   ? "expected_claim": $hash-map, ; byte string containing hash of partial claim
-  ? "expected_claim_generator: $hash-map, ; byte string containing hash of expected claim signer credential
+  ? "expected_claim_generator": $hash-map, ; byte string containing hash of expected claim signer credential
 }
 
 hash-map = {
