@@ -285,7 +285,7 @@ signer-payload-map = {
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
   ? "expected_claim": $hash-map, ; hash of expected partial claim
   ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
-  ? "expected_countersigners": [1* $hash-map], ; array of byte strings containing expected countersigner credentials
+  ? "expected_countersigners": [1* $hash-map], ; array of expected countersigner credentials
 }
 
 hash-map = {
@@ -348,6 +348,7 @@ If the *<<_identity_assertion,identity assertion>> generator* chooses to include
 
 . Create a valid _<<C2PA claim>>_ data structure that includes completed references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertions>>.*
 . For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
+. For any *<<_identity_assertion,identity assertions>>* whose signing credentials are described via the `expected_countersigners` field, replace the `hash` value with all zero-value (`0x00`) bytes.
 . Serialize the _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
@@ -355,8 +356,6 @@ The `expected_claim` value SHOULD contain a CBOR map with the following fields:
 
 * `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
 * `hash` value containing the computed hash of the serialized _<<C2PA claim>>_ data structure.
-
-IMPORTANT: Since this algorithm replaces the `hash` value for exactly one *<<_identity_assertion,identity assertion>>,* this implies that only one *<<_identity_assertion,identity assertion>>* per _<<C2PA Manifest>>_ may provide an `expected_claim` value and that this *<<_identity_assertion,identity assertion>>* MAY NOT be referenced by any other *<<_identity_assertion,identity assertion>>.*
 
 ==== Calculating the `expected_claim_generator` value
 
@@ -493,12 +492,13 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim`
 
 . Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
 . Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
+. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigner` value in `signer_payload`, for each entry in the `expected_countersigner` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` value for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_claim.alg`.
 
 The resulting hash MUST exactly match the value present in `expected_claim.hash`. The `cawg.identity.expected_claim.mismatch` error code SHALL be used to report assertions that contain other values.
 
-==== Calculating the `expected_claim_generator` value
+==== Validating the `expected_claim_generator` value
 
 If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` value in `signer_payload`, it MUST be validated as follows:
 
