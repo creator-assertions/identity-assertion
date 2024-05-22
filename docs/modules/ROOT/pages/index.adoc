@@ -360,7 +360,7 @@ IMPORTANT: Since this algorithm replaces the `hash` value for exactly one *<<_id
 
 If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim_generator` value in `signer_payload`, it MUST be computed as follows:
 
-. Identify signing certificate chain that will be used for the expected _<<C2PA claim generator>>._ This chain should include certificates for all intermediate certificate authorities.
+. Identify the signing certificate chain that will be used for the expected _<<C2PA claim generator>>._ This chain should include certificates for all intermediate certificate authorities.
 . Serialize this signing certificate chain as either a CBOR byte string (single certificate) or CBOR array of byte strings (certificate chain) as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized certificate chain using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
