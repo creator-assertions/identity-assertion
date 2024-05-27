@@ -153,6 +153,11 @@ _This section is non-normative._
 
 * Restructure xref:_overview[xrefstyle=full].
 
+*20 May 2024*
+
+* Move `sig_type` into `signer_payload`.
+* Introduce new terms: _<<_named_actor,named actor>>_ and _<<_identity_assertion_consumer,identity assertion consumer>>._
+
 *Pending merge*
 
 * Introduce an optional `signer_payload.role` field, describing _<<_credential_subject,credential subject’s>>_ relationship to the _<<C2PA asset>>._

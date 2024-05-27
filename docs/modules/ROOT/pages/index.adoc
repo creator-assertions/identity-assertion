@@ -6,9 +6,9 @@
 
 The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
-This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_credential_subject,credential subject’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
+This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 29 April 2024* · xref:_version_history[]
+*Version 1.0 Draft 20 May 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -26,7 +26,7 @@ _This section is non-normative._
 
 === Scope
 
-This specification describes a _<<C2PA assertion>>_ that allows an _<<_actor,actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_c2pa_manifest_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the named _<<_actor,actor>>_ and has not been tampered with.
+This specification describes a _<<C2PA assertion>>_ that allows a _<<_named_actor,named actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_identity_assertion_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the _<<_named_actor,named actor>>_ and has not been tampered with.
 
 IMPORTANT: For purposes of the Community Specification License, the link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document] at the root of this project’s GitHub repository is the governing document of this specification’s scope.
 
@@ -62,22 +62,24 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA claim>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_credential_subject,credential subject’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a data structure known as `signer_payload` which will subsequently be included in a _<<C2PA claim>>._ The `signer_payload` and corresponding signature from the _<<_credential_holder,credential holder>>_ binds this identity assertion to a specific _<<C2PA asset>>_ and allows the _<<_credential_holder,credential holder>>_ to endorse or make additional statements about the _<<_named_actor,named actor’s>>_ relationship to that _<<C2PA asset>>._
 
 This is intended to provide an additional trust signal over and above the signature provided by the _<<C2PA claim generator>>,_ as illustrated in the following diagram, which is non-normative:
 
 .Overview of identity assertion
-image::overview.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
+image::overview/single-author-block-diagram.drawio.svg[Identity assertion overview,width=680,height=878,align="center"]
 
 The _<<C2PA claim>>,_ which is signed by the _<<C2PA claim generator>>,_ contains a list of assertions which may contain any number of *<<_identity_assertion,identity assertions>>.*
 
-Each *<<_identity_assertion,identity assertion>>* contains hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that list of hashlink references, thus providing a non-repudiable, tamper-evident binding between the _<<_credential_subject,credential subject>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
+Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
-This trust signal may be repeated any number of times to convey information specific to distinct _<<_credential_holder,credential holders>>._ The following diagram, which is non-normative, illustrates two _<<_credential_holder,credential holders>>,_ each independently signing different actions and metadata assertions:
+IMPORTANT: This trust signal should be thought of as independent from (and thus, in _addition_ to) the trust signal provided by the _<<C2PA claim generator>>_ itself.
+
+This trust signal may be repeated any number of times to convey information specific to distinct _<<_named_actor,named actors>>._ The following diagram, which is non-normative, illustrates two _<<_credential_holder,credential holders>>,_ each independently signing different actions and metadata assertions:
 
 [#multiple-identity-assertions]
 .Example with multiple identity assertions
-image::overview-multi-author.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
+image::overview/multi-author-block-diagram.drawio.svg[Multiple identity assertion example,width=680,height=750,align="center"]
 
 === Use cases and examples
 
@@ -162,8 +164,6 @@ See link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifi
 
 An _<<_actor,actor>>_ who consumes a _<<_c2pa_asset,C2PA asset>>_ with an associated _<<C2PA Manifest>>_ for the purpose of obtaining the provenance data from the _<<C2PA Manifest>>._
 
-NOTE: When this _<<_actor,actor>>_ is concerned with validating the *<<_identity_assertion,identity assertions>>* contained within a _<<C2PA Manifest>>,_ this role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-verifier++[W3C verifiable credentials data model].
-
 ==== Content binding
 
 Information that associates digital content to a specific _<<C2PA Manifest>>_ associated with a specific _<<C2PA asset>>,_ either as a _hard binding_ or a _soft binding._
@@ -190,15 +190,23 @@ See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-i
 
 ==== Credential holder
 
-The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<ToIP verifiable identifier>>._
-
-==== Credential subject
-
-The _<<_actor,actor>>_ that is identified by the *subject* field of a _<<ToIP verifiable identifier>>._ This may or may not be the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>._
+The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<ToIP verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
 
 ==== Identity assertion
 
-A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over an digital identity and bind that identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
+A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over an digital identity and bind the identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
+
+==== Identity assertion consumer
+
+A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of any *<<_identity_assertion,identity assertions>>* contained within the _<<C2PA Manifest>>._
+
+NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
+
+==== Named actor
+
+The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.* This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
+
+IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
 
 ==== Placeholder assertion
 
@@ -214,21 +222,19 @@ include::partial$terms.adoc[]
 
 === Overview
 
-This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_credential_subject,credential subject>>_ to a set of _<<_referenced_assertions,referenced assertions>>._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
+This specification defines a _<<C2PA assertion>>_ known as an *<<_identity_assertion,identity assertion>>* which MAY be used to bind one _<<_named_actor,named actor>>_ to a set of _<<_referenced_assertions,referenced assertions>>_ and other related data, known overall as the _signer payload._ This binding SHOULD generally be construed as authorization of or participation in the creation of the statements described by those assertions and corresponding portions of the _<<C2PA asset>>_ in which they appear.
 
 The *<<_identity_assertion,identity assertion>>* contains the following data fields:
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_.
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
-* `sig_type` defines the data type of signature
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_. It contains the following fields:
 
-* `referenced_assertions` is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertions>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
+* `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
+* `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credential_signatures_and_validation_methods[xrefstyle=full].
 * `role` _(optional)_ contains one or more descriptions of the credential subject’s relationships to the _<<C2PA asset>>._ Possible role values are described in xref:_credential_subject_roles[xrefstyle=full].
-
-The content of `signature` depends on the type of credential that is used. Valid credential types and the corresponding `signature` data structures and `sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
@@ -282,21 +288,21 @@ The schema for this type is defined by the `identity` rule in the following http
 ----
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
-  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field that follows
   "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; byte strings filled with binary `0x00` values used for filling up space
-  ? "pad2": bstr, ; optional byte strings filled with binary `0x00` values used for filling up space
+  "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
+  ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
 }
 
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
+  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
   ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the credential subject's relationship(s) to this C2PA asset
 }
 ----
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 
-Possible values for the `sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+Possible values for the `signer_payload.sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
 
@@ -310,6 +316,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
 ----
 {
   "signer_payload": {
+    "sig_type": "cawg.x509.cose",
     "referenced_assertions": [
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
@@ -324,9 +331,8 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
         "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
       }
     ],
-    "role": "cawg.creator",
+    "role": ["cawg.creator"],
   },
-  "sig_type": "cawg.x509.cose",
   "signature": b64'....', // COSE signature
   "pad1": b64'....', // zero-filled pad buffer
   "pad2": b64'....'  // zero-filled pad buffer
@@ -351,7 +357,7 @@ Once the signature is obtained, the *<<_identity_assertion,identity assertion>>*
 
 The `signer_payload` data structure MUST be unchanged from the data structure that was presented to the _<<_credential_holder,credential holder>>_ for signature.
 
-The values for the `sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+The values for the `signer_payload.sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 
@@ -430,7 +436,7 @@ The validator SHOULD verify that no entry in `signer_payload.referenced_assertio
 
 The validator MUST ensure that `signer_payload.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
 
-The validator MUST maintain a list of valid `sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `sig_type` values.
+The validator MUST maintain a list of valid `signer_payload.sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `signer_payload.sig_type` values.
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* MUST contain a valid signature. The procedure for validating each signature type and corresponding status codes are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
@@ -459,7 +465,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
-|`cawg.identity.sig_type.unknown` | The `sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
+|`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |=======================
 
@@ -469,17 +475,17 @@ NOTE: Additional failure codes relating to specific signature types are defined 
 
 The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<ToIP verifiable identifier>>_ and corresponding signature can be used in any single assertion.
 
-The signature type is represented by the `sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
+The signature type is represented by the `signer_payload.sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
 
-Other specifications MAY define additional `sig_type` values and the corresponding definition of `signature` with the understanding that some *<<_identity_assertion,identity assertion>>* validators may not be prepared to understand such assertions. Values of `sig_type` that begin with the prefix `cawg.` are reserved for use of the Creator Assertions Working Group and MUST NOT be used in any specification not produced by this group.
+Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature` with the understanding that some *<<_identity_assertion,identity assertion>>* validators may not be prepared to understand such assertions. Values of `signer_payload.sig_type` that begin with the prefix `cawg.` are reserved for use of the Creator Assertions Working Group and MUST NOT be used in any specification not produced by this group.
 
 [IMPORTANT]
 .Credential types in minor version updates
 ====
 Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 
-1. Add new sections to this specification defining new credential types and their corresponding `sig_type` values.
-2. Mark existing sections of this specification defining existing credential types and their corresponding `sig_type` values as deprecated.
+1. Add new sections to this specification defining new credential types and their corresponding `signer_payload.sig_type` values.
+2. Mark existing sections of this specification defining existing credential types and their corresponding `signer_payload.sig_type` values as deprecated.
 
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
@@ -492,7 +498,7 @@ IMPORTANT: This portion of the specification is still undergoing significant exp
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
 
-The `sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
 ==== Generating the COSE signature
 
@@ -506,7 +512,7 @@ To generate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding”,] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 ==== Validating the COSE signature
