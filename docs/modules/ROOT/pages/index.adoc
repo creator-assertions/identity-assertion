@@ -62,7 +62,9 @@ This specification describes mechanisms to support two common individual and org
 
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._ The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a data structure known as `signer_payload`, which among other things includes a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._
+
+The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
 
 Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
