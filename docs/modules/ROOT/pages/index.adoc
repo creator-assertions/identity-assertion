@@ -6,7 +6,7 @@
 
 The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
-This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role in the _<<C2PA asset>>’s_ lifecycle.
+This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
 *Version 1.0 Draft 28 May 2024* · xref:_version_history[]
 
@@ -337,6 +337,7 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 
 * `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credential_signatures_and_validation_methods[xrefstyle=full].
+* `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._ Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
 * `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
 * `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
 * `expected_countersigners` _(optional),_ if present, describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_value[xrefstyle=full].
@@ -345,14 +346,8 @@ The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.ide
 
 Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview. If this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
-[#describe-role-in-content]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/14[issue #14]): Describe how to allow actors to describe their role in the content (previously described via CreativeWork assertion) and potentially in specific steps referenced in C2PA actions assertion.
-
 [#describe-social-media]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/15[issue #15]): Describe where would things like social media accounts live.
-
-[#describe-actor-role]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/26[issue #26]): Describe credential holder’s role in relation to the asset.
 
 ==== Referenced assertions requirements
 
@@ -367,6 +362,28 @@ NOTE: The `assertions` field appears only in version 1.x of the C2PA technical s
 * The list MAY reference other *<<_identity_assertion,identity assertions>>,* provided that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
 
 NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,referenced assertion>>_ be known prior to presenting `signer_payload` for signature implies that an *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself.
+
+==== Named actor roles
+
+The _<<_credential_holder,credential holder>>_ MAY choose to describe one or more relationships of the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ by adding a `role` field to `signer_payload`.
+
+If present, the value for `role` MUST be a non-empty CBOR array of non-empty text strings. It is recommended that the CBOR text strings be chosen from the following values and that any user experience that presents the content of an *<<_identity_assertion,identity assertion>>* be prepared to describe these roles in the same human language as the surrounding interface:
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |  Meaning
+| `cawg.creator` | The _<<_named_actor,named actor>>_ is a primary creator/author of this _<<C2PA asset>>._
+| `cawg.contributor` | The _<<_named_actor,named actor>>_ is a secondary creator/author of this _<<C2PA asset>>._
+| `cawg.editor` | The _<<_named_actor,named actor>>_ is an editor of this _<<C2PA asset>>._
+| `cawg.producer` | The _<<_named_actor,named actor>>_ is a producer of this _<<C2PA asset>>._
+| `cawg.publisher` | The _<<_named_actor,named actor>>_ is a publisher of this _<<C2PA asset>>._
+| `cawg.sponsor` | The _<<_named_actor,named actor>>_ has supported or sponsored the creation of this _<<C2PA asset>>._
+| `cawg.translator` | The _<<_named_actor,named actor>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
+|=======================
+
+Other CBOR text string values MAY be used in `role` with the understanding that they may not be well understood by *<<_identity_assertion,identity assertion>>* consumers. CBOR text string values for `role` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
+
+IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `role` using the `cawg.` prefix.
 
 === CBOR schema
 
@@ -384,6 +401,7 @@ identity = {
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
+  ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
   ? "expected_claim": $hash-map, ; hash of expected partial claim
   ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
   ? "expected_countersigners": [1* $hash-map], ; array of expected countersigner credentials
@@ -400,6 +418,8 @@ IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification M
 Possible values for the `signer_payload.sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
 The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
+
+Possible values for the text string entries in the `signer_payload.role` field are provided in xref:_named_actor_roles[xrefstyle=full].
 
 ==== Example
 
@@ -424,6 +444,7 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
         "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
       }
     ],
+    "role": ["cawg.creator"],
   },
   "signature": b64'....', // COSE signature
   "pad1": b64'....', // zero-filled pad buffer
