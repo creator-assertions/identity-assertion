@@ -161,3 +161,4 @@ _This section is non-normative._
 *28 May 2024*
 
 * Add optional protections against unexpected claim and unexpected claim generators.
+* Revise xref:_conceptual overview[xrefstyle=full] to include new trust signal diagrams.
