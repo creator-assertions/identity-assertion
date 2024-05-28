@@ -271,7 +271,6 @@ If present, the value for `role` MUST be a non-empty CBOR array of non-empty tex
 | `cawg.editor` | The _<<_credential_subject,credential subject>>_ is an editor of this _<<C2PA asset>>._
 | `cawg.producer` | The _<<_credential_subject,credential subject>>_ is a producer of this _<<C2PA asset>>._
 | `cawg.publisher` | The _<<_credential_subject,credential subject>>_ is a publisher of this _<<C2PA asset>>._
-| `cawg.reviewer` | The _<<_credential_subject,credential subject>>_ is a reviewer of this _<<C2PA asset>>._
 | `cawg.sponsor` | The _<<_credential_subject,credential subject>>_ has supported or sponsored the creation of this _<<C2PA asset>>._
 | `cawg.translator` | The _<<_credential_subject,credential subject>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
 |=======================
