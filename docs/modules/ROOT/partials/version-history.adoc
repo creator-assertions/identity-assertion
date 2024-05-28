@@ -157,3 +157,7 @@ _This section is non-normative._
 
 * Move `sig_type` into `signer_payload`.
 * Introduce new terms: _<<_named_actor,named actor>>_ and _<<_identity_assertion_consumer,identity assertion consumer>>._
+
+*28 May 2024*
+
+* Add optional protections against unexpected claim and unexpected claim generators.
