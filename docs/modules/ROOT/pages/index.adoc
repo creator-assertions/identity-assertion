@@ -492,7 +492,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim`
 
 . Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
 . Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
-. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigner` value in `signer_payload`, for each entry in the `expected_countersigner` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` value for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
+. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` value in `signer_payload`, for each entry in the `expected_countersigners` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` value for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_claim.alg`.
 
