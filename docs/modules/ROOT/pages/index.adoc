@@ -914,6 +914,41 @@ The signature from the _<<_claim_generator,claim generator>>_ provides an additi
 
 ==== Re-signing by an adversarial claim generator
 
-NOTE: TO DO: Update following discussion based on link:https://github.com/creator-assertions/identity-assertion/issues/95[#95: Security fixes to identity map] and subsequent related discussion in link:https://github.com/creator-assertions/identity-assertion/issues/97[#97: Create a CAWG identity threat model].
+An attacker could take a valid _<<_c2pa_asset,C2PA asset>>_ and create a new _<<C2PA Manifest>>_ with a new signature from a new _<<_claim_generator,claim generator>>_ that alters the context that was anticipated by the original _<<_credential_holder,credential holder>>_ when signing the *<<_identity_assertion,identity assertion>>.*
+
+[#new-context-adversarial-claim-generator]
+.New context introduced by adversarial claim generator
+[example]
+====
+This diagram builds upon xref:trust-signal-scope-one-ia[xrefstyle=full], to show how an adversarial _<<_claim_generator,claim generator>>_ could alter the context for the *<<_identity_assertion,identity assertion>>.*
+
+.Re-contextualization attack
+image::adversarial-claim-generator/adversarial-trust-bubbles.drawio.svg[Adversarial claim generator example,width=520,height=400,align="center"]
+
+In this example, the attacker has used a new _<<_claim_generator,claim generator’s>>_ signature to re-contextualize the original _<<_c2pa_asset,C2PA asset>>_ without the original _<<_credential_holder,credential holder’s>>_ knowledge.
+
+[IMPORTANT]
+.Scope of attack surface
+======
+In this scenario, the attacker _could:_
+
+* Remove any _<<_c2pa_assertion,C2PA assertions>>_ not referenced in the *<<_identity_assertion,identity assertion>>* (A3 in this example).
+* Introduce new _<<_c2pa_assertion,C2PA assertions>>_ (A4 and A5 in this example).
+* Substitute a new _<<_claim_generator,claim generator>>_ that is unknown to the _<<_credential_holder,credential holder>>._
+
+The attacker could not:
+
+* Modify the asset content (because the _<<_hard_binding,hard binding>>_ assertion would not match the new asset).
+* Modify any of the _<<_c2pa_assertion,C2PA assertions>>_ referenced in the *<<_identity_assertion,identity assertion>>* (A1 or A2 in this example).
+======
+====
+
+A _<<_credential_holder,credential holder>>_ can prevent these attacks by using one or more of the following optional mechanisms in `signer_payload` which are intended to limit the content of the enclosing _<<C2PA Manifest>>:_
+
+* `expected_claim`, which describes the content of the expected _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
+* `expected_claim_generator`, which describes the X.509 certificate of the expected _<<C2PA claim generator>>._
+* `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
+
+See xref:_overview[xrefstyle=full], for complete description of these mechanisms.
 
 include::partial$version-history.adoc[]
