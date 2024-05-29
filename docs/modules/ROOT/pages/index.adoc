@@ -881,7 +881,7 @@ NOTE: TO DO (add new GH issue): Refine discussion of above items and add specifi
 
 ==== Homoglyph and typo-squatting attacks
 
-An attacker could use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
+An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
 
 NOTE: TO DO (add new GH issue): Discuss and add guidance.
 
