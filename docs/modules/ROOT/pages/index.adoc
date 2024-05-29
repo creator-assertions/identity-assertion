@@ -844,13 +844,9 @@ This section enumerates a number of potential attacks on the *<<_identity_assert
 
 ==== Replay attacks
 
-* Could an attacker extract the *<<_identity_assertion,identity assertion>>* out of one _<<_c2pa_asset,C2PA asset>>_ and embed it into another _<<_c2pa_asset,C2PA asset>>?_
-* Is there anything that makes the *<<_identity_assertion,identity assertion>>* unique to that _<<_c2pa_asset,C2PA asset>>?_
-* Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do any checks to make sure that a replay attack is not occurring?
+An attacker could attempt to extract a valid *<<_identity_assertion,identity assertion>>* out of one _<<_c2pa_asset,C2PA asset>>_ and embed it in a new _<<_c2pa_asset,C2PA asset>>_ of an attacker's choosing without causing a validation error. This scenario could allow an attacker to falsely attribute the new _<<_c2pa_asset,C2PA asset>>_ to a victim’s identity without their consent or knowledge. If the attacker’s _<<_c2pa_asset,C2PA asset>>_ is controversial or illegal, then falsely attributing it to a victim’s identity could result in severe consequences for the victim. The system must ensure that an attacker can not apply an existing *<<_identity_assertion,identity assertion>>* to a different _<<_c2pa_asset,C2PA asset>>._
 
-An attacker could, in theory, extract an *<<_identity_assertion,identity assertion>>* and place it into a new _<<C2PA Manifest>>_ as part of an unrelated _<<_c2pa_asset,C2PA asset>>._
-
-To prevent this attack, a valid *<<_identity_assertion,identity assertion>>* must contain a `signer_payload.referenced_assertions` include a _<<_hard_binding,hard binding>>_ assertion that properly describes the _<<_c2pa_asset,C2PA asset>>._ A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should detect that the _<<_hard_binding,hard binding>>_ assertion referenced by the original *<<_identity_assertion,identity assertion>>* does not match the attacker’s _<<_c2pa_asset,C2PA asset>>_ and fail validation.
+To prevent this attack, we require that a valid *<<_identity_assertion,identity assertion>>* contain a `signer_payload.referenced_assertions` which includes a _<<_hard_binding,hard binding>>_ assertion that properly describes the _<<_c2pa_asset,C2PA asset>>._ A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should detect that the _<<_hard_binding,hard binding>>_ assertion referenced by the original *<<_identity_assertion,identity assertion>>* does not match the attacker’s _<<_c2pa_asset,C2PA asset>>_ and fail validation.
 
 ==== Name collisions
 
