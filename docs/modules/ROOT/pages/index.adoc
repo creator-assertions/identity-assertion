@@ -850,13 +850,22 @@ To prevent this attack, we require that a valid *<<_identity_assertion,identity 
 
 ==== Name collisions
 
-* How do we differentiate between two John Does registered to the same identity provider?
-* How do we differentiate between two John Does registered to _different_ identity providers?
-* How do we differentiate between anonymous reporters who need to remain anonymous at a technical level?
-* How do we differentiate between anonymous reporters in the UI? If we allow them to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an "anonymous" user who asks to be identified as “Barack Obama” to the end-user.
-* Is the end user required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Do end users need to keep a “phone book” of serial numbers that they trust?
+For an identity to have value, it must be unique. An attacker may try to cause confusion for the _<<_identity_assertion_consumer,identity assertion consumer>>_ by trying to impersonate a known, trusted identity. One method for attempting to impersonate a trusted identity is to attempt to create an identity with the same name through a second identity provider. If the _<<_identity_assertion_consumer,identity assertion consumer>>_ doesn’t know which identity provider the trusted identity uses, then the attacker may be able to convince the content consumer that their content is from the trusted identity. In addition to intentional collisions, there could also be unintentional collisions due to the fact that thousands of people can have the same name. Therefore, there needs to be methods for distinguishing people of the same name both within a single identity provider and across identity providers.
 
-Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_actor,actors>>_ and to meaningfully expose that differentiation in user experience.
+[#name-collision-examples]
+.Questions to consider with regard to name collisions
+[example]
+====
+These are a few examples of the kinds of questions that an _<<_identity_assertion_consumer,identity assertion consumer>>_ should ask when reviewing the credential presented as part of an *<<_identity_assertion,identity assertion>>.*
+
+* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between two John Does registered to the same identity provider?
+* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between two John Does registered to _different_ identity providers?
+* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters who need to remain anonymous at a technical level?
+* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters in the UI? If a _<<_credential_holder,credential holder>>_ is allowed to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an “anonymous” user who asks to be identified as “Barack Obama” to the end-user.
+* Is the end user (human associated with an _<<_identity_assertion_consumer,identity assertion consumer>>_) required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Should end users keep a “phone book” of serial numbers that they trust?
+====
+
+Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
 
 NOTE: TO DO (add new GH issue): Think through identity presentation so as to provide meaningful differentiation between similarly-named _<<_actor,actors>>._
 
