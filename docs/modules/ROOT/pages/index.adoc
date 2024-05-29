@@ -888,7 +888,7 @@ NOTE: TO DO (add new GH issue): Discuss and add guidance.
 ==== Validation of credential status
 
 * Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do real-time checks to ensure that the _<<_named_actor,named actor’s>>_ credential is still considered valid? What harms or risks may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status?
-* If a bad actor makes it into the system, then how does that ID get blocked? Is there an OCSP,CRL, bad actor database, etc.? If so, what is the governance for such a list and who maintains it?
+* If a bad actor makes it into the system, then how does that ID get blocked? Is there an OCSP, CRL, bad actor database, etc.? If so, what is the governance for such a list and who maintains it?
 * What if the bad actor is in an ingredient and not the primary piece of content?
 * What is displayed to the end-user in both the primary content and ingredient scenarios?
 
