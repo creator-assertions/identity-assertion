@@ -904,9 +904,13 @@ Some *<<_identity_assertion,identity assertion>>* generation and signing systems
 
 *<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
 
-==== Tampering with identity assertion
+==== Tampering with identity assertion content
 
-NOTE: TO DO: Write new section describing potential attacks on the content of the identity assertion itself. Signature within IA should protect against `signer_payload` modifications and C2PA hash-link references should protect against substitution of a new identity assertion.
+An attacker could attempt to alter the content of an *<<_identity_assertion,identity assertion>>* to substitute different credentials or alter the attestations included in `signer_payload` in order to create a misleading of the _<<_named_actor,named actor>>_ or the _<<_c2pa_asset,C2PA asset>>._
+
+A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should validate the `signature` field of the *<<_identity_assertion,identity assertion>>.* If the content of `signer_payload` has been altered, the signature should not match and the _<<_identity_assertion_consumer,identity assertion consumer>>_ should fail validation in that case.
+
+The signature from the _<<_claim_generator,claim generator>>_ provides an additional level of tamper evidence. In the event an attacker substitutes a new *<<_identity_assertion,identity assertion>>* which contains a new signature that is valid, the hash reference from the _<<_c2pa_claim,C2PA claim>>_ should still mismatch. A compliant _<<_c2pa_manifest_consumer,C2PA Manifest Consumer>>_ should fail validation in that case. When validation of a _<<_c2pa_manifest,C2PA Manifest>>_ has failed, a compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should not attempt to interpret the content of any *<<_identity_assertion,identity assertion>>* in that _<<_c2pa_manifest,C2PA Manifest>>._
 
 ==== Re-signing by an adversarial claim generator
 
