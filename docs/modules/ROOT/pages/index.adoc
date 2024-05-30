@@ -340,7 +340,7 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._ Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
 * `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
 * `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
-* `expected_countersigners` _(optional),_ if present, describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_value[xrefstyle=full].
+* `expected_countersigners` _(optional),_ if present, describes the content of other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_value[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
@@ -404,12 +404,17 @@ signer-payload-map = {
   ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
   ? "expected_claim": $hash-map, ; hash of expected partial claim
   ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
-  ? "expected_countersigners": [1* $hash-map], ; array of expected countersigner credentials
+  ? "expected_countersigners": [1* $expected-countersigner-map], ; array of expected identity assertion values
 }
 
 hash-map = {
   "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
   "hash": bstr, ;  byte string containing the hash value
+}
+
+expected-countersigner-map = {
+  "expected_signer_payload": signer_payload value from other identity assertion
+  ? "expected_credentials": $hash-map ; expected identity assertion credentials
 }
 ----
 
@@ -499,13 +504,15 @@ The `expected_claim_generator` value SHOULD contain a CBOR map with the followin
 If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` value in `signer_payload`, it MUST be computed as follows:
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that will be present in the _<<C2PA Manifest>>:_
-.. Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
-.. Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-.. Compute a hash of the serialized end-entity certificate using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
-.. An entry in `expected_countersigners` SHOULD be added containing the hash from the previous step and the corresponding `alg` value for the selected hash algorithm.
-. Once the signing credentials have been gathered, the `expected_countersigners` value SHOULD contain a CBOR array of CBOR maps with the following fields:
-.. `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
-.. `hash` value containing the computed hash of the serialized signing credential.
+.. Calculate the `signer_payload` value for that *<<_identity_assertion,identity assertion>>.*
+.. _(optional)_ Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
+... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+... Compute a hash of the serialized end-entity certificate using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
+. Once the above materials have been gathered, the `expected_countersigners` value SHOULD contain a CBOR array of CBOR maps, each containing the following fields for each *<<_identity_assertion,identity assertion>>*:
+.. `expected_signer_payload` _(required)_ containing the expected `signer_payload`.
+.. `expected_credentials` _(optional)_ containing a description of the expected signing credentials:
+... `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
+... `hash` value containing the computed hash of the serialized signing credential.
 
 ==== Serialization for credential types
 
