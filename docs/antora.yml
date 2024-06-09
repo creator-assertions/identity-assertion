@@ -1,4 +1,4 @@
 name: identity
-version: 1.0+trust-model
+version: 1.0-draft
 title: Identity Assertion
 start_page: index.adoc
