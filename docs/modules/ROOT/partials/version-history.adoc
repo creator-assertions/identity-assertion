@@ -163,3 +163,7 @@ _This section is non-normative._
 * Add optional protections against unexpected claim and unexpected claim generators.
 * Revise xref:_conceptual_overview[xrefstyle=full], to include new trust signal diagrams.
 * Introduce an optional `signer_payload.role` field, describing _<<_named-actor,named actor’s>>_ relationship to the _<<C2PA asset>>._
+
+*09 June 2024*
+
+* Define xref:_trust_model[xrefstyle=full].
