@@ -509,7 +509,7 @@ If the *<<_identity_assertion,identity assertion>> generator* chooses to include
 .. Calculate the `signer_payload` value for that *<<_identity_assertion,identity assertion>>.*
 .. _(optional)_ Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
 ... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-... Compute a hash of the serialized end-entity certificate using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
+... Compute a hash of the serialized signing credential using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 . Once the above materials have been gathered, the `expected_countersigners` value SHOULD contain a CBOR array of CBOR maps, each containing the following fields for each *<<_identity_assertion,identity assertion>>*:
 .. `expected_signer_payload` _(required)_ containing the expected `signer_payload`.
 .. `expected_credentials` _(optional)_ containing a description of the expected signing credentials:
