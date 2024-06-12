@@ -415,7 +415,7 @@ hash-map = {
 }
 
 expected-countersigner-map = {
-  "expected_signer_payload": signer_payload value from other identity assertion
+  "expected_signer_payload": $signer-payload-map ; signer_payload value from other identity assertion
   ? "expected_credentials": $hash-map ; expected identity assertion credentials
 }
 ----
