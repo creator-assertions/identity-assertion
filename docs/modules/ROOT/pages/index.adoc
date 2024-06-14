@@ -10,7 +10,7 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_
 
 Version 1.x (adding W3C VC credentials) *Draft 13 June 2024* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credential[xrefstyle=full].
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credential_2[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
@@ -704,24 +704,24 @@ Such updates to the specification SHOULD continue to use the `cawg.identity` ass
 
 === W3C verifiable credential
 
-In some use cases, an _<<actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
+In some use cases, an _<<_actor,actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
 
-* The identity of an _<<actor>>_ who wishes to document their relationship to the asset
+* The identity of a _<<_named_actor,named actor>>_ who wishes to document their relationship to the asset
 * Social media or other accounts that are related to the asset
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.w3c.vc`.
 
-The issuer is responsible for gathering information about the _<<actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
+The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
-In some scenarios, the issuer MAY be the _<<actor>>,_ but that is not required.
+In some scenarios, the issuer MAY be the _<<_named_actor,named actor>>,_ but that is not required.
 
 ==== Verifiable credential example
 
 _This section is non-normative._
 
-In the data flow diagram below, a software application ("Authoring tool") is acting on behalf of Alice, an _<<actor>>_ who wishes to document her role in producing a _<<C2PA asset>>_ using credentials held in a digital wallet that she controls.
+In the data flow diagram below, a software application (“Authoring tool”) is acting on behalf of Alice, an _<<_actor,actor>>_ who wishes to document her role in producing a _<<C2PA asset>>_ using credentials held in a digital wallet that she controls.
 
-The authoring tool produces a preliminary _<<_c2pa_manifest,C2PA Manifest>>_ describing the _<<C2PA asset>>._ Once enough information is finalized to produce the `signer_payload`, that information is summarized and presented to Alice's wallet to request a Verifiable Presentation.
+The authoring tool produces a preliminary _<<_c2pa_manifest,C2PA Manifest>>_ describing the _<<C2PA asset>>._ Once enough information is finalized to produce the `signer_payload`, that information is summarized and presented to Alice’s wallet to request a Verifiable Presentation.
 
 Once she gives consent, the wallet generates a Verifiable Presentation that contains information that she wishes to disclose about herself (for example, her name and professional affiliations) and the `signer_payload` content. This Verifiable Presentation is signed on her behalf by her wallet and returned to the authoring tool.
 
