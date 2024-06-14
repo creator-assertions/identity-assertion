@@ -725,11 +725,24 @@ In each of the above sections, the following changes MUST be applied:
 
 IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
 
-=== Digital trust introduction
+=== Human trust versus technical trust
 
 _This section is non-normative._
 
-Digital trust is typically described using a _trust triangle_ as shown in the following diagram:
+This document draws a distinction between _human trust_ and _technical trust._ We define these terms as follows:
+
+* *Technical trust:* Can I prove that the content I’m consuming came from a particular _<<_named_actor,named actor>>_ and that it hasn’t been tampered with?
+* *Human trust:* Can I trust the _<<_named_actor,named actor>>_ to produce valuable content in good faith? Do they have a reputation and legitimacy that I can rely on?
+
+NOTE: We thank CIRA and Continuum Loop for their report link:https://www.cira.ca/uploads/2023/12/12222023_A-trust-layer-for-the-internet-is-emerging_-report-–-Continuum_CIRA.pdf[_A Trust Layer for the Internet is Emerging: Toward a More Interoperable and Trusted Internet for Canadians_], from which these definitions are adapted.
+
+The *<<_identity_assertion,identity assertion>>* should be thought of primarily as providing a framework for establishing _technical trust._ _Human trust_ requires _technical trust_ to be established, but also involves human judgement and is thus outside the scope of this specification.
+
+=== Technical trust introduction
+
+_This section is non-normative._
+
+Technical trust in a digital context is typically described using a _trust triangle_ as shown in the following diagram:
 
 .Basic trust triangle
 image::trust-model/basic-trust-triangle.drawio.svg[Basic trust triangle,width=400,height=130,align="center"]
