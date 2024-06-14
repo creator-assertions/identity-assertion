@@ -10,7 +10,7 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_
 
 Version 1.x (adding W3C VC credentials) *Draft 13 June 2024* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credential[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
