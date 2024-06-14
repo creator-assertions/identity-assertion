@@ -329,7 +329,7 @@ NOTE: This role can also be thought of as a *relying party* or *verifier* as def
 
 ==== Identity verifier
 
-An organization or system that is responsible for confirming the authenticity and validity of an individual’s or entity’s identity. 
+An organization or system that is responsible for confirming the authenticity and validity of the identity of an individual or organization.
 
 ==== Named actor
 
