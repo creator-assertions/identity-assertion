@@ -327,6 +327,10 @@ A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of a
 
 NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
 
+==== Identity verifier
+
+An organization or system that is responsible for confirming the authenticity and validity of an individual’s or entity’s identity. 
+
 ==== Named actor
 
 The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.* This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
@@ -340,10 +344,6 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 ==== Referenced assertions
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
-
-==== Identity verifier
-
-An organization or system that is responsible with confirming the authenticity and validity of an individual's or entity's identity. 
 
 include::partial$terms.adoc[]
 
