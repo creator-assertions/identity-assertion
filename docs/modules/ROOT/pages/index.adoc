@@ -800,14 +800,14 @@ Type:: The `type` property MUST be present and MUST contain at least the followi
 Issuer:: The `issuer` property MUST be present and MAY have one of two representations:
 * String format
 +
-When specified as a string, the `issuer` MUST specify a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[§4.7, “Issuer,”] of the Verifiable credentials data model.
+When specified as a string, the `issuer` MUST specify a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
 +
 .Example:
 [source,json]
 "issuer": "did:example:2g55q912ec3476eba2l9812ecbfe"
 * Object format
 +
-When specified as an object, the `issuer` MUST include an `id` property. The `id` property MUST be a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[§4.7, “Issuer,”] of the Verifiable credentials data model.
+When specified as an object, the `issuer` MUST include an `id` property. The `id` property MUST be a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
 +
 Additional properties MAY be included within the object to provide further details about the issuer, including a non-empty `name` property.
 +
@@ -822,7 +822,7 @@ Additional properties MAY be included within the object to provide further detai
 ---- 
 [#vc-property-validFrom]
 Validity::
-The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[§4.8, “Validity period,”] of the Verifiable credentials data model.
+The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
 ===== Creator identity properties
 
@@ -974,67 +974,65 @@ The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the 
 
 ==== Identity assertion verifiable credential example
 
-NOTE: TO DO: Eric’s detailed review SHOULD continue from here ...
-
-An example of the identity assertion verifiable credential is given below:
+An example of the *<<_identity_assertion,identity assertion>>* verifiable credential is given below:
 
 .Example identity assertion verifiable credential
 [#example-ia-vc]
 [source,json]
 ----
 {
-    "@context": [
-      "https://www.w3.org/ns/credentials/v2",
-      "https://creator-assertions.github.io/tbd/tbd"
-    ],
-    "type": [
-      "VerifiableCredential",
-      "CreatorIdentityAssertionCredential"
-    ],
-    "issuer": "did:web:connected-identities.identity.adobe.com",
-    "validFrom": "2024-05-27T11:40:40Z",
-    "credentialSubject": {
-       "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",
-       "person": {
-        "name": "First Name Last Name",
-        "verifiedBy": [                    
-          {
-            "id": "https://verifier-3732.com",
-            "name": "Verifier 3732",
-            "proof": "https://verifier-3732.com/proofs/3732"
-          }        
-        ]
-      },
-      "identities": [
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://creator-assertions.github.io/tbd/tbd"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "CreatorIdentityAssertionCredential"
+  ],
+  "issuer": "did:web:connected-identities.identity.adobe.com",
+  "validFrom": "2024-05-27T11:40:40Z",
+  "credentialSubject": {
+    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",
+    "person": {
+      "name": "First Name Last Name",
+      "verifiedBy": [                    
         {
-          "type": "socialProvider",
-          "provider": "twitter",
-          "createdAt": "2024-05-27T08:40:39.569856Z",
-          "username": "username",
-          "url": "https://twitter.com/username"
-        }      
-      ],
-      "boundTo": {
-        "referencedAssertions": [
-          {
-            "url": "url",
-            "hash": "hash"
-          }
-        ]
-      }
+          "id": "https://verifier-3732.com",
+          "name": "Verifier 3732",
+          "proof": "https://verifier-3732.com/proofs/3732"
+        }        
+      ]
     },
-    "credentialSchema": [
+    "identities": [
       {
-        "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
-        "type": "JSONSchema"
-      }
-    ]  
+        "type": "socialProvider",
+        "provider": "twitter",
+        "createdAt": "2024-05-27T08:40:39.569856Z",
+        "username": "username",
+        "url": "https://twitter.com/username"
+      }      
+    ],
+    "boundTo": {
+      "referencedAssertions": [
+        {
+          "url": "url",
+          "hash": "hash"
+        }
+      ]
+    }
+  },
+  "credentialSchema": [
+    {
+      "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
+      "type": "JSONSchema"
+    }
+  ]  
 }
 ----
 
 ==== Data verification schema
 
-The Identity assertion verifiable credential must adhere to a set of strict requirements as depicted in <<#_creator_identity_assertion, Creator identity assertion>>. All of there requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[Verifiable Credentials JSON Schema] i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all Identity assertion verifiable credential requirements.
+The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
 
 [source,json]
 ----
@@ -1048,19 +1046,21 @@ The Identity assertion verifiable credential must adhere to a set of strict requ
 
 NOTE: The usage of this data verification schema is not enforced by this specification, but it is RECOMMENDED to be used when possible.
 
-*Recommendations for issuers*
+==== Recommendations for issuers
 
-The inclusion of the `credentialSchema` property in a verifiable credential is optional. However, it is highly recommended to include this field to specify the structure and constraints of the credential's data.
+The inclusion of the `credentialSchema` property in a verifiable credential is optional. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
 
-The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is highly recommended to include it as it enforces this specification's constraints.
+The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is highly recommended to include it as it enforces this specification’s constraints.
 
-*Recommendations for verifiers*
+==== Recommendations for verifiers
 
 The usage of the data verification schemas from a verifiable credential's `credentialSchema` is OPTIONAL. However, it is recommended that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
 
 NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ==== Proofs
+
+TO DO
 
 ==== Validating an identity assertion with verifiable credentials
 
