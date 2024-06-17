@@ -885,7 +885,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 
 An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/117[issue #117]): Discuss and add guidance.
+A direct resolution of this threat may not be attainable. (Note that this is an as-yet unaddressed issue in the DNS ecosystem.) For that reason, identity assertion producers are encouraged to link multiple verifiable trust signals (social accounts, web sites, etc.) together to produce a stronger overall identity signal.
 
 ==== Validation of credential status
 
