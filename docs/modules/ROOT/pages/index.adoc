@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 13 June 2024* · xref:_version_history[]
+*Version 1.0 Draft 17 June 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -886,13 +886,13 @@ These are a few examples of the kinds of questions that an _<<_identity_assertio
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters who need to remain anonymous at a technical level?
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters in the UI? If a _<<_credential_holder,credential holder>>_ is allowed to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an “anonymous” user who asks to be identified as “Barack Obama” to the end-user.
 * Is the end user (human associated with an _<<_identity_assertion_consumer,identity assertion consumer>>_) required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Should end users keep a “phone book” of serial numbers that they trust?
+
+NOTE: The above questions target name collisions for individuals, but the same questions could be asked about organizational identity. For instance, different legal entities with the name “Smith Consulting” could legitimately be registered in different jurisdictions.
 ====
 
 Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
 
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/115[issue #115]): Think through identity presentation so as to provide meaningful differentiation between similarly-named _<<_actor,actors>>._
-
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/122[issue #12]): Revise above language to point out that name collisions can occur to organizations as well as individuals.
 
 ==== Parsing and validation errors
 

@@ -171,3 +171,7 @@ _This section is non-normative._
 *13 June 2024*
 
 * (Clerical): Fix several broken cross-references.
+
+*17 June 2024*
+
+* Add wording to clarify that name collisions are not necessarily limited to individuals.
