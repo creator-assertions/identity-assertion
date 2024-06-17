@@ -506,7 +506,7 @@ The `expected_claim_generator` field SHOULD contain a CBOR map with the followin
 If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that will be present in the _<<C2PA Manifest>>:_
-.. Calculate the `signer_payload` map for that *<<_identity_assertion,identity assertion>>.* Remove any `expected_countersigners` field from that `signer_payload` map and place that in the `partial_signer_payload` field of _this_ *<<_identity_assertion,identity assertion’s>>* `expected_countersigners` map.
+.. Calculate the `signer_payload` map for that *<<_identity_assertion,identity assertion>>.* Exclude any `expected_countersigners` field from that `signer_payload` map and place the resulting `signer_payload` structure in the `partial_signer_payload` field of _this_ *<<_identity_assertion,identity assertion’s>>* `expected_countersigners` map.
 .. _(optional)_ Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
 ... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 ... Compute a hash of the serialized signing credential using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
@@ -645,7 +645,7 @@ If the *<<_identity_assertion,identity assertion>>* contains an `expected_counte
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that is present in the <<C2PA Manifest>>:
 .. Find the `signer_payload` map in that *<<_identity_assertion,identity assertion>>*. Remove any `expected_countersigners` field that is found in that `signer_payload` map. This will be referred to in the rest of this process as the _partial signer payload._
-.. Search the `expected_countersigners` list for an entry where `partial_signer_payload` matches the just-computed _partial signer payload._ If no such entry can be found, stop validating and return the `cawg.identity.unexpected_countersigner` error code.
+.. Search the `expected_countersigners` list _in the current *<<_identity_assertion,identity assertion>>* being validated_ for an entry where `partial_signer_payload` matches the just-computed _partial signer payload._ If no such entry can be found, stop validating and return the `cawg.identity.unexpected_countersigner` error code.
 .. If the entry in `expected_countersigners` also contains an `expected_credentials` entry:
 ... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 ... Compute a hash of the serialized signing credential using the algorithm specified by the `alg` entry in the `expected_credentials` map.
