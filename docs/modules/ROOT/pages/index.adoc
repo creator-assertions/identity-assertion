@@ -834,41 +834,42 @@ The `id` MUST be present and MUST represent an URI. It is RECOMMENDED that the U
 
 [#vc-credentialsubject-person]
 Person::
-The `person` property MUST be an object that MAY be present. If present, `person` MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified. The method of verification is beyond the scope of this specification. The `person` property MUST contain at least two child properties: `name` and `verifiedBy`.
+The `person` property MUST be an array that MAY be present. If present, every item of `person` MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified by a certain _<<Identity verifier,identity verifiers>>_. The method of verification is beyond the scope of this specification. Each item of `person` property MUST contain at least two child properties: `name` and `verifiedBy`.
 +
 .Example:
 [source,json]
 ----
 "credentialSubject": {
   ...
-  "person": {
-    "name": "First-Name Last-Name",
-    "verifiedBy": [
+  "person": [
+    {
+      "name": "First-Name Last-Name",
+      "verifiedBy": 
       {
         "id": "https://example-id-verifier.com",
         "name": "Example Id Verifier",
         "proof": "https://example-id-verifier.com/proofs/1"
-      }
-    ]
-  }
+      }      
+    }
+  ]
   ...
 }
 ---- 
 [#vc-credentialsubject-person-name]
 Person name::
-The `person.name` property MUST be present and MUST not be empty. The `person.name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by one or multiple _<<Identity verifier,identity verifiers>>_.
+The `person[?].name` property MUST be present and MUST not be empty. The `person[?].name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by the _<<Identity verifier,identity verifiers>>_.
 
 [#vc-credentialsubject-person-verifiedBy]
 Person verification details::
-The `person.verifiedBy` property MUST be a non empty array and MUST be present. Each item of the array MUST contain details about the _<<_identity_verifier,identity verifier>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the person verification details: `id`, `name`, and `proof`.
+The `person[?].verifiedBy` property MUST be an object and MUST be present. The `person[?].verifiedBy` property MUST contain details about the _<<_identity_verifier,identity verifier>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the person verification details: `id`, `name`, and `proof`.
 
 [#vc-credentialsubject-person-verifiedBy-id]
 Identity verifier ID:::
-The `person.verifiedBy[?].id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_.
+The `person[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_
 
 [#vc-credentialsubject-person-verifiedBy-name]
 Identity verifier name:::
-The `person.verifiedBy[?].name` MUST be present and MUST not be empty. The `person.verifiedBy[?].name` property is the name of the _<<_identity_verifier,identity verifier>>_.
+The `person[?].verifiedBy.name` MUST be present and MUST not be empty. The `person[?].verifiedBy.name` property is the name of the _<<_identity_verifier,identity verifier>>_.
 
 [#vc-credentialsubject-person-verifiedBy-proof]
 Identity verification proof:::
@@ -887,8 +888,11 @@ The `identities` property is an optional field. If present, it MUST be an array 
     {
       "type": "socialProvider",
       "username": "username",
-      "url": "https://twitter.com/username",
-      "provider": "twitter",
+      "uri": "https://twitter.com/username",
+      "provider": {
+        "id": "https://twitter.com",
+        "name": "Twitter"
+      },
       "createdAt": "2024-05-27T08:40:39.569856Z"      
     }
   ]
@@ -901,7 +905,7 @@ This specification mentions two identity types that MAY be used, but this specif
 
 [#vc-credentialsubject-identities-socialProvider]
 Identity by social provider::
-This identity representation presents the details of a social account of the _<<_named_actor,named actor>>_. The method of social account verification is outside the scope of this specifiation. An identity by social provider MUST contain at least the following five child properties: `type`, `username`, `url`, `provider`, and `createdAt`.
+This identity representation presents the details of a social account of the _<<_named_actor,named actor>>_. The method of social account verification is outside the scope of this specifiation. An identity by social provider MUST contain at least the following four child properties: `type`, `uri`, `provider`, and `createdAt`. Additionally, an identity by social provider MAY contain an `username` property.
 
 [#vc-credentialsubject-identities-type]
 Identity by social provider type:::
@@ -909,33 +913,47 @@ In this case the `identities[?].type` property MUST be present and MUST be `soci
 
 [#vc-credentialsubject-identities-username]
 Identity user name:::
-The `identities[?].username` MUST be present and MUST NOT be empty. It represents the social account's user name.
+The `identities[?].username` MAY be present and, if present, MUST NOT be empty. It represents the social account's user name.
 
-[#vc-credentialsubject-identities-url]
-Identity URL:::
-The `identities[?].url` MUST be present and MUST be a valid URI. It represents an URL that can prove the existence of an account for the user name.
+[#vc-credentialsubject-identities-uri]
+Identity URI:::
+The `identities[?].uri` MUST be present and MUST be a valid URI. It represents an URI that can prove the existence of an account for the user name.
 
 [#vc-credentialsubject-identities-provider]
 Identity provider:::
-The `identities[?].provider` MUST be present. It represents a string that identifies the social provider type. 
+The `identities[?].provider` MUST be a non empty object. The `identities[?].provider` object contains information about the social provider that is associated with this identity.  A social provider MUST contain at least the following two child properties: `id` and `name`.
+
+[#vc-credentialsubject-identities-provider-id]
+Identity provider ID:::
+The `identities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof existence of the social provider.
+
+[#vc-credentialsubject-identities-provider-name]
+Identity provider name:::
+The `identities[?].provider.name` MUST be present and MUST be a non emtpy string that represents the name of the social provider.
 
 Identity creation date:::
 The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this social account was associated with the _<<_named_actor,named actor>>_. 
 
 Identity by crypto wallet:::
-This identity representation presents the details of a crypto wallet account of the _<<_named_actor,named actor>>_. The methods for verifying crypto wallet accounts and their association with the _<<_named_actor,named actor>>_ are outside the scope of this specifiation. An identity by crypto wallet needs to contain at least the following child properties: `type`, `username`, `address`, `provider`, and `createdAt`.
+This identity representation presents the details of a crypto wallet account of the _<<_named_actor,named actor>>_. The methods for verifying crypto wallet accounts and their association with the _<<_named_actor,named actor>>_ are outside the scope of this specifiation. An identity by crypto wallet needs to contain at least the following four child properties: `type`, `address`, `provider`, and `createdAt`.
 
 Identity by crypto wallet type:::
 In this case the `identities[?].type` property MUST be present and MUST be `cryptoWallet`.
 
-Identity user name:::
-The `identities[?].username` MUST be present and MUST NOT be empty. It represents the crypto wallet account’s user name.
+Identity by crypto wallet address:::
+The `identities[?].address` MUST be present and MUST be a valid crypto wallet address. It represents a unique alphanumeric string that can be used to identity the user's crypto wallet.
 
-Identity address:::
-The `identities[?].address` MUST be present and MUST be a valid crypto wallet address. It represents an URL that can prove the existence of an account for the user name.
-
+[#vc-credentialsubject-identities-cw-provider]
 Identity provider:::
-The `identities[?].provider` MUST be present. It represents a unique alphanumeric string that can be used to identity the user. _(Is it the user or the crypto wallet provider?)_
+The `identities[?].provider` MUST be a non empty object. The `identities[?].provider` object contains information about the crypto wallet provider that is associated with this identity.  A crypto wallet MUST contain at least the following two child properties: `id` and `name`.
+
+[#vc-credentialsubject-identities-cw-provider-id]
+Identity provider ID:::
+The `identities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof existence of the cryto wallet provider.
+
+[#vc-credentialsubject-identities-cw-provider-name]
+Identity provider name:::
+The `identities[?].provider.name` MUST be present and MUST be a non emtpy string that represents the name of the crypto wallet provider.
 
 Identity creation date:::
 The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this crypto wallet account was associated with the _<<_named_actor,named actor>>_. 
@@ -992,34 +1010,45 @@ An example of the *<<_identity_assertion,identity assertion>>* verifiable creden
   "issuer": "did:web:connected-identities.identity.adobe.com",
   "validFrom": "2024-05-27T11:40:40Z",
   "credentialSubject": {
-    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",
-    "person": {
-      "name": "First Name Last Name",
-      "verifiedBy": [                    
-        {
+    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",    
+    "person": [
+      {
+        "name": "John Doe",
+        "verifiedBy": {
           "id": "https://verifier-3732.com",
           "name": "Verifier 3732",
           "proof": "https://verifier-3732.com/proofs/3732"
-        }        
-      ]
-    },
+        }
+      }
+    ],    
     "identities": [
       {
         "type": "socialProvider",
-        "provider": "twitter",
+        "provider": {
+          "id": "https://twitter.com",
+          "name": "Twitter"
+        },
         "createdAt": "2024-05-27T08:40:39.569856Z",
         "username": "username",
-        "url": "https://twitter.com/username"
+        "uri": "https://twitter.com/username"
       }      
     ],
     "boundTo": {
       "referencedAssertions": [
         {
-          "url": "url",
-          "hash": "hash"
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+          "hash": "b64'U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8='"
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+          "hash": "b64'G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c='"
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+          "hash": "b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='"
         }
       ]
-    }
+    },
   },
   "credentialSchema": [
     {
