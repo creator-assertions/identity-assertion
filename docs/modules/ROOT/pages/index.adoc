@@ -879,7 +879,7 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 * *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
 * *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/116[issue #116]): Refine discussion of above items and add specific guidance.
+The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementors that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
 ==== Homoglyph and typo-squatting attacks
 
