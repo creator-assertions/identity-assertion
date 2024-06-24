@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials with credential schema) *Draft 13 June 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials with credential schema) *Draft 24 June 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credential_2[xrefstyle=full].
 
@@ -1272,13 +1272,13 @@ These are a few examples of the kinds of questions that an _<<_identity_assertio
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters who need to remain anonymous at a technical level?
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters in the UI? If a _<<_credential_holder,credential holder>>_ is allowed to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an “anonymous” user who asks to be identified as “Barack Obama” to the end-user.
 * Is the end user (human associated with an _<<_identity_assertion_consumer,identity assertion consumer>>_) required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Should end users keep a “phone book” of serial numbers that they trust?
+
+NOTE: The above questions target name collisions for individuals, but the same questions could be asked about organizational identity. For instance, different legal entities with the name “Smith Consulting” could legitimately be registered in different jurisdictions.
 ====
 
 Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
 
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/115[issue #115]): Think through identity presentation so as to provide meaningful differentiation between similarly-named _<<_actor,actors>>._
-
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/122[issue #12]): Revise above language to point out that name collisions can occur to organizations as well as individuals.
 
 ==== Parsing and validation errors
 
@@ -1288,7 +1288,7 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 * *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
 * *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/116[issue #116]): Refine discussion of above items and add specific guidance.
+The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementors that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
 ==== Homoglyph and typo-squatting attacks
 
