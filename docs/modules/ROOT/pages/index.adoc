@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 09 June 2024* · xref:_version_history[]
+*Version 1.0 Draft 24 June 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -338,7 +338,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_. It contains the following fields:
 
 * `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
-* `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credential_signatures_and_validation_methods[xrefstyle=full].
+* `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._ Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
 * `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
 * `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
@@ -558,7 +558,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_connecting_the_signature++[Section 10.3.2.3, “Connecting the signature”]
 5. If using C2PA 1.x process, link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”].
 6. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_create_content_bindings++[Section 10.4.1, “Create content bindings”]
-7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_list_of_referenced_assertions_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
@@ -876,13 +876,13 @@ These are a few examples of the kinds of questions that an _<<_identity_assertio
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters who need to remain anonymous at a technical level?
 * How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters in the UI? If a _<<_credential_holder,credential holder>>_ is allowed to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an “anonymous” user who asks to be identified as “Barack Obama” to the end-user.
 * Is the end user (human associated with an _<<_identity_assertion_consumer,identity assertion consumer>>_) required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Should end users keep a “phone book” of serial numbers that they trust?
+
+NOTE: The above questions target name collisions for individuals, but the same questions could be asked about organizational identity. For instance, different legal entities with the name “Smith Consulting” could legitimately be registered in different jurisdictions.
 ====
 
 Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
 
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/115[issue #115]): Think through identity presentation so as to provide meaningful differentiation between similarly-named _<<_actor,actors>>._
-
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/122[issue #12]): Revise above language to point out that name collisions can occur to organizations as well as individuals.
 
 ==== Parsing and validation errors
 
@@ -892,7 +892,7 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 * *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
 * *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/116[issue #116]): Refine discussion of above items and add specific guidance.
+The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementors that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
 ==== Homoglyph and typo-squatting attacks
 
