@@ -175,3 +175,7 @@ _This section is non-normative._
 *17 June 2024*
 
 * Add wording to clarify that name collisions are not necessarily limited to individuals.
+
+*24 June 2024*
+
+* Add wording to clarify that best practices for avoiding parsing and validation attacks are language-specific and thus outside the scope of this specification.
