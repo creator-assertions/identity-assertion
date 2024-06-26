@@ -832,16 +832,16 @@ The `credentialSubject` property MUST contain both the identity of _<<_named_act
 ID::
 The `id` MUST be present and MUST represent an URI. It is RECOMMENDED that the URI be one which, if dereferenced, results in a globally unambiguous status of existence of the _<<_named_actor,named actor>>_. For example, dereferencing a `did:web` might return a `204 No Content` HTTP status code in case the user exists and no further information is available or `404 Not Found` HTTP status code in case the user does not exist.
 
-[#vc-credentialsubject-person]
-Person::
-The `person` property MUST be an array that MAY be present. If present, every item of `person` MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified by a certain _<<Identity verifier,identity verifiers>>_. The method of verification is beyond the scope of this specification. Each item of `person` property MUST contain at least two child properties: `name` and `verifiedBy`.
+[#vc-credentialsubject-namedactor]
+Named Actor::
+The `namedActor` property MUST be an array that MAY be present. If present, every item of `namedActor` MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified by a certain _<<Identity verifier,identity verifiers>>_. The method of verification is beyond the scope of this specification. Each item of `namedActor` property MUST contain at least two child properties: `name` and `verifiedBy`.
 +
 .Example:
 [source,json]
 ----
 "credentialSubject": {
   ...
-  "person": [
+  "namedActor": [
     {
       "name": "First-Name Last-Name",
       "verifiedBy": 
@@ -855,25 +855,25 @@ The `person` property MUST be an array that MAY be present. If present, every it
   ...
 }
 ---- 
-[#vc-credentialsubject-person-name]
-Person name::
-The `person[?].name` property MUST be present and MUST not be empty. The `person[?].name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by the _<<Identity verifier,identity verifiers>>_.
+[#vc-credentialsubject-namedactor-name]
+Named Actor name::
+The `namedActor[?].name` property MUST be present and MUST not be empty. The `namedActor[?].name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by the _<<Identity verifier,identity verifiers>>_.
 
-[#vc-credentialsubject-person-verifiedBy]
-Person verification details::
-The `person[?].verifiedBy` property MUST be an object and MUST be present. The `person[?].verifiedBy` property MUST contain details about the _<<_identity_verifier,identity verifier>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the person verification details: `id`, `name`, and `proof`.
+[#vc-credentialsubject-namedactor-verifiedBy]
+Named Actor verification details::
+The `namedActor[?].verifiedBy` property MUST be an object and MUST be present. The `namedActor[?].verifiedBy` property MUST contain details about the _<<_identity_verifier,identity verifier>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id`, `name`, and `proof`.
 
-[#vc-credentialsubject-person-verifiedBy-id]
+[#vc-credentialsubject-namedactor-verifiedBy-id]
 Identity verifier ID:::
-The `person[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_
+The `namedActor[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_
 
-[#vc-credentialsubject-person-verifiedBy-name]
+[#vc-credentialsubject-namedactor-verifiedBy-name]
 Identity verifier name:::
-The `person[?].verifiedBy.name` MUST be present and MUST not be empty. The `person[?].verifiedBy.name` property is the name of the _<<_identity_verifier,identity verifier>>_.
+The `namedActor[?].verifiedBy.name` MUST be present and MUST not be empty. The `namedActor[?].verifiedBy.name` property is the name of the _<<_identity_verifier,identity verifier>>_.
 
-[#vc-credentialsubject-person-verifiedBy-proof]
+[#vc-credentialsubject-namedactor-verifiedBy-proof]
 Identity verification proof:::
-The `person.verifiedBy[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_verifier,identity verifier>>_. The content as well as the process are outside the scope of this specification.
+The `namedActor.verifiedBy[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_verifier,identity verifier>>_. The content as well as the process are outside the scope of this specification.
 
 [#vc-credentialsubject-identities]
 Identities::
@@ -958,7 +958,7 @@ The `identities[?].provider.name` MUST be present and MUST be a non emtpy string
 Identity creation date:::
 The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this crypto wallet account was associated with the _<<_named_actor,named actor>>_. 
 
-IMPORTANT: At least one of `person` property and `identities` property MUST be present, as they represent _<<_named_actor,named actor>>_ identity to be bound to with the _<<C2PA asset>>_ being described. Having both missing makes the credential invalid as there is no identity to be bound to the _<<C2PA asset>>._
+IMPORTANT: At least one of `namedActor` property and `identities` property MUST be present, as they represent _<<_named_actor,named actor>>_ identity to be bound to with the _<<C2PA asset>>_ being described. Having both missing makes the credential invalid as there is no identity to be bound to the _<<C2PA asset>>._
 
 Credential C2PA asset::
 The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings. (TO DO: Specify Base-64 encoding options.)
@@ -1011,7 +1011,7 @@ An example of the *<<_identity_assertion,identity assertion>>* verifiable creden
   "validFrom": "2024-05-27T11:40:40Z",
   "credentialSubject": {
     "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",    
-    "person": [
+    "namedActor": [
       {
         "name": "John Doe",
         "verifiedBy": {
