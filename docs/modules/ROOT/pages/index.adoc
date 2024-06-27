@@ -731,7 +731,16 @@ _This section is non-normative._
 
 This document draws a distinction between _human trust_ and _technical trust._ We define these terms as follows:
 
-* *Technical trust:* Can I prove that the content I’m consuming came from a particular _<<_named_actor,named actor>>_ and that it hasn’t been tampered with?
+* *Technical trust* exists if the following requirements are satisfied:
+** Can I prove that the content I’m consuming was signed by a credential associated with a named actor and that it is unmodified from what the named actor produced at the time it was signed?
+** Can I trust that the identity signals in the credential point to a unique named actor?
+** Do I trust that the identifiers for credential issuers are unique?
+
+* *Governance trust* exists if the following requirements are satisfied:
+** Am I confident in how the credential(s) were issued to a named actor, managed and controlled by the named actor and issuer, and used to sign the content I'm consuming?
+** If the issuer is referenced on a trust list, do I trust the governance of that trust list? In other words, do I have confidence in the process by which this issuer was added and has remained on the trust list?
+** TO DO: Follow work of groups such as Trust Over IP Trust Registry WG that are working to refine governance and scope of specific kinds of credentials.
+
 * *Human trust:* Can I trust the _<<_named_actor,named actor>>_ to produce valuable content in good faith? Do they have a reputation and legitimacy that I can rely on?
 
 NOTE: We thank CIRA and Continuum Loop for their report link:https://www.cira.ca/uploads/2023/12/12222023_A-trust-layer-for-the-internet-is-emerging_-report-–-Continuum_CIRA.pdf[_A Trust Layer for the Internet is Emerging: Toward a More Interoperable and Trusted Internet for Canadians_], from which these definitions are adapted.
