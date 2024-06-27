@@ -885,7 +885,16 @@ The effectiveness of such attacks will necessarily be dependent on the language 
 
 An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
 
-A direct resolution of this threat may not be attainable. For that reason, identity assertion producers are encouraged to link multiple verifiable trust signals (social accounts, web sites, etc.) together to produce a stronger overall identity signal.
+IMPORTANT: The Creator Assertions Working Group supports the principle of link:https://www.icann.org/ua[Universal Acceptance as described by ICANN]. No mitigation for homoglyph or typo-squatting attacks should result in preferential treatment for identifiers in any language or script system over any other language or script system.
+
+Implementors are encouraged to apply one or more of the following approaches to mitigate this potential attack:
+
+* Credential issuers are encouraged to verify proposed names carefully to avoid malicious use of names. Intermediate authorities (trust lists, intermediate CAs, etc.) are encouraged to require such verification as part of their governance terms.
+* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain a list of trust anchors that have well-established governance terms designed to avoid the inclusion of inadvertently or maliciously misleading identity credentials and to reference those roots of trust in their user experience.
+* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain lists of known _<<_named_actor,named actors>>_ via unique identifiers available with each credential type rather than the human-readable display names.
+* Future versions of this specification will likely allow linking independent verifiable trust signals (social accounts, web sites, etc.). As those become available, _<<_named_actor,named actors>>_ are encouraged to include those signals and _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to verify those signals.
+
+To some extent, this concern is addressed by (same concept as C2PA) evaluating identity assertion signatures as trusted, well-formed, or invalid.
 
 ==== Validation of credential status
 
