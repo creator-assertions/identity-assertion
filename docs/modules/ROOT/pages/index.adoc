@@ -865,7 +865,7 @@ The `namedActor[?].verifiedBy` property MUST be an object and MUST be present. T
 
 [#vc-credentialsubject-namedactor-verifiedBy-id]
 Identity verifier ID:::
-The `namedActor[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_
+The `namedActor[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_.
 
 [#vc-credentialsubject-namedactor-verifiedBy-name]
 Identity verifier name:::
@@ -873,7 +873,38 @@ The `namedActor[?].verifiedBy.name` MUST be present and MUST not be empty. The `
 
 [#vc-credentialsubject-namedactor-verifiedBy-proof]
 Identity verification proof:::
-The `namedActor.verifiedBy[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_verifier,identity verifier>>_. The content as well as the process are outside the scope of this specification.
+The `namedActor[?].verifiedBy.proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_verifier,identity verifier>>_. The content as well as the process are outside the scope of this specification.
+
+[#vc-credentialsubject-affiliations]
+Affiliations::
+The `affiliations` property is an optional field. If present, it MUST be an array in which each item MUST contain information about a _<<_named_actor,named actor's>>_ affiliation. The process of proving the validity of these affiliations is outside the scope of this specification. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ affiliation details: `id`, `name`, and `proof`.
++
+.Example:
+[source,json]
+----
+"credentialSubject": {
+  ...
+  "affiliations": [
+    {
+      "id": "https://example-affiliated-organization.com",
+      "name": "Example Affiliated Organization",
+      "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
+    }
+  ]
+  ...
+}
+----
+[#vc-credentialsubject-affiliation-id]
+Affiliation ID:::
+The `affiliations[?].id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_named_actor,named actor's>>_ affiliated entity.
+
+[#vc-credentialsubject-affiliation-name]
+Affiliation name:::
+The `affiliations[?].name` MUST be present and MUST not be empty. The `affiliations[?].name` property is the name of the  _<<_named_actor,named actor's>>_ affiliated entity.
+
+[#vc-credentialsubject-affiliation-proof]
+Affiliation proof:::
+The `affiliations[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor's>>_ affiliation validity, i.e., the _<<_named_actor,named actor>> is affiliated indeed with this organization. The content as well as the process of validatig an affiliation relation are outside the scope of this specification.
 
 [#vc-credentialsubject-identities]
 Identities::
@@ -1019,6 +1050,13 @@ An example of the *<<_identity_assertion,identity assertion>>* verifiable creden
           "name": "Verifier 3732",
           "proof": "https://verifier-3732.com/proofs/3732"
         }
+      }
+    ],
+    "affiliations": [
+      {
+        "id": "https://example-affiliated-organization.com",
+        "name": "Example Affiliated Organization",
+        "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
       }
     ],    
     "identities": [
