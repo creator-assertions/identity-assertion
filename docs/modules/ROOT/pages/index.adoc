@@ -888,10 +888,10 @@ The `identities` property is an optional field. If present, it MUST be an array 
     {
       "type": "socialProvider",
       "username": "username",
-      "uri": "https://twitter.com/username",
+      "uri": "https://example-social-network.com/username",
       "provider": {
-        "id": "https://twitter.com",
-        "name": "Twitter"
+        "id": "https://example-social-network.com",
+        "name": "Example Social Network"
       },
       "createdAt": "2024-05-27T08:40:39.569856Z"      
     }
@@ -1025,12 +1025,12 @@ An example of the *<<_identity_assertion,identity assertion>>* verifiable creden
       {
         "type": "socialProvider",
         "provider": {
-          "id": "https://twitter.com",
-          "name": "Twitter"
+          "id": "https://example-social-network.com",
+          "name": "Example Social Network"
         },
         "createdAt": "2024-05-27T08:40:39.569856Z",
         "username": "username",
-        "uri": "https://twitter.com/username"
+        "uri": "https://example-social-network.com/username"
       }      
     ],
     "boundTo": {
