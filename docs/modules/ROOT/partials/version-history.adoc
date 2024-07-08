@@ -179,3 +179,7 @@ _This section is non-normative._
 *24 June 2024*
 
 * Add wording to clarify that best practices for avoiding parsing and validation attacks are language-specific and thus outside the scope of this specification.
+
+*08 July 2024*
+
+* Change the definition of `expected_countersigners` to require the expected `signer_payload` for other identity assertions
