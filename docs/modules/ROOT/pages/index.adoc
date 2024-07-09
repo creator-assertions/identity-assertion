@@ -910,14 +910,13 @@ An attacker could make use of visually-similar Unicode characters to mislead an 
 
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/117[issue #117]): Discuss and add guidance.
 
-==== Validation of credential status
+==== Revocation of credential
 
-* Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do real-time checks to ensure that the _<<_named_actor,named actor’s>>_ credential is still considered valid? What harms or risks may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status?
-* If a bad actor makes it into the system, then how does that ID get blocked? Is there an OCSP, CRL, bad actor database, etc.? If so, what is the governance for such a list and who maintains it?
-* What if the bad actor is in an ingredient and not the primary piece of content?
-* What is displayed to the end-user in both the primary content and ingredient scenarios?
+A _<<_credential_holder,credential holder>>_ such as credential compromise or acting in bad faith that would lead to the credential being revoked.
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/118[issue #118]): Discuss and add guidance.
+When possible, the _<<_identity_assertion_consumer,identity assertion consumer>>_ should look for appropriate revocation lists and verify the current status of the credential. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be revoked, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.*
+
+Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
 
 ==== Compromise of private key material
 
