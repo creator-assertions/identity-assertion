@@ -770,7 +770,7 @@ The *<<_identity_assertion,identity assertion>>* should be thought of primarily 
 
 * Am I confident in how the credential(s) were issued to a _<<_named_actor,named actor>>?_ Do I understand the level of assurance offered by the credential issuer? Is it sufficient for me to accept the identity of the _<<_named_actor,named actor>>_ as valid and meaningful?
 * Am I confident in how the credential(s) were managed and controlled by the _<<_named_actor,named actor>>,_ _<<credential_holder,credential holder>>,_ and issuer, and then used to sign the content I'm consuming?
-* If the issuer is referenced on a trust list, do I trust the governance of that trust list? In other words, do I have confidence in the process by which this issuer was added to and has remained on the trust list?
+* If the issuer is referenced on a trust list (a.k.a. _link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry]_), do I trust the governance of that trust list? In other words, do I have confidence in the process by which this issuer was added to and has remained on the trust list?
 
 Software tools supporting _<<_identity_assertion_consumer,identity assertion consumers>>_ can assist in establishing _governance trust_ by making well-informed choices about roots of trust.
 
