@@ -183,3 +183,7 @@ _This section is non-normative._
 *08 July 2024*
 
 * Change the definition of `expected_countersigners` to require the expected `signer_payload` for other identity assertions
+
+*15 July 2024*
+
+* Add xref:_user_experience. (Brief section as a placeholder for forthcoming UX guidance.)
