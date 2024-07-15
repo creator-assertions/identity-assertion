@@ -311,6 +311,8 @@ NOTE: This role can also be thought of as a *relying party* or *verifier* as def
 
 The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.* This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
 
+IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an individual human, an organization of humans, or a non-human (software or hardware device).
+
 IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
 
 ==== Placeholder assertion
