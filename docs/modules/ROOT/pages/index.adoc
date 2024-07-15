@@ -894,7 +894,7 @@ NOTE: The above questions target name collisions for individuals, but the same q
 
 Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
 
-A related threat is the intentional use of similar characters, which is discussed in xref:/_homoglyph_and_typo_squatting_attacks[xrefstyle=full].
+A related threat is the intentional use of similar characters, which is discussed in xref:_homoglyph_and_typo_squatting_attacks[xrefstyle=full].
 
 ==== Parsing and validation errors
 
