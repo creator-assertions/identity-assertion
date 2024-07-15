@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 24 June 2024* · xref:_version_history[]
+*Version 1.0 Draft 15 July 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -188,11 +188,11 @@ IMPORTANT: The identity assertion SHOULD NOT be construed to convey _ownership_ 
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
-A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
 
 ==== Enhance the evidentiary value of critical footage
 
-A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
 
 ==== Election integrity and protecting political campaigns from deepfakes
 
@@ -208,7 +208,7 @@ One morning, Charlie, an up-and-coming digital artist, woke up to find that one 
 
 ==== Audio sampling and artistic collaboration
 
-Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device configured with her identity and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
+Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
 
 == Normative references
 
@@ -342,9 +342,9 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 * `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._ Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
-* `expected_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_value[xrefstyle=full].
-* `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_value[xrefstyle=full].
-* `expected_countersigners` _(optional),_ if present, describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_value[xrefstyle=full].
+* `expected_partial_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_field[xrefstyle=full].
+* `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_field[xrefstyle=full].
+* `expected_countersigners` _(optional),_ if present, describes the content of other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_field[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
@@ -406,14 +406,19 @@ signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
   ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
-  ? "expected_claim": $hash-map, ; hash of expected partial claim
+  ? "expected_partial_claim": $hash-map, ; hash of expected partial claim
   ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
-  ? "expected_countersigners": [1* $hash-map], ; array of expected countersigner credentials
+  ? "expected_countersigners": [1* $expected-countersigner-map], ; array of expected other identity assertion descriptions
 }
 
 hash-map = {
   "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
   "hash": bstr, ;  byte string containing the hash value
+}
+
+expected-countersigner-map = {
+  "partial_signer_payload": $signer-payload-map ; signer_payload map from other identity assertion minus any `expected_countersigner` field
+  ? "expected_credentials": $hash-map ; expected identity assertion credentials
 }
 ----
 
@@ -468,9 +473,9 @@ The `signer_payload` data structure MUST be presented to be signed by the _<<_cr
 
 IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
-==== Calculating the `expected_claim` value
+==== Calculating the `expected_partial_claim` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim` value in `signer_payload`, it MUST be computed as follows:
+If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_partial_claim` field in `signer_payload`, it MUST be computed as follows:
 
 . Create a valid _<<C2PA claim>>_ data structure that includes references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertions>>.* The `hash` value for all assertion references MUST be valid and correct, except in the following cases:
 .. For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
@@ -478,38 +483,40 @@ If the *<<_identity_assertion,identity assertion>> generator* chooses to include
 . Serialize the _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized _<<C2PA claim>>_ data structure using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
-The `expected_claim` value SHOULD contain a CBOR map with the following fields:
+The `expected_partial_claim` field SHOULD contain a CBOR map with the following fields:
 
 * `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
 * `hash` value containing the computed hash of the serialized _<<C2PA claim>>_ data structure.
 
-==== Calculating the `expected_claim_generator` value
+==== Calculating the `expected_claim_generator` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim_generator` value in `signer_payload`, it MUST be computed as follows:
+If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim_generator` field in `signer_payload`, it MUST be computed as follows:
 
 . Identify the end-entity signing certificate that will be used for the expected _<<C2PA claim generator>>._
 . Serialize this signing certificate as a CBOR byte string as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized end-entity certificate using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
 
-The resulting hash should be used as the `expected_claim_generator` value.
+The resulting hash should be used as the `expected_claim_generator` field.
 
-The `expected_claim_generator` value SHOULD contain a CBOR map with the following fields:
+The `expected_claim_generator` field SHOULD contain a CBOR map with the following fields:
 
 * `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
 * `hash` value containing the computed hash of the serialized certificate.
 
-==== Calculating the `expected_countersigners` value
+==== Calculating the `expected_countersigners` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` value in `signer_payload`, it MUST be computed as follows:
+If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that will be present in the _<<C2PA Manifest>>:_
-.. Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
-.. Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-.. Compute a hash of the serialized end-entity certificate using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
-.. An entry in `expected_countersigners` SHOULD be added containing the hash from the previous step and the corresponding `alg` value for the selected hash algorithm.
-. Once the signing credentials have been gathered, the `expected_countersigners` value SHOULD contain a CBOR array of CBOR maps with the following fields:
-.. `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
-.. `hash` value containing the computed hash of the serialized signing credential.
+.. Calculate the `signer_payload` map for that *<<_identity_assertion,identity assertion>>.* Exclude any `expected_countersigners` field from that `signer_payload` map and place the resulting `signer_payload` structure in the `partial_signer_payload` field of _this_ *<<_identity_assertion,identity assertion’s>>* `expected_countersigners` map.
+.. _(optional)_ Identify the signing credential that will be used to sign that *<<_identity_assertion,identity assertion>>.*
+... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+... Compute a hash of the serialized signing credential using one of the algorithms documented in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification.
+. Once the above materials have been gathered, the `expected_countersigners` field SHOULD contain a CBOR array of CBOR maps, each containing the following fields for each *<<_identity_assertion,identity assertion>>*:
+.. `partial_signer_payload` _(required)_ containing the expected `signer_payload`, omitting any `expected_countersigners` field.
+.. `expected_credentials` _(optional)_ containing a description of the expected signing credentials:
+... `alg` describing the hash algorithm as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hashing_2++[Section 13.1, “Hashing,”] of the C2PA technical specification, and
+... `hash` value containing the computed hash of the serialized signing credential.
 
 ==== Serialization for credential types
 
@@ -612,27 +619,40 @@ The `signature` field of an *<<_identity_assertion,identity assertion>>* MUST co
 
 The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes. The `cawg.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
 
-==== Validating the `expected_claim` value
+==== Validating the `expected_partial_claim` field
 
-If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim` value in `signer_payload`, it MUST be validated as follows:
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_partial_claim` field in `signer_payload`, it MUST be validated as follows:
 
 . Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
 . Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
-. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` value in `signer_payload`, for each entry in the `expected_countersigners` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` value for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
+. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` field in `signer_payload`, for each entry in the `expected_countersigners` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` field for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
 . Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
-. Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_claim.alg`.
+. Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_partial_claim.alg`.
 
-The resulting hash MUST exactly match the value present in `expected_claim.hash`. The `cawg.identity.expected_claim.mismatch` error code SHALL be used to report assertions that contain other values.
+The resulting hash MUST exactly match the value present in `expected_partial_claim.hash`. The `cawg.identity.expected_partial_claim.mismatch` error code SHALL be used to report assertions that contain other values.
 
-==== Validating the `expected_claim_generator` value
+==== Validating the `expected_claim_generator` field
 
-If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` value in `signer_payload`, it MUST be validated as follows:
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` field in `signer_payload`, it MUST be validated as follows:
 
 . Locate the end-entity signing certificate that is present in the _<<C2PA claim>>_ signature. It can be located as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
 . Identify the CBOR bytes specific to this signing certifcate. If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.
 
 The resulting hash MUST exactly match the value present in `expected_claim_generator.hash`. The `cawg.identity.expected_claim_generator.mismatch` error code SHALL be used to report assertions that contain other values.
+
+==== Validating the `expected_countersigners` field
+
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` field in `signer_payload`, it MUST be validated as follows:
+
+. For every _other_ *<<_identity_assertion,identity assertion>>* that is present in the <<C2PA Manifest>>:
+.. Find the `signer_payload` map in that *<<_identity_assertion,identity assertion>>*. Remove any `expected_countersigners` field that is found in that `signer_payload` map. This will be referred to in the rest of this process as the _partial signer payload._
+.. Search the `expected_countersigners` list _in the current *<<_identity_assertion,identity assertion>>* being validated_ for an entry where `partial_signer_payload` matches the just-computed _partial signer payload._ If no such entry can be found, stop validating and return the `cawg.identity.unexpected_countersigner` error code.
+.. If the entry in `expected_countersigners` also contains an `expected_credentials` entry:
+... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+... Compute a hash of the serialized signing credential using the algorithm specified by the `alg` entry in the `expected_credentials` map.
+... Compare the just-computed hash with the `hash` entry in the `expected_credentials` map. If they do not match, stop validating and return the `cawg.identity.expected_countersigner.mismatch` error code.
+. If any entry exists in `expected_countersigners` that was not matched by the previous loop, the `cawg.identity.expected_countersigner.missing` error code SHOULD be returned.
 
 === Status codes
 
@@ -659,8 +679,11 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
-|`cawg.identity.expected_claim.mismatch` | The `signer_payload.expected_claim` field did not match the _<<C2PA claim>>_ data structure.
+|`cawg.identity.expected_partial_claim.mismatch` | The `signer_payload.expected_partial_claim` field did not match the _<<C2PA claim>>_ data structure.
 |`cawg.identity.expected_claim_generator.mismatch` | The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._ 
+|`cawg.identity.unexpected_countersigner` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that was not described in `signer_payload.expected_countersigners`
+|`cawg.identity.expected_countersigner.mismatch` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that has the expected `signer_payload` but has different signing credentials than were described in `signer_payload.expected_countersigners`
+|``cawg.identity.expected_countersigner.missing` | The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>_
 |=======================
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
@@ -881,7 +904,7 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 * *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
 * *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
 
-The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementors that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
+The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementers that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
 ==== Homoglyph and typo-squatting attacks
 
@@ -907,6 +930,8 @@ It is therefore important that systems that manage *<<_identity_assertion,identi
 Some *<<_identity_assertion,identity assertion>>* generation and signing systems may be exposed to untrusted users. Exploitation or misuse of these systems may allow attackers to create *<<_identity_assertion,identity assertion>>* signatures on arbitrary assets using identities provided by the system. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity. The impact of such an attack may be amplified if identities are shared between users, and/or if the attack goes undetected for an extended period of time.
 
 *<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
+
+Capture devices, such as non-smartphone cameras, often do not have a mechanism for restricting access to specific users. It is recommended that such devices should not hold credentials for _<<_named_actor,named actors>>_ and should not generate *<<_identity_assertion,identity assertion>>* unless they can access more secure credential-access mechanisms such as a digital wallet.
 
 ==== Tampering with identity assertion content
 
@@ -949,10 +974,27 @@ The attacker could not:
 
 A _<<_credential_holder,credential holder>>_ can prevent these attacks by using one or more of the following optional mechanisms in `signer_payload` which are intended to limit the content of the enclosing _<<C2PA Manifest>>:_
 
-* `expected_claim`, which describes the content of the expected _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
+* `expected_partial_claim`, which describes the content of the expected _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 * `expected_claim_generator`, which describes the X.509 certificate of the expected _<<C2PA claim generator>>._
 * `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
 
 See xref:_overview[xrefstyle=full], for complete description of these mechanisms.
+
+== User experience
+
+_This section is non-normative._
+
+=== Approach
+
+The Creator Assertions Working Group intends, in a forthcoming document, to provide clear recommendations and guidance for implementers of identity-based provenance user experiences (UX). Similar to the C2PA’s link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[User experience guidance for implementers], CAWG UX recommendations aim to define best practices for presenting CAWG identity assertions within a _<<_c2pa_manifest,C2PA Manifest>>._ The recommendations strive to describe standard, readily-recognizable experiences that:
+
+* provide _<<named_actors,named actors>>_ a means to express *<<_identity_assertion,identity assertions>>* about a _<<_c2pa_asset,C2PA asset>>,_ and
+* provide _<<_identity_assertion_consumer,identity assertion consumers>>_ with additional information about the _<<_c2pa_asset,C2PA asset>>_ they are experiencing, thereby empowering them to understand who is involved in its creation.
+
+CAWG UX recommendations should adhere to the same principles and levels of information disclosure outlined in the link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[C2PA UX Guidance].  
+
+=== Public review, feedback, and evolution
+
+Developing these recommendations is an ongoing process that involves diverse stakeholders, with the results balancing uniformity and familiarity with utility and flexibility for users across contexts, platforms, and devices. Feedback, review, user testing, and ongoing evolution are key requirements for success. The recommendations will therefore be an evolving document, informed by real-world experiences deploying CAWG-enabled _<<_c2pa_manifest,C2PA Manifests>>_ across a wide variety of applications and scenarios. These recommendations will be provided as a companion document.
 
 include::partial$version-history.adoc[]
