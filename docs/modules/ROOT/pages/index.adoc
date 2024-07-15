@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 08 July 2024* · xref:_version_history[]
+*Version 1.0 Draft 15 July 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -975,5 +975,22 @@ A _<<_credential_holder,credential holder>>_ can prevent these attacks by using 
 * `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
 
 See xref:_overview[xrefstyle=full], for complete description of these mechanisms.
+
+== User experience
+
+_This section is non-normative._
+
+=== Approach
+
+The Creator Assertions Working Group intends, in a forthcoming document, to provide clear recommendations and guidance for implementers of identity-based provenance user experiences (UX). Similar to the C2PA’s link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[User experience guidance for implementers], CAWG UX recommendations aim to define best practices for presenting CAWG identity assertions within a _<<_c2pa_manifest,C2PA Manifest>>._ The recommendations strive to describe standard, readily-recognizable experiences that:
+
+* provide _<<named_actors,named actors>>_ a means to express *<<_identity_assertion,identity assertions>>* about a _<<_c2pa_asset,C2PA asset>>,_ and
+* provide _<<_identity_assertion_consumer,identity assertion consumers>>_ with additional information about the _<<_c2pa_asset,C2PA asset>>_ they are experiencing, thereby empowering them to understand who is involved in its creation.
+
+CAWG UX recommendations should adhere to the same principles and levels of information disclosure outlined in the link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[C2PA UX Guidance].  
+
+=== Public review, feedback, and evolution
+
+Developing these recommendations is an ongoing process that involves diverse stakeholders, with the results balancing uniformity and familiarity with utility and flexibility for users across contexts, platforms, and devices. Feedback, review, user testing, and ongoing evolution are key requirements for success. The recommendations will therefore be an evolving document, informed by real-world experiences deploying CAWG-enabled _<<_c2pa_manifest,C2PA Manifests>>_ across a wide variety of applications and scenarios. These recommendations will be provided as a companion document.
 
 include::partial$version-history.adoc[]
