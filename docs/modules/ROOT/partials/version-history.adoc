@@ -183,3 +183,9 @@ _This section is non-normative._
 *08 July 2024*
 
 * Change the definition of `expected_countersigners` to require the expected `signer_payload` for other identity assertions
+
+*15 July 2024*
+
+* Add xref:_user_experience. (Brief section as a placeholder for forthcoming UX guidance.)
+* Revise discussion of capture devices holding credentials. See xref:_use_cases_and_examples[xrefstyle=full] and xref:_compromise_of_private_key_material[xrefstyle=full].
+* Added language to xref:_named_actor[xrefstyle=full] to clarify that a named actor can be an organization of actors.

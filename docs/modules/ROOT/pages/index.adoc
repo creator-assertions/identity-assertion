@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 08 July 2024* · xref:_version_history[]
+*Version 1.0 Draft 15 July 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -188,11 +188,11 @@ IMPORTANT: The identity assertion SHOULD NOT be construed to convey _ownership_ 
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
-A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is configured with her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
 
 ==== Enhance the evidentiary value of critical footage
 
-A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is configured with her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
 
 ==== Election integrity and protecting political campaigns from deepfakes
 
@@ -208,7 +208,7 @@ One morning, Charlie, an up-and-coming digital artist, woke up to find that one 
 
 ==== Audio sampling and artistic collaboration
 
-Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device configured with her identity and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
+Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
 
 == Normative references
 
@@ -310,6 +310,8 @@ NOTE: This role can also be thought of as a *relying party* or *verifier* as def
 ==== Named actor
 
 The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.* This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
+
+IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an individual human, an organization of humans, or a non-human (software or hardware device).
 
 IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
 
@@ -940,6 +942,8 @@ Some *<<_identity_assertion,identity assertion>>* generation and signing systems
 
 *<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
 
+Capture devices, such as non-smartphone cameras, often do not have a mechanism for restricting access to specific users. It is recommended that such devices should not hold credentials for _<<_named_actor,named actors>>_ and should not generate *<<_identity_assertion,identity assertion>>* unless they can access more secure credential-access mechanisms such as a digital wallet.
+
 ==== Tampering with identity assertion content
 
 An attacker could attempt to alter the content of an *<<_identity_assertion,identity assertion>>* to substitute different credentials or alter the attestations included in `signer_payload` in order to create a misleading of the _<<_named_actor,named actor>>_ or the _<<_c2pa_asset,C2PA asset>>._
@@ -986,5 +990,22 @@ A _<<_credential_holder,credential holder>>_ can prevent these attacks by using 
 * `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
 
 See xref:_overview[xrefstyle=full], for complete description of these mechanisms.
+
+== User experience
+
+_This section is non-normative._
+
+=== Approach
+
+The Creator Assertions Working Group intends, in a forthcoming document, to provide clear recommendations and guidance for implementers of identity-based provenance user experiences (UX). Similar to the C2PA’s link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[User experience guidance for implementers], CAWG UX recommendations aim to define best practices for presenting CAWG identity assertions within a _<<_c2pa_manifest,C2PA Manifest>>._ The recommendations strive to describe standard, readily-recognizable experiences that:
+
+* provide _<<named_actors,named actors>>_ a means to express *<<_identity_assertion,identity assertions>>* about a _<<_c2pa_asset,C2PA asset>>,_ and
+* provide _<<_identity_assertion_consumer,identity assertion consumers>>_ with additional information about the _<<_c2pa_asset,C2PA asset>>_ they are experiencing, thereby empowering them to understand who is involved in its creation.
+
+CAWG UX recommendations should adhere to the same principles and levels of information disclosure outlined in the link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[C2PA UX Guidance].  
+
+=== Public review, feedback, and evolution
+
+Developing these recommendations is an ongoing process that involves diverse stakeholders, with the results balancing uniformity and familiarity with utility and flexibility for users across contexts, platforms, and devices. Feedback, review, user testing, and ongoing evolution are key requirements for success. The recommendations will therefore be an evolving document, informed by real-world experiences deploying CAWG-enabled _<<_c2pa_manifest,C2PA Manifests>>_ across a wide variety of applications and scenarios. These recommendations will be provided as a companion document.
 
 include::partial$version-history.adoc[]
