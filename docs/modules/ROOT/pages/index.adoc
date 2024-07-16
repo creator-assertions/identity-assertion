@@ -281,17 +281,7 @@ One or more cryptographic hashes that uniquely identifies either the entire _<<C
 
 Hard bindings are described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
-=== Concepts adapted from ToIP technical architecture
-
-The following definitions are adapted from the link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md++[Trust over IP (ToIP) technology architecture specification]. This specification uses the prefix “ToIP” to denote concepts incorporated from that specification.
-
-==== ToIP verifiable identifier
-
-Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.” This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
-
-See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-identifiers++[ToIP identifiers] in the ToIP technology architecture specification.
-
-=== Concepts specific to this specification
+=== Other concepts
 
 ==== Credential holder
 
@@ -322,6 +312,20 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 ==== Referenced assertions
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
+
+==== ToIP verifiable identifier
+
+Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.” This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
+
+See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-identifiers++[ToIP identifiers] in the ToIP technology architecture specification.
+
+==== Trust list
+
+A list of _<<_actor,actors>>,_ published by an authoritative source that are trusted in a specific trust context.
+
+Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-list++[Trust Over IP’s definition of trust list].
+
+A _trust list_ can be considered a simplified form of a link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry].
 
 include::partial$terms.adoc[]
 
@@ -772,7 +776,7 @@ The *<<_identity_assertion,identity assertion>>* should be thought of primarily 
 
 * Am I confident in how the credential(s) were issued to a _<<_named_actor,named actor>>?_ Do I understand the level of assurance offered by the credential issuer? Is it sufficient for me to accept the identity of the _<<_named_actor,named actor>>_ as valid and meaningful?
 * Am I confident in how the credential(s) were managed and controlled by the _<<_named_actor,named actor>>,_ _<<credential_holder,credential holder>>,_ and issuer, and then used to sign the content I'm consuming?
-* If the issuer is referenced on a trust list (a.k.a. _link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry]_), do I trust the governance of that trust list? In other words, do I have confidence in the process by which this issuer was added to and has remained on the trust list?
+* If the issuer is referenced on a _<<_trust_list,trust list>>,_ do I trust the governance of that _<<_trust_list,trust list>>?_ In other words, do I have confidence in the process by which this issuer was added to and has remained on the _<<_trust_list,trust list>>?_
 
 Software tools supporting _<<_identity_assertion_consumer,identity assertion consumers>>_ can assist in establishing _governance trust_ by making well-informed choices about roots of trust.
 
@@ -794,9 +798,9 @@ Technical trust is typically described using a _trust diamond_ as shown in the f
 .Basic trust diamond
 image::trust-model/basic-trust-diamond.drawio.svg[Basic trust triangle,width=430,height=250,align="center"]
 
-The four roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _governing authority_ sets the rules over the issuance of conformant identities from _credential issuers_ to _<<_credential_holder,credential holders>>_ and allows _credential issuers_ to appear on a _trust registry_ after it satisfies the conformance of its rules within its governance framework. A _<<_credential_holder,credential holder>>_ establishes a relationship with a _credential issuer._ If the _issuer_ trusts the _<<_credential_holder,credential holder>>,_ it will then issue a digital credential which makes statements about the _<<_named_actor,named actor>>_ (which may or may not be the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>_) and is signed by the _issuer._
+The four roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _governing authority_ sets the rules over the issuance of conformant identities from _credential issuers_ to _<<_credential_holder,credential holders>>_ and allows _credential issuers_ to appear on a _<<_trust_list,trust list>>_ after it satisfies the conformance of its rules within its governance framework. A _<<_credential_holder,credential holder>>_ establishes a relationship with a _credential issuer._ If the _issuer_ trusts the _<<_credential_holder,credential holder>>,_ it will then issue a digital credential which makes statements about the _<<_named_actor,named actor>>_ (which may or may not be the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>_) and is signed by the _issuer._
 
-Later, the _<<_credential_holder,credential holder>>_ can then present this credential to a _verifier_ (also often known as a “relying party”). If the _verifier_ has an existing trust relationship with the _credential issuer,_ then the _verifier_ can choose to trust the credential, after checking that credential was issued by an _issuer_ appearing on the _trust registry,_ and the statements made within it.
+Later, the _<<_credential_holder,credential holder>>_ can then present this credential to a _verifier_ (also often known as a “relying party”). If the _verifier_ has an existing trust relationship with the _credential issuer,_ then the _verifier_ can choose to trust the credential, after checking that credential was issued by an _issuer_ appearing on the _<<_trust_list,trust list>>,_ and the statements made within it.
 
 This pattern can be repeated if there is not a direct trust relationship between the _verifier_ and _issuer._ The _issuer_ itself might have a credential that is issued by another _issuer_ that is known to the _verifier_ as shown in the following diagram:
 
@@ -951,7 +955,7 @@ IMPORTANT: The Creator Assertions Working Group supports the principle of link:h
 
 Implementers are encouraged to apply one or more of the following approaches to mitigate this potential attack:
 
-* Credential issuers are encouraged to verify proposed names carefully to avoid malicious use of names. Intermediate authorities (trust lists, intermediate CAs, etc.) are encouraged to require such verification as part of their governance terms.
+* Credential issuers are encouraged to verify proposed names carefully to avoid malicious use of names. Intermediate authorities (_<<_trust list,trust lists>>,_ intermediate CAs, etc.) are encouraged to require such verification as part of their governance terms.
 * Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain a list of trust anchors that have well-established governance terms designed to avoid the inclusion of inadvertently or maliciously misleading identity credentials and to reference those roots of trust in their user experience.
 * Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain lists of known _<<_named_actor,named actors>>_ via unique identifiers available with each credential type rather than the human-readable display names.
 * Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to make visible the evaluation of an identity assertion as trusted, well-formed, or invalid.
