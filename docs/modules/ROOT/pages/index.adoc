@@ -793,7 +793,7 @@ While _reputation trust_ requires _technical trust_ and _governance trust_ to be
 
 _This section is non-normative._
 
-Technical trust is typically described using a _trust diamond_ as shown in the following diagram:
+The relationships required to establish technical trust are typically described using a _trust diamond_ as shown in the following diagram:
 
 .Basic trust diamond
 image::trust-model/basic-trust-diamond.drawio.svg[Basic trust triangle,width=430,height=250,align="center"]
