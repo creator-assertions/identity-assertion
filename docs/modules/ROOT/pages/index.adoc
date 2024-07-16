@@ -837,7 +837,7 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 
 . Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential that was effective at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 .. If the transitive trust relationship exists and the credential has not been revoked, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 
@@ -885,14 +885,14 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
 .. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential that was effective at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 .. If the transitive trust relationship exists and the credential has not been revoked, proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
 .. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, proceed to step 3.
 .. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, proceed to step 3.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
-. Has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential?
+. Has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential that was effective at the time the *<<_identity_assertion,identity assertion>>* was signed?
 .. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
 .. If no such revocation has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 
@@ -960,9 +960,9 @@ Implementers are encouraged to apply one or more of the following approaches to 
 
 ==== Revocation of credential
 
-A _<<_credential_holder,credential holder>>_ such as credential compromise or acting in bad faith that would lead to the credential being revoked.
+There are numerous scenarios which may result in the credential issued to a _<<_credential_holder,credential holder>>_ being revoked. Some are adverse, such as credential compromise or acting in bad faith. Other scenarios are routine, such as changes to the name, address, or other identifying information contained within the credentials.
 
-When possible, the _<<_identity_assertion_consumer,identity assertion consumer>>_ should look for appropriate revocation lists and verify the current status of the credential. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be revoked, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.*
+The _<<_identity_assertion_consumer,identity assertion consumer>>_ should make a best effort to verify the status of the credential as of the time of *<<_identity_assertion,identity assertion>>* issuance. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be revoked at that time, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.* Absent specific information as to the cause for revocation, a _<<_identity_assertion_consumer,identity assertion consumer>>_ should not assume that a revocation is an indication of an adverse event.
 
 Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
 
