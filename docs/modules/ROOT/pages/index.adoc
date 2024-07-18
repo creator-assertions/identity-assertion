@@ -11,7 +11,7 @@ This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_
 
 Version 1.x (adding W3C VC credentials with credential schema) *Draft 17 July 2024* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credential_2[xrefstyle=full].
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
@@ -732,7 +732,7 @@ Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
 
-=== W3C verifiable credential
+=== W3C verifiable credentials
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
 
