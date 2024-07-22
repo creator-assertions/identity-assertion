@@ -681,7 +681,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
-|`cawg.identity.credential_revoked` | The *<<_identity_assertion,identity assertion>>* was signed using a credential that has been revoked as of the time the *<<_identity_assertion,identity assertion>>* was issued.
+|`cawg.identity.credential_revoked` | The *<<_identity_assertion,identity assertion>>* was signed using a revoked credential.
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
@@ -830,9 +830,9 @@ IMPORTANT: The trust decisions described in the scenarios should only be evaluat
 
 The trust decision can result in one of three descriptions of the _<<_named_actor,named actor>>:_
 
-* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked by the credential’s issuer at the time the *<<_identity_assertion,identity assertion>>* was created.
-* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked by the credential’s issuer at the time the *<<_identity_assertion,identity assertion>>* was created.
-* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* has been revoked by the credential’s issuer at the timethe *<<_identity_assertion,identity assertion>>* was created.
+* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
 
 ==== Named actor as issuer
 
