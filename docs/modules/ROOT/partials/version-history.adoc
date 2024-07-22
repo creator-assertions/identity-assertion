@@ -191,3 +191,7 @@ _This section is non-normative._
 * Added language to xref:_named_actor[xrefstyle=full] to clarify that a named actor can be an organization of actors.
 * Added language to describe mitigations for homoglpyh and typosquatting attacks. See xref:_homoglyph_and_typo_squatting_attacks[xrefstyle=full].
 * Added xref:_what_does_trust_mean[xrefstyle=full].
+
+*22 July 2024*
+
+* Refine discussion of the relationships in technical trust. See xref:_technical_trust_introduction[xrefstyle=full].
