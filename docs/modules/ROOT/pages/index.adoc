@@ -321,7 +321,7 @@ See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-i
 
 ==== Trust list
 
-A list of _<<_actor,actors>>,_ published by an authoritative source that are trusted in a specific trust context.
+A list of _<<_actor,actors>>,_ published by an authoritative source that are trusted in a specific context.
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-list++[Trust Over IP’s definition of trust list].
 
@@ -748,7 +748,7 @@ In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
-* The validator SHALL maintain one or more trust registries which do not need to be the same as the trust registries used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
+* The validator SHALL maintain one or more _<<_trust_list,trust lists>>_ which do not need to be the same as the _<<_trust_list,trust lists>>_ used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
 
 == Trust model
 
