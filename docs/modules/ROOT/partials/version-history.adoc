@@ -39,3 +39,4 @@ _This section is non-normative._
 *22 July 2024*
 
 * Merge with updated 1.0-draft version of this specification.
+* Add (work-in-progress) definition of VC schema.
