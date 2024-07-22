@@ -669,7 +669,8 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`cawg.identity.validated` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated.
+|`cawg.identity.trusted` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated. The _<<_named_actor,named actor>>_ is considered *trusted* according to the evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full].
+|`cawg.identity.well-formed` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated. The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] could not identify any root of trust for the _<<_named_actor,named actor>>._
 |=======================
 
 ==== Failure codes
@@ -680,6 +681,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
+|`cawg.identity.credential_revoked` | The *<<_identity_assertion,identity assertion>>* was signed using a revoked credential.
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
@@ -826,6 +828,12 @@ There are a few possible relationships between the implementation of the *<<_ide
 
 IMPORTANT: The trust decisions described in the scenarios should only be evaluated once the *<<_identity_assertion,identity assertion>>* and the signature material within have been successfully validated as described in xref:_validating_the_identity_assertion[xrefstyle=full].
 
+The trust decision can result in one of three descriptions of the _<<_named_actor,named actor>>:_
+
+* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+
 ==== Named actor as issuer
 
 In this scenario, the _<<_credential_holder,credential holder>>_ possesses a credential that describes the _<<_named_actor,named actor>>_ and is provisioned with the ability to generate digital signatures on the _<<_named_actor,named actor’s>>_ behalf.
@@ -841,9 +849,9 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 
 . Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
 .. If the transitive trust relationship exists and the credential has not been revoked, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
-. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 
 NOTE: The direct trust relationship case is possible, but relatively uncommon.
 
@@ -889,15 +897,15 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
 .. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
 .. If the transitive trust relationship exists and the credential has not been revoked, proceed to step 2.
-.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
 .. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, proceed to step 3.
 .. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, proceed to step 3.
-.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 . Has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential?
-.. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *untrusted.*
+.. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
 .. If no such revocation has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 
 === Threats to trust model
