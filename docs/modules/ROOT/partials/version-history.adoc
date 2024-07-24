@@ -196,3 +196,7 @@ _This section is non-normative._
 
 * Refine discussion of the relationships in technical trust. See xref:_technical_trust_introduction[xrefstyle=full].
 * Formalize trusted, well-formed, and revoked status for identity assertion signatures. See xref:_trust_scenarios_in_identity_assertion[xrefstyle=full].
+
+*23 July 2024*
+
+* (Clerical): Fix up broken links and remove TO DO items slated for later versions.

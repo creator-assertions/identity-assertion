@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 22 July 2024* · xref:_version_history[]
+*Version 1.0 Draft 23 July 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -352,16 +352,13 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 * `referenced_assertions` _(required)_ is an array of `hashed-uri-map` structures with one entry for every _<<_referenced_assertions,referenced assertion>>_ chosen by the _<<_credential_holder,credential holder>>._ It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature. Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._ Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
-* `expected_partial_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_field[xrefstyle=full].
+* `expected_partial_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears. It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_partial_claim_field[xrefstyle=full].
 * `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_field[xrefstyle=full].
 * `expected_countersigners` _(optional),_ if present, describes the content of other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_field[xrefstyle=full].
 
 The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
 
 Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview. If this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
-
-[#describe-social-media]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/15[issue #15]): Describe where would things like social media accounts live.
 
 ==== Referenced assertions requirements
 
@@ -725,7 +722,7 @@ IMPORTANT: This portion of the specification is still undergoing significant exp
 
 === X.509 certificates and COSE signatures
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
+In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
@@ -974,10 +971,10 @@ IMPORTANT: The Creator Assertions Working Group supports the principle of link:h
 Implementers are encouraged to apply one or more of the following approaches to mitigate this potential attack:
 
 * Credential issuers are encouraged to verify proposed names carefully to avoid malicious use of names. Intermediate authorities (_<<_trust list,trust lists>>,_ intermediate CAs, etc.) are encouraged to require such verification as part of their governance terms.
-* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain a list of trust anchors that have well-established governance terms designed to avoid the inclusion of inadvertently or maliciously misleading identity credentials and to reference those roots of trust in their user experience.
-* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to maintain lists of known _<<_named_actor,named actors>>_ via unique identifiers available with each credential type rather than the human-readable display names.
-* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to make visible the evaluation of an identity assertion as trusted, well-formed, or invalid.
-* Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to display additional detail about the _<<_named_actor,named actor>>,_ such as the unique identifiers behind the credential, upon user request.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to maintain a list of trust anchors that have well-established governance terms designed to avoid the inclusion of inadvertently or maliciously misleading identity credentials and to reference those roots of trust in their user experience.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to maintain lists of known _<<_named_actor,named actors>>_ via unique identifiers available with each credential type rather than the human-readable display names.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to make visible the evaluation of an identity assertion as trusted, well-formed, or invalid.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to display additional detail about the _<<_named_actor,named actor>>,_ such as the unique identifiers behind the credential, upon user request.
 * Future versions of this specification will likely allow linking independent verifiable trust signals (social accounts, web sites, etc.). As those become available, _<<_named_actor,named actors>>_ are encouraged to include those signals and _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to verify those signals.
 
 ==== Revocation of credential
