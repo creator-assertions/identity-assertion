@@ -801,7 +801,8 @@ sequenceDiagram
   end
 ....
 
-NOTE: TO DO: Revise above example to reflect more common scenario where issuer ≠ named actor.
+[#issue-144]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/144[issue #144]): Revise above example to reflect more common scenario where issuer ≠ named actor.
 
 ==== Creator identity assertion description
 
@@ -817,7 +818,8 @@ The `@context` property MUST be present and MUST contain at least the following 
 * `https://www.w3.org/ns/credentials/v2`
 * `https://creator-assertions.github.io/tbd/tbd`
 
-NOTE: TO DO: Transition the creator identity assertion context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
+[#issue-145]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/145[issue #145]): Transition the creator identity assertion context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
 
 [#vc-property-type]
 ===== Type
@@ -852,13 +854,15 @@ Additional properties MAY be included within the object to provide further detai
 }
 ----
 
-NOTE: TO DO: Consider removing this section. I don’t think it adds any new requirements over the existing W3C VC requirements.
+[#pr-146]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/pull/146[PR #146]): Consider removing this section. I don’t think it adds any new requirements over the existing W3C VC requirements.
 
 [#vc-property-validFrom]
 ===== Validity
 
 The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
+[#issue-64]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/64[issue #64]): Consider stronger timestamping mechanism than W3C VC requires.
 
 [#vc-credentialsubject-id]
@@ -866,7 +870,8 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 
 The `id` property MUST be present and MUST represent an URI. It is RECOMMENDED that the URI be one which, if dereferenced, results in a globally unambiguous status of existence of the _<<_named_actor,named actor>>_. For example, dereferencing a `did:web` might return a `204 No Content` HTTP status code in case the user exists and no further information is available or `404 Not Found` HTTP status code in case the user does not exist.
 
-NOTE: TO DO: Consider removing this section. This section doesn't add much information over the existing W3C VC requirements except the requirement to have an `id` field and I'm not sure that's actually necessary.
+[#pr-147]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/pull/147[PR #147]): Consider removing this section. This section doesn't add much information over the existing W3C VC requirements except the requirement to have an `id` field and I'm not sure that's actually necessary.
 
 [#vc-credentialsubject-namedactor]
 ===== Named actor
@@ -893,7 +898,8 @@ The `namedActor` property is an OPTIONAL property within the `credentialSchema` 
 }
 ----
 
-NOTE: TO DO: Consider merging this down into `credentialSubject` and making verifications its own property.
+[#issue-148]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/148[issue #148]): Consider merging this down into `credentialSubject` and making verifications its own property.
 
 [#vc-credentialsubject-namedactor-name]
 Named Actor name::
@@ -940,7 +946,8 @@ The `affiliations` property is an OPTIONAL field within the `credentialSchema` p
 Affiliation ID:::
 The `affiliations[?].id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_named_actor,named actor's>>_ affiliated entity.
 
-NOTE: TO DO: Define what we mean by "proof of authenticity" here.
+[#issue-149]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/149[issue #149]): Define what we mean by "proof of authenticity" here.
 
 [#vc-credentialsubject-affiliation-name]
 Affiliation name:::
@@ -948,7 +955,7 @@ The `affiliations[?].name` MUST be present and MUST NOT be empty. The `affiliati
 
 [#vc-credentialsubject-affiliation-proof]
 Affiliation proof:::
-The `affiliations[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor's>>_ affiliation validity, i.e., the _<<_named_actor,named actor>> is affiliated indeed with this organization. The content as well as the process of validatig an affiliation relation are outside the scope of this specification.
+The `affiliations[?].proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor's>>_ affiliation validity, i.e., the _<<_named_actor,named actor>> is affiliated indeed with this organization. The content as well as the process of validatig an affiliation relation are outside the scope of this specification.
 
 [#vc-credentialsubject-identities]
 ===== Identities
@@ -980,7 +987,8 @@ This specification mentions two identity types that MAY be used, but this specif
 * `socialProvider`
 * `cryptoWallet`
 
-NOTE: TO DO: Consider changing the identity type names to `snake_case` for consistency with the rest of the spec. Consider using `cawg.` prefix to allow non-CAWG identity types to be used here.
+[#issue-150]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/150[issue #150]): Consider changing the identity type names to `snake_case` for consistency with the rest of the spec. Consider using `cawg.` prefix to allow non-CAWG identity types to be used here.
 
 [#vc-credentialsubject-identities-socialProvider]
 ====== Identity by social provider
@@ -1043,11 +1051,15 @@ The `identities[?].createdAt` MUST be present and MUST be a valid date-time as s
 
 The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings.
 
-NOTE: TO DO: Specify Base-64 encoding options.
+[#issue-151]
+[NOTE]
+====
+TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/151[Issue #151]): Review description of `boundTo` property.
 
-NOTE: TO DO: Consider name of this property. I'm not sure `boundTo` conveys the meaning fully.
-
-NOTE: TO DO: Decide whether to preserve `snake_case` names or translate to `camelCase` for `signer_payload` content. Current example uses `camelCase`.
+* Specify Base-64 encoding options.
+* Consider name of this property. I'm not sure `boundTo` conveys the meaning fully.
+* Decide whether to preserve `snake_case` names or translate to `camelCase` for `signer_payload` content. Current example uses `camelCase`.
+====
 
 .Example:
 [source,json]
@@ -1152,15 +1164,18 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
 }
 ----
 
-NOTE: TO DO: Track changes to draft schema and ensure example is correctly updated.
+[#issue-152]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/152[issue #152]): Track changes to draft schema and ensure example is correctly updated.
 
 ==== Data verification schema
 
 The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
 
-NOTE: TO DO: Update schema URL once it is finalized.
+[#issue-153]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/153[issue #153]): Update schema URL once it is finalized.
 
-NOTE: TO DO: Add text explaining the use of `credentialSchema` property as per the example below.
+[#issue-154]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Add text explaining the use of `credentialSchema` property as per the example below.
 
 [source,json]
 ----
@@ -1176,7 +1191,7 @@ NOTE: The usage of this data verification schema is not enforced by this specifi
 
 ==== Recommendations for issuers
 
-NOTE: TO DO: Merge with above section? This explains the use of `credentialSchema` to answer my earlier TO DO item.
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Merge with above section? This explains the use of `credentialSchema` to answer my earlier TO DO item.
 
 The inclusion of the `credentialSchema` property in a verifiable credential is OPTIONAL. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
 
@@ -1190,11 +1205,13 @@ NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema ke
 
 ==== Proofs
 
-NOTE: TO DO: Write section on proofs.
+[#issue-155]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/155[issue #155]): Write section on proofs.
 
 ==== Validating an identity assertion with verifiable credentials
 
-NOTE: TO DO: Write section on validating.
+[#issue-156]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/156[issue #156]): Write section on validating.
 
 === X.509 certificates and COSE signatures
 
