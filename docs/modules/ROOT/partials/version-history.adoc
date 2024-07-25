@@ -44,3 +44,8 @@ _This section is non-normative._
 *24 July 2024*
 
 * Merge with updated 1.0-draft version of this specification.
+
+*25 July 2024*
+
+* Review and flag upcoming discussion items.
+* (Clerical) Add section numbers in schema description.

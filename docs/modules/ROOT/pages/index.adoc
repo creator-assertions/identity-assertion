@@ -3,13 +3,13 @@
 :toc-title:
 :sectanchors:
 :sectnums:
-:sectnumlevels: 4
+:sectnumlevels: 5
 
 The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 24 July 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 25 July 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
@@ -801,44 +801,47 @@ sequenceDiagram
   end
 ....
 
-[#_creator_identity_assertion]
-==== Creator identity assertion
+NOTE: TO DO: Revise above example to reflect more common scenario where issuer ≠ named actor.
 
-A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds the identity of an _<<_named_actor,named actor>>_ with their _<<C2PA asset>>_ contribution. A *creator identity assertion* MUST satisfy the requirements in the subsections that follow;
+==== Creator identity assertion description
 
-===== W3C verifiable credentials version compatibility
+A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds the identity of the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. A *creator identity assertion* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
 
-The credential MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model, version 2.0].
-
-===== W3C verifiable credentials properties
+IMPORTANT: At least one of `namedActor` property and `identities` property MUST be present, as they represent the _<<_named_actor,named actor’s>>_ identity to be bound to the _<<C2PA asset>>_ being described. Having both missing makes the credential invalid as there is no identity to be bound to the _<<C2PA asset>>._
 
 [#vc-property-context]
-Context:: The `@context` property MUST be present and MUST contain at least the following two entries:
+===== Context
+
+The `@context` property MUST be present and MUST contain at least the following two entries:
+
 * `https://www.w3.org/ns/credentials/v2`
 * `https://creator-assertions.github.io/tbd/tbd`
 
 NOTE: TO DO: Transition the creator identity assertion context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
 
 [#vc-property-type]
-Type:: The `type` property MUST be present and MUST contain at least the following two entries:
-** `VerifiableCredential`
-** `CreatorIdentityAssertionCredential`
+===== Type
+
+The `type` property MUST be present and MUST contain at least the following two entries:
+
+* `VerifiableCredential`
+* `CreatorIdentityAssertionCredential`
 
 [#vc-property-issuer]
-Issuer:: The `issuer` property MUST be present and MAY have one of two representations:
-* String format
-+
-When specified as a string, the `issuer` MUST specify a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
+===== Issuer
+
+The `issuer` property MUST be present and MAY have one of two representations:
+
+* *String format:* When specified as a string, the `issuer` MUST specify a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
 +
 .Example:
 [source,json]
 "issuer": "did:example:2g55q912ec3476eba2l9812ecbfe"
-* Object format
-+
-When specified as an object, the `issuer` MUST include an `id` property. The `id` property MUST be a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
-+
+
+* *Object format:* When specified as an object, the `issuer` MUST include an `id` property. The `id` property MUST be a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
+
 Additional properties MAY be included within the object to provide further details about the issuer, including a non-empty `name` property.
-+
+
 .Example:
 [source,json]
 ----
@@ -847,23 +850,29 @@ Additional properties MAY be included within the object to provide further detai
   "name": "Example issuer",
   "contact": "https://example.com/issuer"
 }
----- 
+----
+
+NOTE: TO DO: Consider removing this section. I don’t think it adds any new requirements over the existing W3C VC requirements.
+
 [#vc-property-validFrom]
-Validity::
+===== Validity
+
 The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
-===== Creator identity properties
-
-The `credentialSubject` property MUST contain both the identity of _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ as described by the `signer_payload`. These can be represented by the following properties:
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/64[issue #64]): Consider stronger timestamping mechanism than W3C VC requires.
 
 [#vc-credentialsubject-id]
-ID::
-The `id` MUST be present and MUST represent an URI. It is RECOMMENDED that the URI be one which, if dereferenced, results in a globally unambiguous status of existence of the _<<_named_actor,named actor>>_. For example, dereferencing a `did:web` might return a `204 No Content` HTTP status code in case the user exists and no further information is available or `404 Not Found` HTTP status code in case the user does not exist.
+===== ID
+
+The `id` property MUST be present and MUST represent an URI. It is RECOMMENDED that the URI be one which, if dereferenced, results in a globally unambiguous status of existence of the _<<_named_actor,named actor>>_. For example, dereferencing a `did:web` might return a `204 No Content` HTTP status code in case the user exists and no further information is available or `404 Not Found` HTTP status code in case the user does not exist.
+
+NOTE: TO DO: Consider removing this section. This section doesn't add much information over the existing W3C VC requirements except the requirement to have an `id` field and I'm not sure that's actually necessary.
 
 [#vc-credentialsubject-namedactor]
-Named Actor::
-The `namedActor` property MUST be an array that MAY be present. If present, every item of `namedActor` MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified by a certain _<<Identity verifier,identity verifiers>>_. The method of verification is beyond the scope of this specification. Each item of `namedActor` property MUST contain at least two child properties: `name` and `verifiedBy`.
-+
+===== Named actor
+
+The `namedActor` property is an OPTIONAL property within the `credentialSchema` property. If present, it MUST be an array and every item MUST contain information about the _<<_named_actor,named actor>>_ whose identity has been verified by a certain _<<Identity verifier,identity verifiers>>_. The method of verification is beyond the scope of this specification. Each item of `namedActor` property MUST contain at least two child properties: `name` and `verifiedBy`.
+
 .Example:
 [source,json]
 ----
@@ -882,10 +891,13 @@ The `namedActor` property MUST be an array that MAY be present. If present, ever
   ]
   ...
 }
----- 
+----
+
+NOTE: TO DO: Consider merging this down into `credentialSubject` and making verifications its own property.
+
 [#vc-credentialsubject-namedactor-name]
 Named Actor name::
-The `namedActor[?].name` property MUST be present and MUST not be empty. The `namedActor[?].name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by the _<<Identity verifier,identity verifiers>>_.
+The `namedActor[?].name` property MUST be present and MUST NOT be empty. The `namedActor[?].name` property defines the _<<_named_actor,named actor’s>>_ name as it was verified by the _<<Identity verifier,identity verifiers>>_.
 
 [#vc-credentialsubject-namedactor-verifiedBy]
 Named Actor verification details::
@@ -893,20 +905,21 @@ The `namedActor[?].verifiedBy` property MUST be an object and MUST be present. T
 
 [#vc-credentialsubject-namedactor-verifiedBy-id]
 Identity verifier ID:::
-The `namedActor[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ must not be confused with the proof of verification of the _<<_named_actor,named actor>>_.
+The `namedActor[?].verifiedBy.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_verifier,identity verifier>>_. This proof of authenticity of the _<<_identity_verifier,identity verifier>>_ MUST NOT be confused with the proof of verification of the _<<_named_actor,named actor>>_.
 
 [#vc-credentialsubject-namedactor-verifiedBy-name]
 Identity verifier name:::
-The `namedActor[?].verifiedBy.name` MUST be present and MUST not be empty. The `namedActor[?].verifiedBy.name` property is the name of the _<<_identity_verifier,identity verifier>>_.
+The `namedActor[?].verifiedBy.name` MUST be present and MUST NOT be empty. The `namedActor[?].verifiedBy.name` property is the name of the _<<_identity_verifier,identity verifier>>_.
 
 [#vc-credentialsubject-namedactor-verifiedBy-proof]
 Identity verification proof:::
 The `namedActor[?].verifiedBy.proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_verifier,identity verifier>>_. The content as well as the process are outside the scope of this specification.
 
 [#vc-credentialsubject-affiliations]
-Affiliations::
-The `affiliations` property is an optional field. If present, it MUST be an array in which each item MUST contain information about a _<<_named_actor,named actor's>>_ affiliation. The process of proving the validity of these affiliations is outside the scope of this specification. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ affiliation details: `id`, `name`, and `proof`.
-+
+===== Affiliations
+
+The `affiliations` property is an OPTIONAL field within the `credentialSchema` property. If present, it MUST be an array in which each item MUST contain information about an affiliation of the _<<_named_actor,named actor>>._ The process of proving the validity of these affiliations is outside the scope of this specification. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ affiliation details: `id`, `name`, and `proof`.
+
 .Example:
 [source,json]
 ----
@@ -922,22 +935,26 @@ The `affiliations` property is an optional field. If present, it MUST be an arra
   ...
 }
 ----
+
 [#vc-credentialsubject-affiliation-id]
 Affiliation ID:::
 The `affiliations[?].id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_named_actor,named actor's>>_ affiliated entity.
 
+NOTE: TO DO: Define what we mean by "proof of authenticity" here.
+
 [#vc-credentialsubject-affiliation-name]
 Affiliation name:::
-The `affiliations[?].name` MUST be present and MUST not be empty. The `affiliations[?].name` property is the name of the  _<<_named_actor,named actor's>>_ affiliated entity.
+The `affiliations[?].name` MUST be present and MUST NOT be empty. The `affiliations[?].name` property is the name of the  _<<_named_actor,named actor's>>_ affiliated entity.
 
 [#vc-credentialsubject-affiliation-proof]
 Affiliation proof:::
 The `affiliations[?].proof` is an optional field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor's>>_ affiliation validity, i.e., the _<<_named_actor,named actor>> is affiliated indeed with this organization. The content as well as the process of validatig an affiliation relation are outside the scope of this specification.
 
 [#vc-credentialsubject-identities]
-Identities::
-The `identities` property is an optional field. If present, it MUST be an array containing information about the accounts that the _<<_named_actor,named actor>>_ requested to be bound with the _<<C2PA asset>>_ being described.
-+
+===== Identities
+
+The `identities` property is an optional field within the `credentialSchema` property. If present, it MUST be an array containing information about the accounts that the _<<_named_actor,named actor>>_ requested to be bound with the _<<C2PA asset>>_ being described.
+
 .Example:
 [source,json]
 ----
@@ -958,42 +975,47 @@ The `identities` property is an optional field. If present, it MUST be an array 
   ...
 }
 ----
-This specification mentions two identity types that MAY be used, but this specification is not limitted to these two:
+This specification mentions two identity types that MAY be used, but this specification is not limited to these two:
+
 * `socialProvider`
 * `cryptoWallet`
 
+NOTE: TO DO: Consider changing the identity type names to `snake_case` for consistency with the rest of the spec. Consider using `cawg.` prefix to allow non-CAWG identity types to be used here.
+
 [#vc-credentialsubject-identities-socialProvider]
-Identity by social provider::
+====== Identity by social provider
+
 This identity representation presents the details of a social account of the _<<_named_actor,named actor>>_. The method of social account verification is outside the scope of this specifiation. An identity by social provider MUST contain at least the following four child properties: `type`, `uri`, `provider`, and `createdAt`. Additionally, an identity by social provider MAY contain an `username` property.
 
 [#vc-credentialsubject-identities-type]
-Identity by social provider type:::
+Identity by social provider type::
 In this case the `identities[?].type` property MUST be present and MUST be `socialProvider`.
 
 [#vc-credentialsubject-identities-username]
-Identity user name:::
+Identity user name::
 The `identities[?].username` MAY be present and, if present, MUST NOT be empty. It represents the social account's user name.
 
 [#vc-credentialsubject-identities-uri]
-Identity URI:::
+Identity URI::
 The `identities[?].uri` MUST be present and MUST be a valid URI. It represents an URI that can prove the existence of an account for the user name.
 
 [#vc-credentialsubject-identities-provider]
-Identity provider:::
+Identity provider::
 The `identities[?].provider` MUST be a non empty object. The `identities[?].provider` object contains information about the social provider that is associated with this identity.  A social provider MUST contain at least the following two child properties: `id` and `name`.
 
 [#vc-credentialsubject-identities-provider-id]
-Identity provider ID:::
+Identity provider ID::
 The `identities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof existence of the social provider.
 
 [#vc-credentialsubject-identities-provider-name]
-Identity provider name:::
+Identity provider name::
 The `identities[?].provider.name` MUST be present and MUST be a non emtpy string that represents the name of the social provider.
 
-Identity creation date:::
+Identity creation date::
 The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this social account was associated with the _<<_named_actor,named actor>>_. 
 
-Identity by crypto wallet:::
+====== Identity by crypto wallet
+
 This identity representation presents the details of a crypto wallet account of the _<<_named_actor,named actor>>_. The methods for verifying crypto wallet accounts and their association with the _<<_named_actor,named actor>>_ are outside the scope of this specifiation. An identity by crypto wallet needs to contain at least the following four child properties: `type`, `address`, `provider`, and `createdAt`.
 
 Identity by crypto wallet type:::
@@ -1015,13 +1037,18 @@ Identity provider name:::
 The `identities[?].provider.name` MUST be present and MUST be a non emtpy string that represents the name of the crypto wallet provider.
 
 Identity creation date:::
-The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this crypto wallet account was associated with the _<<_named_actor,named actor>>_. 
+The `identities[?].createdAt` MUST be present and MUST be a valid date-time as specified by https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when this crypto wallet account was associated with the _<<_named_actor,named actor>>_.
 
-IMPORTANT: At least one of `namedActor` property and `identities` property MUST be present, as they represent _<<_named_actor,named actor>>_ identity to be bound to with the _<<C2PA asset>>_ being described. Having both missing makes the credential invalid as there is no identity to be bound to the _<<C2PA asset>>._
+===== Binding to C2PA asset
 
-Credential C2PA asset::
-The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings. (TO DO: Specify Base-64 encoding options.)
-+
+The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings.
+
+NOTE: TO DO: Specify Base-64 encoding options.
+
+NOTE: TO DO: Consider name of this property. I'm not sure `boundTo` conveys the meaning fully.
+
+NOTE: TO DO: Decide whether to preserve `snake_case` names or translate to `camelCase` for `signer_payload` content. Current example uses `camelCase`.
+
 .Example:
 [source,json]
 ----
@@ -1051,9 +1078,9 @@ The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the 
 
 ==== Identity assertion verifiable credential example
 
-An example of the *<<_identity_assertion,identity assertion>>* verifiable credential is given below:
+An example of the *<<_creator_identity_assertion,creator identity assertion>>* verifiable credential is given below:
 
-.Example identity assertion verifiable credential
+.Example creator identity assertion verifiable credential
 [#example-ia-vc]
 [source,json]
 ----
@@ -1125,9 +1152,15 @@ An example of the *<<_identity_assertion,identity assertion>>* verifiable creden
 }
 ----
 
+NOTE: TO DO: Track changes to draft schema and ensure example is correctly updated.
+
 ==== Data verification schema
 
-The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
+The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
+
+NOTE: TO DO: Update schema URL once it is finalized.
+
+NOTE: TO DO: Add text explaining the use of `credentialSchema` property as per the example below.
 
 [source,json]
 ----
@@ -1143,23 +1176,25 @@ NOTE: The usage of this data verification schema is not enforced by this specifi
 
 ==== Recommendations for issuers
 
-The inclusion of the `credentialSchema` property in a verifiable credential is optional. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
+NOTE: TO DO: Merge with above section? This explains the use of `credentialSchema` to answer my earlier TO DO item.
 
-The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is highly recommended to include it as it enforces this specification’s constraints.
+The inclusion of the `credentialSchema` property in a verifiable credential is OPTIONAL. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
+
+The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
 
 ==== Recommendations for verifiers
 
-The usage of the data verification schemas from a verifiable credential's `credentialSchema` is OPTIONAL. However, it is recommended that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
+The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
 
 NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ==== Proofs
 
-TO DO
+NOTE: TO DO: Write section on proofs.
 
 ==== Validating an identity assertion with verifiable credentials
 
-TO DO
+NOTE: TO DO: Write section on validating.
 
 === X.509 certificates and COSE signatures
 
