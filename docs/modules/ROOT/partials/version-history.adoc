@@ -49,3 +49,8 @@ _This section is non-normative._
 
 * Review and flag upcoming discussion items.
 * (Clerical) Add section numbers in schema description.
+* (Clerical) Add GitHub issue references for TO DO items.
+
+*29 July 2024*
+
+* Merge with updated 1.0-draft version of this specification.
