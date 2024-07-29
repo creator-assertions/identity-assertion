@@ -842,30 +842,7 @@ The `type` property MUST be present and MUST contain at least the following two 
 [#vc-property-issuer]
 ===== Issuer
 
-The `issuer` property MUST be present and MAY have one of two representations:
-
-* *String format:* When specified as a string, the `issuer` MUST specify a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
-+
-.Example:
-[source,json]
-"issuer": "did:example:2g55q912ec3476eba2l9812ecbfe"
-
-* *Object format:* When specified as an object, the `issuer` MUST include an `id` property. The `id` property MUST be a valid URI that, when dereferenced, results in a document that can be used to verify the information from the credential, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
-
-Additional properties MAY be included within the object to provide further details about the issuer, including a non-empty `name` property.
-
-.Example:
-[source,json]
-----
-"issuer": {
-  "id": "did:example:2g55q912ec3476eba2l9812ecbfe",
-  "name": "Example issuer",
-  "contact": "https://example.com/issuer"
-}
-----
-
-[#pr-146]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/pull/146[PR #146]): Consider removing this section. I don’t think it adds any new requirements over the existing W3C VC requirements.
+The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
 
 [#vc-property-validFrom]
 ===== Validity
