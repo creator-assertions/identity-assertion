@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 25 July 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 29 July 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
@@ -308,6 +308,12 @@ Also referred to as a *DID document,* this is a document that is accessible usin
 
 The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<ToIP verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
 
+==== Credential revocation
+
+An action signifying that a digital credential can no longer be considered as valid. This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ stating that the public/private key pair associated with the credential is no longer valid.
+
+Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
+
 ==== Identity assertion
 
 A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over an digital identity and bind the identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
@@ -343,6 +349,10 @@ The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_i
 Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.” This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
 
 See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-identifiers++[ToIP identifiers] in the ToIP technology architecture specification.
+
+==== Trust
+
+In the context of an *<<_identity_assertion,identity assertion>>,* we define _trust_ as meeting or exceeding the minimum level of confidence an _<<_identity_assertion_consumer,identity assertion consumer>>_ requires over assertions made about the identity of the _<<_named_actor,named actor>>_ and the _<<_named_actor,named actor’s>>_ true intention regarding their attestations via content included in and referenced by the *<<_identity_assertion,identity assertion>>.*
 
 ==== Trust list
 
@@ -703,7 +713,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.cbor.invalid` | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
 |`cawg.identity.assertion.mismatch` | The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
 |`cawg.identity.assertion.duplicate` | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
-|`cawg.identity.credential_revoked` | The *<<_identity_assertion,identity assertion>>* was signed using a revoked credential.
+|`cawg.identity.credential_revoked` | The *<<_identity_assertion,identity assertion>>* was signed using a _<<_credential_revocation,revoked credential>>._
 |`cawg.identity.hard_binding_missing` | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 |`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
@@ -1317,8 +1327,8 @@ IMPORTANT: “Content Credential” is a trademarked term that refers to _<<_c2p
 
 For each form of credential that an _<<_identity_asertion_consumer,identity assertion consumer>>_ is prepared to accept, it SHOULD maintain:
 
-1. a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>,* and
-2. one or more mechanisms to check for credentials that have been revoked by the _issuer._
+. a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>,* and
+. one or more mechanisms to check for credentials that have been _<<_credential_revocation,revoked>>_ by the _issuer._
 
 There are a few possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
 
@@ -1326,9 +1336,9 @@ IMPORTANT: The trust decisions described in the scenarios should only be evaluat
 
 The trust decision can result in one of three descriptions of the _<<_named_actor,named actor>>:_
 
-* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
-* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
-* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been revoked at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
 
 ==== Named actor as issuer
 
@@ -1345,9 +1355,11 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 
 . Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
-.. If the transitive trust relationship exists and the credential has not been revoked, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+.. If so, was the _<<_named_actor,named actor’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+.. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
 . If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
+
+IMPORTANT: Any available information about credential _<<_credential_revocation,revocation>>_ SHOULD be included in the _<<_identity_assertion_consumer,identity assertion consumer’s>>_ report about the *<<_identity_assertion,identity assertion>>* regardless of *trusted* or *untrusted* status.
 
 NOTE: The direct trust relationship case is possible, but relatively uncommon.
 
@@ -1393,16 +1405,18 @@ In this scenario, the _<<_identity_assertion_consumer,identity assertion consume
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
 .. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
 .. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
-.. If so, has the _credential issuer_ issued a revocation for the *<<_identity_assertion,identity assertion>> generator’s* credential? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
-.. If the transitive trust relationship exists and the credential has not been revoked, proceed to step 2.
+.. If so, was the *<<_identity_assertion,identity assertion>> generator’s* credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+.. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
 .. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, proceed to step 3.
 .. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, proceed to step 3.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
-. Has the _credential issuer_ issued a revocation for the _<<_named_actor,named actor’s>>_ credential?
+. Was the _<<_named_actor,named actor’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed?
 .. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
-.. If no such revocation has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+.. If no such _<<_credential_revocation,revocation>>_ has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+
+IMPORTANT: Any available information about _<<_credential_revocation,credential revocation>>_ SHOULD be included in the _<<_identity_assertion_consumer,identity assertion consumer’s>>_ report about the *<<_identity_assertion,identity assertion>>* regardless of *trusted* or *untrusted* status.
 
 === Threats to trust model
 
@@ -1466,20 +1480,19 @@ Implementers are encouraged to apply one or more of the following approaches to 
 * Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to display additional detail about the _<<_named_actor,named actor>>,_ such as the unique identifiers behind the credential, upon user request.
 * Future versions of this specification will likely allow linking independent verifiable trust signals (social accounts, web sites, etc.). As those become available, _<<_named_actor,named actors>>_ are encouraged to include those signals and _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to verify those signals.
 
-==== Validation of credential status
+==== Revocation of credential
 
-* Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ need to do real-time checks to ensure that the _<<_named_actor,named actor’s>>_ credential is still considered valid? What harms or risks may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status?
-* If a bad actor makes it into the system, then how does that ID get blocked? Is there an OCSP, CRL, bad actor database, etc.? If so, what is the governance for such a list and who maintains it?
-* What if the bad actor is in an ingredient and not the primary piece of content?
-* What is displayed to the end-user in both the primary content and ingredient scenarios?
+There are numerous scenarios which may result in the credential issued to a _<<_credential_holder,credential holder>>_ being _<<_credential_revocation,revoked>>._ Some are adverse, such as credential compromise or acting in bad faith. Other scenarios are routine, such as changes to the name, address, or other identifying information contained within the credentials.
 
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/118[issue #118]): Discuss and add guidance.
+The _<<_identity_assertion_consumer,identity assertion consumer>>_ should make a best effort to verify the status of the credential as of the time of *<<_identity_assertion,identity assertion>>* creation. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be _<<_credential_revocation,revoked>>_ at that time, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.* Absent specific information as to the cause for _<<_credential_revocation,revocation,>>_ a _<<_identity_assertion_consumer,identity assertion consumer>>_ should not assume that a _<<_credential_revocation,revocation>>_ is an indication of an adverse event.
+
+Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks – such as generating network traffic that may indicate interest in particular content – that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
 
 ==== Compromise of private key material
 
 In practice, the _<<_credential_holder,credential holder’s>>_ signing keys will be issued to systems that perform *<<_identity_assertion,identity assertion>>* signing operations. These systems may make these operations available to end users and/or be deployed to user-owned platforms (e.g., mobile phones). Issuance or disclosure of signing keys to malicious actors enables attackers to create claim signatures on arbitrary assets using the compromised identity. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity.
 
-It is therefore important that systems that manage *<<_identity_assertion,identity assertion>>* signing keys adhere to security and key management best practices. This includes leveraging platform-specific features (e.g., hardware security modules and cloud key management services), minimizing key reuse, and revoking keys when compromise is suspected. For more information on key management, see the link:https://csrc.nist.gov/Projects/Key-Management/Key-Management-Guidelines[NIST Key Management Guidelines].
+It is therefore important that systems that manage *<<_identity_assertion,identity assertion>>* signing keys adhere to security and key management best practices. This includes leveraging platform-specific features (e.g., hardware security modules and cloud key management services), minimizing key reuse, and _<<_credential_revocation,revoking>>_ keys when compromise is suspected. For more information on key management, see the link:https://csrc.nist.gov/Projects/Key-Management/Key-Management-Guidelines[NIST Key Management Guidelines].
 
 Some *<<_identity_assertion,identity assertion>>* generation and signing systems may be exposed to untrusted users. Exploitation or misuse of these systems may allow attackers to create *<<_identity_assertion,identity assertion>>* signatures on arbitrary assets using identities provided by the system. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity. The impact of such an attack may be amplified if identities are shared between users, and/or if the attack goes undetected for an extended period of time.
 
