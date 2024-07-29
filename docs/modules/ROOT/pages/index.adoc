@@ -289,7 +289,7 @@ The _<<_actor,actor>>_ that has control (specifically signature authority) over 
 
 ==== Credential revocation
 
-An action signifying that a digital credential can no longer be considered as valid. This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ that the public/private key pair associated with the credential is no longer valid.
+An action signifying that a digital credential can no longer be considered as valid. This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ stating that the public/private key pair associated with the credential is no longer valid.
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
 
@@ -837,8 +837,8 @@ IMPORTANT: The trust decisions described in the scenarios should only be evaluat
 
 The trust decision can result in one of three descriptions of the _<<_named_actor,named actor>>:_
 
-* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
-* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a direct or indirect trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
 * *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
 
 ==== Named actor as issuer
@@ -985,9 +985,9 @@ Implementers are encouraged to apply one or more of the following approaches to 
 
 There are numerous scenarios which may result in the credential issued to a _<<_credential_holder,credential holder>>_ being _<<_credential_revocation,revoked>>._ Some are adverse, such as credential compromise or acting in bad faith. Other scenarios are routine, such as changes to the name, address, or other identifying information contained within the credentials.
 
-The _<<_identity_assertion_consumer,identity assertion consumer>>_ should make a best effort to verify the status of the credential as of the time of *<<_identity_assertion,identity assertion>>* issuance. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be _<<_credential_revocation,revoked>>_ at that time, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.* Absent specific information as to the cause for _<<_credential_revocation,revocation,>>_ a _<<_identity_assertion_consumer,identity assertion consumer>>_ should not assume that a _<<_credential_revocation,revocation>>_ is an indication of an adverse event.
+The _<<_identity_assertion_consumer,identity assertion consumer>>_ should make a best effort to verify the status of the credential as of the time of *<<_identity_assertion,identity assertion>>* creation. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be _<<_credential_revocation,revoked>>_ at that time, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.* Absent specific information as to the cause for _<<_credential_revocation,revocation,>>_ a _<<_identity_assertion_consumer,identity assertion consumer>>_ should not assume that a _<<_credential_revocation,revocation>>_ is an indication of an adverse event.
 
-Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
+Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks – such as generating network traffic that may indicate interest in particular content – that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
 
 ==== Compromise of private key material
 
