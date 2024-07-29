@@ -55,3 +55,4 @@ _This section is non-normative._
 
 * Merge with updated 1.0-draft version of this specification.
 * Remove requirement for credential identity assertion to have an `id` field.
+* Simplify requirement for credential identity assertion to reference W3C VC definition.
