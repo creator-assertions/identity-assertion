@@ -200,3 +200,7 @@ _This section is non-normative._
 *23 July 2024*
 
 * (Clerical): Fix up broken links and remove TO DO items slated for later versions.
+
+*29 July 2024*
+
+* Add section on credential revocation.
