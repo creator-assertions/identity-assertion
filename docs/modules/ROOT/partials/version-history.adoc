@@ -54,3 +54,4 @@ _This section is non-normative._
 *29 July 2024*
 
 * Merge with updated 1.0-draft version of this specification.
+* Remove requirement for credential identity assertion to have an `id` field.
