@@ -1028,51 +1028,53 @@ The `identities[?].createdAt` MUST be present and MUST be a valid date-time as s
 
 ===== Binding to C2PA asset
 
-The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings.
+The `credentialSubject` field MUST contain a `c2paAsset` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature with the following adaptations:
 
-[#issue-151]
-[NOTE]
+* All CBOR bytestring values in `signer_payload` data structure (for example, `hash` entries in the hashlink data structure) MUST be converted to the corresponding base 64 encoding as specified in link:++https://datatracker.ietf.org/doc/html/rfc4648#section-4++[Section 4, “Base 64 Encoding,”] of RFC 4648. The base 64 encoding MUST NOT use the URL-safe variation of base 64. The encoding MUST NOT include line feeds or additional annotations not directly required by the core base 64 specification.
+* The JSON encoding MUST use the field names exactly as specified in xref:_overview[xrefstyle=full].
++
+IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overview[xrefstyle=full]) are specified using lower-case letters with underscore characters (commonly referred to as `snake_case`). Field names in the verifiable credential data model are typically specified using lower-case letters with upper-case letters for word breaks (commonly referred to as `camelCase`). A translation between the two styles MUST NOT be performed as it creates the potential for miscommunication.
+
+[#example-c2pa-asset-section]
+.`c2paAsset` entry
+[example]
 ====
-TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/151[Issue #151]): Review description of `boundTo` property.
-
-* Specify Base-64 encoding options.
-* Consider name of this property. I'm not sure `boundTo` conveys the meaning fully.
-* Decide whether to preserve `snake_case` names or translate to `camelCase` for `signer_payload` content. Current example uses `camelCase`.
-====
-
-.Example:
 [source,json]
 ----
 "credentialSubject": {
   ...
-  "boundTo": {
+  "c2paAsset": {
     ...
-    "referencedAssertions": [
+    "referenced_assertions": [
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
-        "hash": b64'U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8='
+        "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
       },
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
-        "hash": b64'G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c='
+        "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
       },
       {
         "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
-        "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
+        "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
       }
-    ]
+    ],
+    "sig_type": "cawg.w3c.vc"
     ...
   }
   ...
 }
 ----
+====
 
 ==== Identity assertion verifiable credential example
 
 An example of the *<<_creator_identity_assertion,creator identity assertion>>* verifiable credential is given below:
 
-.Example creator identity assertion verifiable credential
+.Creator identity assertion verifiable credential
 [#example-ia-vc]
+[example]
+====
 [source,json]
 ----
 {
@@ -1087,7 +1089,6 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
   "issuer": "did:web:connected-identities.identity.adobe.com",
   "validFrom": "2024-05-27T11:40:40Z",
   "credentialSubject": {
-    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",    
     "namedActor": [
       {
         "name": "John Doe",
@@ -1117,21 +1118,22 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
         "uri": "https://example-social-network.com/username"
       }      
     ],
-    "boundTo": {
-      "referencedAssertions": [
+    "c2paAsset": {
+      "referenced_assertions": [
         {
           "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
-          "hash": "b64'U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8='"
+          "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
         },
         {
           "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
-          "hash": "b64'G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c='"
+          "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
         },
         {
           "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
-          "hash": "b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='"
+          "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
         }
-      ]
+      ],
+      "sig_type": "cawg.w3c.vc"
     },
   },
   "credentialSchema": [
@@ -1142,6 +1144,7 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
   ]  
 }
 ----
+====
 
 [#issue-152]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/152[issue #152]): Track changes to draft schema and ensure example is correctly updated.
