@@ -875,14 +875,6 @@ The `validFrom` field MUST exist and it MUST express the date and time when the 
 [#issue-64]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/64[issue #64]): Consider stronger timestamping mechanism than W3C VC requires.
 
-[#vc-credentialsubject-id]
-===== ID
-
-The `id` property MUST be present and MUST represent an URI. It is RECOMMENDED that the URI be one which, if dereferenced, results in a globally unambiguous status of existence of the _<<_named_actor,named actor>>_. For example, dereferencing a `did:web` might return a `204 No Content` HTTP status code in case the user exists and no further information is available or `404 Not Found` HTTP status code in case the user does not exist.
-
-[#pr-147]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/pull/147[PR #147]): Consider removing this section. This section doesn't add much information over the existing W3C VC requirements except the requirement to have an `id` field and I'm not sure that's actually necessary.
-
 [#vc-credentialsubject-namedactor]
 ===== Named actor
 
