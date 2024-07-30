@@ -941,11 +941,11 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 
 The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementers that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
-==== Name collisions and homoglyph and typo-squatting attacks
+==== Name collisions, homoglyph attacks, and typo-squatting attacks
 
 An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
 
-Similarly, it is likely that two or more _<<_named_actor,named actors>>_ may legitimately have the same or very similar names. Whether legitimate or not, similar names may cause confusion among _<<_identity_assertion_consumer,identity assertion consumers>>_ absent other signals that disambiguate specific individuals or organizations.
+Similarly, it is likely that two or more _<<_named_actor,named actors>>_ may legitimately have the same or very similar names. Whether legitimate or not, similar names may cause confusion among _<<_identity_assertion_consumer,identity assertion consumers>>_ absent other signals that disambiguate specific individuals or organizations. If anonymous identities are supported, _<<_identity_assertion,identity assertions>>_ should also contain signals to disambiguate between anonymous identities.
 
 IMPORTANT: The Creator Assertions Working Group supports the principle of link:https://www.icann.org/ua[Universal Acceptance as described by ICANN]. No mitigation for the attacks described in this section should result in preferential treatment for identifiers in any language or script system over any other language or script system.
 
