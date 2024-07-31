@@ -967,6 +967,16 @@ The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty.
 Identity provider proof:::
 The `verifiedIdentities[?].provider.proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_provider,identity provider>>._ The content as well as the process are outside the scope of this specification.
 
+[#issue-160]
+[NOTE]
+====
+TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/160[Issue #160]): Determine structure for `verifiedIdentities[?].proof`.
+
+Need to clarify that the proof is _identity provider's_ signature about their attestations for _named actor._
+
+For that reason, might make sense to move proof up one level from its current place in the hierarchy.
+====
+
 ===== Binding to C2PA asset
 
 The `credentialSubject` field MUST contain a `boundTo` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature. All bytestring entries in the `signer_payload` data structure (i.e. hash entries in hashlink URL data structures) MUST be converted to the corresponding Base-64 plain-text strings.
