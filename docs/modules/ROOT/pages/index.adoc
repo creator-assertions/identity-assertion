@@ -853,7 +853,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 [#vc-credentialsubject-verifiedIdentities]
 ===== Verified identities
 
-The `verifiedIdentities` property MUST be present and MUST be an array. Every item in the array MUST contain information about the _<<_named_actor,named actor>>_ as verified by the _<<_identity_assertion_generator,identity assertion generator>>_ or a service contacted by the _<<_identity_assertion_generator,identity assertion generator>>._
+The `verifiedIdentities` property MUST be present and MUST be a non-empty array. Every item in the array MUST contain information about the _<<_named_actor,named actor>>_ as verified by the _<<_identity_assertion_generator,identity assertion generator>>_ or a service contacted by the _<<_identity_assertion_generator,identity assertion generator>>._
 
 .Example:
 [source,json]
@@ -933,6 +933,8 @@ If the `type` of this verified identity is `cawg.document_verification`, the `ve
 User name::
 The `verifiedIdentities[?].username` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ user name as assigned by the _<<_identity_provider,identity provider>>._
 +
+If the `type` of this verified identity is `cawg.social_media`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the user within this service.
++
 If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the user’s crypto wallet.
 
 [#vc-credentialsubject-verifiedidentity-uri]
@@ -943,7 +945,7 @@ If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDE
 
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 Identity verification date::
-The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>.
+The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
 
 [#vc-credentialsubject-verifiedidentity-provider]
 Identity provider details::
