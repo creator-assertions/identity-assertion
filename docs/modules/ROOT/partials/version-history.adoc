@@ -56,3 +56,7 @@ _This section is non-normative._
 * Merge with updated 1.0-draft version of this specification.
 * Remove requirement for credential identity assertion to have an `id` field.
 * Simplify requirement for credential identity assertion to reference W3C VC definition.
+
+*31 July 2024*
+
+* Unify `namedActor`, `affiliations`, and `identities` into a single `verifiedIdentities` property
