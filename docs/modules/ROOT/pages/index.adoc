@@ -758,6 +758,17 @@ The issuer is responsible for gathering information about the _<<_named_actor,na
 
 In some scenarios, the issuer MAY be the _<<_named_actor,named actor>>,_ but that is not required.
 
+[#issue-161]
+[NOTE]
+====
+TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/161[Issue #161]): Provide definitions for _identity assertion_ and _identity assertion provider._
+
+These terms are used throughout this section and should be added to the glossary. Preliminary definitions:
+
+* _identity assertion generator:_ akin to the claim generator: what's the software that's producing the identity assertion itself
+* _identity provider:_ the actor that is attesting to the identity of the named actor. As stated elsewhere, this might be the identity assertion generator or it might be a third party.
+====
+
 ==== Verifiable credential example
 
 _This section is non-normative._
