@@ -60,3 +60,7 @@ _This section is non-normative._
 *31 July 2024*
 
 * Unify `namedActor`, `affiliations`, and `identities` into a single `verifiedIdentities` property
+
+*01 August 2024*
+
+* (Clerical) Correct mismatched domain names in example verifiable credential.
