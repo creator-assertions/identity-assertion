@@ -972,7 +972,7 @@ The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI 
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name:::
-The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty. The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
+The `verifiedIdentities[?].provider.name` MUST be present and MUST be a non-empty string. The `verifiedIdentities[?].provider.name` property is the user-visible name of the _<<_identity_provider,identity provider>>._
 
 [#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
 Identity provider proof:::
