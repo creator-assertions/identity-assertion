@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 01 August 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 02 August 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
@@ -1374,29 +1374,6 @@ An attacker could attempt to extract a valid *<<_identity_assertion,identity ass
 
 To prevent this attack, we require that a valid *<<_identity_assertion,identity assertion>>* contain a `signer_payload.referenced_assertions` which includes a _<<_hard_binding,hard binding>>_ assertion that properly describes the _<<_c2pa_asset,C2PA asset>>._ A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should detect that the _<<_hard_binding,hard binding>>_ assertion referenced by the original *<<_identity_assertion,identity assertion>>* does not match the attacker’s _<<_c2pa_asset,C2PA asset>>_ and fail validation.
 
-==== Name collisions
-
-For an identity to have value, it must be unique. An attacker may try to cause confusion for the _<<_identity_assertion_consumer,identity assertion consumer>>_ by trying to impersonate a known, trusted identity. One method for attempting to impersonate a trusted identity is to attempt to create an identity with the same name through a second identity provider. If the _<<_identity_assertion_consumer,identity assertion consumer>>_ doesn’t know which identity provider the trusted identity uses, then the attacker may be able to convince the content consumer that their content is from the trusted identity. In addition to intentional collisions, there could also be unintentional collisions due to the fact that thousands of people can have the same name. Therefore, there needs to be methods for distinguishing people of the same name both within a single identity provider and across identity providers.
-
-[#name-collision-examples]
-.Questions to consider with regard to name collisions
-[example]
-====
-These are a few examples of the kinds of questions that an _<<_identity_assertion_consumer,identity assertion consumer>>_ should ask when reviewing the credential presented as part of an *<<_identity_assertion,identity assertion>>.*
-
-* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between two John Does registered to the same identity provider?
-* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between two John Does registered to _different_ identity providers?
-* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters who need to remain anonymous at a technical level?
-* How should an _<<_identity_assertion_consumer,identity assertion consumer>>_ differentiate between anonymous reporters in the UI? If a _<<_credential_holder,credential holder>>_ is allowed to specify what gets displayed for their ID, then that opens the door for impersonation attacks. As an example, consider an “anonymous” user who asks to be identified as “Barack Obama” to the end-user.
-* Is the end user (human associated with an _<<_identity_assertion_consumer,identity assertion consumer>>_) required to memorize serial numbers, cryptographic identifiers, certificate chains, and the like? Should end users keep a “phone book” of serial numbers that they trust?
-
-NOTE: The above questions target name collisions for individuals, but the same questions could be asked about organizational identity. For instance, different legal entities with the name “Smith Consulting” could legitimately be registered in different jurisdictions.
-====
-
-Whether a name collision is intentional or coincidental, careful attention should be paid as to how to gather the appropriate technical details to allow differentiate distinct _<<_named_actor,named actors>>_ and to meaningfully expose that differentiation in user experience.
-
-A related threat is the intentional use of similar characters, which is discussed in xref:_homoglyph_and_typo_squatting_attacks[xrefstyle=full].
-
 ==== Parsing and validation errors
 
 Any content including, but not limited to the _<<_named_actor,named actor’s>>_ identity, could be subject to a number of parsing or validation attacks:
@@ -1407,13 +1384,13 @@ Any content including, but not limited to the _<<_named_actor,named actor’s>>_
 
 The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementers that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
 
-==== Homoglyph and typo-squatting attacks
+==== Name collisions, homoglyph attacks, and typo-squatting attacks
 
 An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
 
-Similarly, it is likely that two or more _<<_named_actor,named actors>>_ may legitimately have the same or very similar names. This is discussed in xref:_name_collisions[xrefstyle=full].
+Similarly, it is likely that two or more _<<_named_actor,named actors>>_ may legitimately have the same or very similar names. Whether legitimate or not, similar names may cause confusion among _<<_identity_assertion_consumer,identity assertion consumers>>_ absent other signals that disambiguate specific individuals or organizations. If anonymous identities are supported, _<<_identity_assertion,identity assertions>>_ should also contain signals to disambiguate between anonymous identities.
 
-IMPORTANT: The Creator Assertions Working Group supports the principle of link:https://www.icann.org/ua[Universal Acceptance as described by ICANN]. No mitigation for homoglyph or typo-squatting attacks should result in preferential treatment for identifiers in any language or script system over any other language or script system.
+IMPORTANT: The Creator Assertions Working Group supports the principle of link:https://www.icann.org/ua[Universal Acceptance as described by ICANN]. No mitigation for the attacks described in this section should result in preferential treatment for identifiers in any language or script system over any other language or script system.
 
 Implementers are encouraged to apply one or more of the following approaches to mitigate this potential attack:
 

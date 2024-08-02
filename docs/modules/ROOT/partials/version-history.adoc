@@ -64,3 +64,7 @@ _This section is non-normative._
 *01 August 2024*
 
 * (Clerical) Correct mismatched domain names in example verifiable credential.
+
+*02 August 2024*
+
+* Merge with updated 1.0-draft version of this specification.
