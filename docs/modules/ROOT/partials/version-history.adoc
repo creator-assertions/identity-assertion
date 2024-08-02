@@ -204,3 +204,7 @@ _This section is non-normative._
 *29 July 2024*
 
 * Add section on credential revocation.
+
+*02 August 2024*
+
+* Fold name collisions discussion into existing homoglyph and typo-squatting attack discussion.
