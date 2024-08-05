@@ -324,6 +324,10 @@ A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of a
 
 NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
 
+==== Identity assertion generator
+
+The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for generating the *<<_identity_assertion,identity assertion>>.* This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
+
 ==== Identity verifier
 
 An organization or system that is responsible for confirming the authenticity and validity of the identity of an individual or organization.
@@ -507,11 +511,11 @@ The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the 
 
 The `signer_payload` data structure MUST be presented to be signed by the _<<_credential_holder,credential holder>>_ corresponding to each *<<_identity_assertion,identity assertion>>.* This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+IMPORTANT: If a data hash assertion is being used, the _<<_identity_assertion_generator,identity assertion generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Calculating the `expected_partial_claim` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_partial_claim` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_partial_claim` field in `signer_payload`, it MUST be computed as follows:
 
 . Create a valid _<<C2PA claim>>_ data structure that includes references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertions>>.* The `hash` value for all assertion references MUST be valid and correct, except in the following cases:
 .. For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
@@ -526,7 +530,7 @@ The `expected_partial_claim` field SHOULD contain a CBOR map with the following 
 
 ==== Calculating the `expected_claim_generator` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim_generator` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_claim_generator` field in `signer_payload`, it MUST be computed as follows:
 
 . Identify the end-entity signing certificate that will be used for the expected _<<C2PA claim generator>>._
 . Serialize this signing certificate as a CBOR byte string as described in link:https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
@@ -541,7 +545,7 @@ The `expected_claim_generator` field SHOULD contain a CBOR map with the followin
 
 ==== Calculating the `expected_countersigners` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that will be present in the _<<C2PA Manifest>>:_
 .. Calculate the `signer_payload` map for that *<<_identity_assertion,identity assertion>>.* Exclude any `expected_countersigners` field from that `signer_payload` map and place the resulting `signer_payload` structure in the `partial_signer_payload` field of _this_ *<<_identity_assertion,identity assertion’s>>* `expected_countersigners` map.
@@ -572,7 +576,7 @@ The `signer_payload` data structure MUST be unchanged from the data structure th
 
 The values for the `signer_payload.sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 
 If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting *<<_identity_assertion,identity assertion>>* exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_ If the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full] MUST be repeated with a larger _<<_placeholder_assertion,placeholder assertion>>._
 
@@ -595,7 +599,7 @@ Similarly, the size of the *<<_identity_assertion,identity assertion>>* cannot b
 
 In this case, it is necessary to use a _<<_placeholder_assertion,placeholder assertion>>_ to reserve space for the content of the final *<<_identity_assertion,identity assertion>>* (including its signature) which will be created later.
 
-When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+When using a data hash assertion, an _<<_identity_assertion_generator,identity assertion generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
 
 1. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions.”] Any *<<_identity_assertion,identity assertion>>* that will be added to the claim MUST be represented during this step by an assertion using the same label as the final *<<_identity_assertion,identity assertion>>.* The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final *<<_identity_assertion,identity assertion>>.*
 2. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 10.3.2.1, “Adding assertions and redactions”]
@@ -603,7 +607,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_connecting_the_signature++[Section 10.3.2.3, “Connecting the signature”]
 5. If using C2PA 1.x process, link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”].
 6. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_create_content_bindings++[Section 10.4.1, “Create content bindings”]
-7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
@@ -614,7 +618,7 @@ These steps are also represented by the following sequence diagram, which is non
 [mermaid,width=100%]
 ....
 sequenceDiagram
-    participant G as C2PA claim generator
+    participant G as Identity assertion generator
     participant H as Credential holder
 
     G->>G: Create assertions
@@ -765,7 +769,6 @@ TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/161[
 
 These terms are used throughout this section and should be added to the glossary. Preliminary definitions:
 
-* _identity assertion generator:_ akin to the claim generator: what's the software that's producing the identity assertion itself
 * _identity provider:_ the actor that is attesting to the identity of the named actor. As stated elsewhere, this might be the identity assertion generator or it might be a third party.
 ====
 
@@ -1327,7 +1330,7 @@ In this example, the wallet is prepared to selectively disclose portions of the 
 [mermaid,width=100%]
 ....
 sequenceDiagram
-    participant G as C2PA claim generator
+    participant G as Identity assertion generator
     participant W as Wallet
     participant H as Credential holder
 
@@ -1350,10 +1353,10 @@ image::trust-model/no-signature-authority.drawio.svg[Named actor without signatu
 
 In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
-. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
-.. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
-.. If so, was the *<<_identity_assertion,identity assertion>> generator’s* credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator>>_ to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
+.. Is there a direct trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>?_ If so, proceed to step 2.
+.. Is there a transitive trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator’s>>_ _credential issuer_ to issue valid signature credentials?)
+.. If so, was the _<<_identity_assertion_generator,identity assertion generator’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
 .. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
