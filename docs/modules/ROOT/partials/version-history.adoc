@@ -208,3 +208,7 @@ _This section is non-normative._
 *02 August 2024*
 
 * Fold name collisions discussion into existing homoglyph and typo-squatting attack discussion.
+
+*12 August 2024*
+
+* Update links to point to C2PA 2.1 technical specification instead of 2.0. Add prohibition on using v1 timestamps as described in C2PA 2.0 and prior.
