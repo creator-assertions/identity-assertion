@@ -1215,6 +1215,173 @@ In each of the above sections, the following changes MUST be applied:
 * The validator SHALL maintain one or more _<<_trust_list,trust lists>>_ which do not need to be the same as the _<<_trust_list,trust lists>>_ used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
 * The validator SHALL consider any v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.
 
+== HTTPS API
+
+An _<<_actor,actor>>_ MAY wish to provide a service API for providing *<<_identity_assertion,identity assertion>>* signatures and credentials. This MAY be done via any protocol. This standard defines a RECOMMENDED API which can be made available via link:https://datatracker.ietf.org/doc/html/rfc9112[HTTP 1.1 (RFC 9112)] or any subsequent version of the HTTP protocol.
+
+The intent of this API is that a software library can be configured by providing a single HTTPS endpoint address. All remaining configuration can be discovered via that endpoint.
+
+This standard describes three endpoints:
+
+* *Configuration and discovery:* Provides additional information required for a client process to perform the remaining operations.
+* *User-specific options:* Provides additional information about an authenticated user which can be used to configure subsequent signing requests.
+* *Generate asset-specific credential:* Given a description of a specific _<<C2PA asset>>_ and a specific authenticated user, generate an appropriate `signature` value binding the user to the asset.
+
+The interaction between _<<_identity_assertion_generator,identity assertion generator>>_ and the service API is depicted in the following sequence diagram, which is non-normative:
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+    participant IAG as Identity assertion generator
+    participant API as Service API
+
+    IAG->>API: Request configuration information
+    API->>IAG: Respond with configuration information
+    Note right of IAG: Caching of this information is encouraged
+
+    IAG->>API: Request user-specific options
+    API->>IAG: Respond with user-specific options
+    Note right of IAG: This may inform user experience<br>such as which verified<br>identities are available
+
+    IAG->>IAG: Generate signer_payload
+    IAG->>API: Request signature for user and signer_payload
+    API->>IAG: Generate signature
+
+    IAG->>IAG: Embed signature in identity assertion
+....
+
+=== Configuration and discovery
+
+This request is an HTTPS `GET` with no parameters.
+
+The endpoint address is communicated out-of-band from the API service provider to the _<<_identity_assertion_generator,identity assertion generator>>._
+
+This request MAY require authentication via a `Bearer` token.
+
+This request provides basic information about the remainder of the service.
+
+If the API service is stable (and, if applicable, the authentication token is valid), the service SHALL respond with HTTP status 200 (OK), a `Content-Type` header of `application/json`, and a JSON object conforming to the `service-description` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
+
+[source,cddl]
+----
+service-description = {
+  "endpoints": $endpoint-map, ; subsequent 
+  "name": tstr .size (1..max-tstr-length), ; user-visible name for this service
+}
+
+endpoint-map = {
+  "user_options": tstr .size (1..max-tstr-length), ; HTTPS endpoint address for user-specific options
+  "sign": tstr .size (1..max-tstr-length), ; HTTPS endpoint address for generating asset-specific credential
+}
+----
+
+.Example service description response
+[sidebar]
+****
+This example, which is non-normative, depicts a possible response from the configuration and discovery API.
+
+[source,json]
+----
+{
+  "endpoints": {
+    "user_options": "https://api.example.com/user_options",
+    "sign": "https://api.example.com/sign",
+  },
+  "name": "Example Identity Assertion Signing Service"
+}
+----
+****
+
+IMPORTANT: Service and client implementers are encouraged to use HTTP caching options as defined by link:https://datatracker.ietf.org/doc/html/rfc9111[RFC 9111] to avoid repetitive traffic on this endpoint.
+
+=== User-specific options
+
+This request is an HTTPS `GET` with no parameters.
+
+The endpoint address is obtained via the `endpoints.user_options` member of the <<Configuration and discovery>>_ response.
+
+This request MUST require authentication via a `Bearer` token.
+
+This request provides configuration information that is specific to the authenticated user on the service.
+
+If the API service is stable and the authentication token is valid, the service SHALL respond with HTTP status 200 (OK), a `Content-Type` header of `application/json`, and a JSON object conforming to the `user-options` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
+
+[source,cddl]
+----
+user-options = {
+  "sig_type": tstr .size (1..max-tstr-length), ; signature type
+  "verified_identities": $verified-identity-map, ; available verified identities for user to choose
+  "identity_required": bool, ; true if user must choose at least one identity
+}
+----
+
+.Example user-specific options response
+[sidebar]
+****
+This example, which is non-normative, depicts a possible response from the user-specific options API.
+
+[source,json]
+----
+{
+  "sig_type": "cawg.w3c.vc",
+  "verified_identities": [
+    {
+      "name": "First-Name Last-Name",
+      "type": "cawg.document_verification",
+      "provider": {
+        "id": "https://example-id-verifier.com",
+        "name": "Example ID Verifier",
+        "proof": "https://example-id-verifier.com/proofs/1"
+      },
+      "verifiedAt": "2024-07-26T22:30:15Z"
+    },
+    {
+      "type": "cawg.affiliation",
+      "provider": {
+        "id": "https://example-affiliated-organization.com",
+        "name": "Example Affiliated Organization",
+        "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
+      },
+      "verifiedAt": "2024-07-26T22:29:57Z"
+    },
+    {
+      "type": "cawg.social_media",
+      "name": "Silly Cats 929",
+      "username": "username",
+      "uri": "https://example-social-network.com/username",
+      "provider": {
+        "id": "https://example-social-network.com",
+        "name": "Example Social Network"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    },
+    {
+      "type": "cawg.crypto_wallet",
+      "address": "fa64ef445f994138bdeb9baac6ce1e16",
+      "uri": "https://example-crypto-wallet.com/fa64ef445f994138bdeb9baac6ce1e16",
+      "provider": {
+        "id": "https://example-crypto-wallet.com",
+        "name": "Example Crypto Wallet"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    }
+  ],
+  "identity_required": true
+}
+----
+****
+
+IMPORTANT: Service and client implementers are encouraged to use HTTP caching options as defined by link:https://datatracker.ietf.org/doc/html/rfc9111[RFC 9111] to avoid repetitive traffic on this endpoint.
+
+=== Generate asset-specific credential
+
+TO DO ...
+
+
+=== Error responses
+
+In the event the service is unable to respond successfully to any of the requests described here, the service SHOULD respond with an appropriate HTTP status code (4xx or 5xx). This specification does not specify the response body for error cases.
+
 == Trust model
 
 IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._ It does not replace any portion of the C2PA trust model.
