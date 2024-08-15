@@ -1298,7 +1298,7 @@ IMPORTANT: Service and client implementers are encouraged to use HTTP caching op
 
 This request is an HTTPS `GET` with no parameters.
 
-The endpoint address is obtained via the `endpoints.user_options` member of the <<Configuration and discovery>>_ response.
+The endpoint address is obtained via the `endpoints.user_options` member of the xref:_configuration_and_discovery[xrefstyle=full] response.
 
 This request MUST require authentication via a `Bearer` token.
 
@@ -1310,6 +1310,7 @@ If the API service is stable and the authentication token is valid, the service 
 ----
 user-options = {
   "sig_type": tstr .size (1..max-tstr-length), ; signature type
+  "suggested_size: uint, ; suggested size for signature placeholder
   "verified_identities": $verified-identity-map, ; available verified identities for user to choose
   "identity_required": bool, ; true if user must choose at least one identity
 }
@@ -1324,6 +1325,7 @@ This example, which is non-normative, depicts a possible response from the user-
 ----
 {
   "sig_type": "cawg.w3c.vc",
+  "suggested_size": 10000,
   "verified_identities": [
     {
       "name": "First-Name Last-Name",
@@ -1375,12 +1377,23 @@ IMPORTANT: Service and client implementers are encouraged to use HTTP caching op
 
 === Generate asset-specific credential
 
-TO DO ...
+This request is an HTTPS `POST`.
 
+The endpoint address is obtained via the `endpoints.sign` member of the xref:_configuration_and_discovery[xrefstyle=full] response.
+
+This request MUST require authentication via a `Bearer` token.
+
+The request endpoint MAY contain a query parameter named `identities`. If present, this item must BE a comma-separated list of verified identities. Each name specified in this query string MUST be a name provided by this service via the `verified_identities[?].name` member of the xref:_user_specific_options[xrefstyle=full] response.
+
+NOTE: TO DO: Figure out how to map names to verified identities. The `verified_identities[?].name` isn't actually the key we need.
+
+The request MUST contain a `Content-Type` header of `application/cbor` and the request body MUST be the `signer_payload` structure, encoded as described by link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+
+If the API service is stable, the authentication token is valid, and the `signer_payload` is acceptable, the service SHALL respond with HTTP status 200 (OK), a `Content-Type` header of `application/octet-stream`. The response body MUST be the exact value to place in the `signature` field of the *<<_identity_assertion,identity assertion>>.* (The data type may vary depending on the `sig_type` value.)
 
 === Error responses
 
-In the event the service is unable to respond successfully to any of the requests described here, the service SHOULD respond with an appropriate HTTP status code (4xx or 5xx). This specification does not specify the response body for error cases.
+In the event the service is unable to respond successfully to any of the requests described in this section, the service SHOULD respond with an appropriate HTTP status code (4xx or 5xx). This specification does not specify the response body for error cases.
 
 == Trust model
 
