@@ -1173,6 +1173,12 @@ NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema ke
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* using verifiable credentials MUST be secured as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[§3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
 
+===== Signature algorithms
+
+The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[§13.2, “Digital signatures,”] in version 2.1 or any subsequent version of the C2PA technical specification.
+
+===== DID methods
+
 The public key corresponding to the `issuer` field SHALL be discoverable using one of the link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID methods] as described in this section. This section defines:
 
 * A list of DID methods that are allowed for providing public keys for new content as well as required for discovering public keys for existing content (the allowed list);
