@@ -72,3 +72,8 @@ _This section is non-normative._
 *05 August 2024*
 
 * Rename `boundTo` to `c2paAsset` and clarify some items.
+
+*12 August 2024*
+
+* Merge with updated 1.0-draft version of this specification.
+* Define _<<_identity_assertion_generator,identity assertion generator>>._
