@@ -77,3 +77,7 @@ _This section is non-normative._
 
 * Merge with updated 1.0-draft version of this specification.
 * Define _<<_identity_assertion_generator,identity assertion generator>>._
+
+*20 August 2024*
+
+* Merge with updated 1.0-draft version of this specification.
