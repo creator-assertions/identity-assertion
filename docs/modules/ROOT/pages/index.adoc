@@ -8,7 +8,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Draft 12 August 2024* · xref:_version_history[]
+*Version 1.0 Draft 20 August 2024* · xref:_version_history[]
 
 [#maintainers]
 *Maintainers:*
@@ -362,9 +362,9 @@ The `signer_payload` field is a structure of type `signer-payload-map` which is 
 * `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._ It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._ The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_field[xrefstyle=full].
 * `expected_countersigners` _(optional),_ if present, describes the content of other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._ The method for calculating this field is described in xref:_calculating_the_expected_countersigners_field[xrefstyle=full].
 
-The *<<_identity_assertion,identity assertion>>* shall have a label of `cawg.identity`.
+The *<<_identity_assertion,identity assertion>>* SHALL have a label of `cawg.identity`.
 
-Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview. If this occurs, these assertions shall be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
+Multiple identity assertions may be used in the same _<<C2PA Manifest>>_ to describe the distinct roles of multiple _<<_actor,actors>>_ in creating a single _<<C2PA asset>>._ This is illustrated in the xref:multiple-identity-assertions[multi-author example] from the conceptual overview. If this occurs, these assertions SHALL be given unique labels as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_instances++[Section 6.4, “Multiple instances,”] of the C2PA technical specification.
 
 ==== Referenced assertions requirements
 
