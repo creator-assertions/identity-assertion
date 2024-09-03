@@ -332,7 +332,7 @@ The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for 
 
 ==== Identity provider
 
-An _<<_actor,actor>>_ that is attesting to the identity of the _<<_named_actor,named actor>>._ This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>_ or it might be a third party contacted by the _<<_identity_assertion_generator,identity assertion generator>>._
+An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._ This _<<actor,actor>> MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
 
 ==== Named actor
 
