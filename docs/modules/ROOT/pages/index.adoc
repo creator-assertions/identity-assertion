@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 20 August 2024* · xref:_version_history[]
+Version 1.x (adding W3C VC credentials) *Draft 03 September 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
@@ -330,9 +330,9 @@ NOTE: This role can also be thought of as a *relying party* or *verifier* as def
 
 The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for generating the *<<_identity_assertion,identity assertion>>.* This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
 
-==== Identity verifier
+==== Identity provider
 
-An organization or system that is responsible for confirming the authenticity and validity of the identity of an individual or organization.
+An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._ This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
 
 ==== Named actor
 
@@ -763,17 +763,6 @@ The `signer_payload.sig_type` value for such an assertion MUST be `cawg.w3c.vc`.
 The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
 In some scenarios, the issuer MAY be the _<<_named_actor,named actor>>,_ but that is not required.
-
-[#issue-161]
-[NOTE]
-====
-TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/161[Issue #161]): Provide definitions for [line-through]##_identity assertion generator_## and _identity assertion provider._
-
-These terms are used throughout this section and should be added to the glossary. Preliminary definitions:
-
-* [line-through]#_identity assertion generator:_ akin to the claim generator: what's the software that's producing the identity assertion itself# *DONE*
-* _identity provider:_ the actor that is attesting to the identity of the named actor. As stated elsewhere, this might be the identity assertion generator or it might be a third party.
-====
 
 ==== Verifiable credential example
 
