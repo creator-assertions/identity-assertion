@@ -81,3 +81,7 @@ _This section is non-normative._
 *20 August 2024*
 
 * Merge with updated 1.0-draft version of this specification.
+
+*03 September 2024*
+
+* Define _<<_identity_provider,identity provider>>._
