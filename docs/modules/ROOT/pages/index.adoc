@@ -9,9 +9,9 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding W3C VC credentials) *Draft 03 September 2024* · xref:_version_history[]
+Version 1.x (adding identity claim aggregation) *Draft 03 September 2024* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_identity_claim_aggregation[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
@@ -315,6 +315,10 @@ The _<<_actor,actor>>_ that has control (specifically signature authority) over 
 An action signifying that a digital credential can no longer be considered as valid. This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ stating that the public/private key pair associated with the credential is no longer valid.
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
+
+==== Identity claim aggregator
+
+An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._ This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>._
 
 ==== Identity assertion
 
@@ -751,18 +755,23 @@ Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
 
-=== W3C verifiable credentials
+=== Identity claim aggregation
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
+In some use cases, an _<<_actor,actor>>_ in the system may wish to document their role in creating a _<<C2PA asset>>_ but does not have credentials with autonomous signing capability.
 
-* The identity of a _<<_named_actor,named actor>>_ who wishes to document their relationship to the asset
-* Social media or other accounts that are related to the asset
+In that case, they may arrange with an _<<_identity_claim_aggregator,identity claim aggregator>>_ to collect identity attestation claims from various _<<_identity_provider,identity providers>>_ (social media sites, ID verification vendors, etc.) and replay those identity attestation claims on their behalf to describe their role in producing a specific _<<C2PA asset>>._
 
-The `signer_payload.sig_type` value for such an assertion MUST be `cawg.w3c.vc`.
+The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
+
+The _<<_identity_claim_aggregator,identity claim aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called a “creator identity assertion credential” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claim_aggregator,identity claim aggregator’s>>_ signature, is the `signature` value for the *<<_identity_assertion,identity assertion>>.*
+
+NOTE: TO DISCUSS: We use the terms “identity claim aggregation” and “creator identity assertion credential” to mean essentially the same thing. Can we unify on one term? If so, which one?
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claim_aggregation`.
 
 The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
-In some scenarios, the issuer MAY be the _<<_named_actor,named actor>>,_ but that is not required.
+NOTE: This specification is not meant to support a _<<_named_actor,named actor>>_ using their own _<<W3C verifiable credential>>_ to issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of the specification.
 
 ==== Verifiable credential example
 
@@ -822,7 +831,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 
 ==== Creator identity assertion description
 
-A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds the identity of the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. A *creator identity assertion* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
+A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds one or more identity claim attestations regarding the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. A *creator identity assertion* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
 
 [#vc-property-context]
 ===== Context
