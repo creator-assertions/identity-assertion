@@ -9,9 +9,9 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.x (adding identity claim aggregation) *Draft 03 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 09 September 2024* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_identity_claim_aggregation[xrefstyle=full].
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
@@ -316,7 +316,7 @@ An action signifying that a digital credential can no longer be considered as va
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
 
-==== Identity claim aggregator
+==== Identity claims aggregator
 
 An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._ This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>._
 
@@ -755,19 +755,17 @@ Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
 
-=== Identity claim aggregation
+=== Identity claims aggregation
 
 In some use cases, an _<<_actor,actor>>_ in the system may wish to document their role in creating a _<<C2PA asset>>_ but does not have credentials with autonomous signing capability.
 
-In that case, they may arrange with an _<<_identity_claim_aggregator,identity claim aggregator>>_ to collect identity attestation claims from various _<<_identity_provider,identity providers>>_ (social media sites, ID verification vendors, etc.) and replay those identity attestation claims on their behalf to describe their role in producing a specific _<<C2PA asset>>._
+In that case, they may arrange with an _<<_identity_claims_aggregator,identity claims aggregator>>_ to collect identity attestation claims from various _<<_identity_provider,identity providers>>_ (social media sites, ID verification vendors, etc.) and replay those identity attestation claims on their behalf to describe their role in producing a specific _<<C2PA asset>>._
 
 The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
 
-The _<<_identity_claim_aggregator,identity claim aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called a “creator identity assertion credential” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claim_aggregator,identity claim aggregator’s>>_ signature, is the `signature` value for the *<<_identity_assertion,identity assertion>>.*
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ signature, is the `signature` value for the *<<_identity_assertion,identity assertion>>.*
 
-NOTE: TO DISCUSS: We use the terms “identity claim aggregation” and “creator identity assertion credential” to mean essentially the same thing. Can we unify on one term? If so, which one?
-
-The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claim_aggregation`.
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claims_aggregation`.
 
 The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
@@ -829,9 +827,9 @@ sequenceDiagram
 [#issue-144]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/144[issue #144]): Revise above example to reflect more common scenario where issuer ≠ named actor.
 
-==== Creator identity assertion description
+==== Identity claims aggregation description
 
-A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds one or more identity claim attestations regarding the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. A *creator identity assertion* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
+An *identity claims aggregation* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds one or more identity claim attestations regarding the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
 
 [#vc-property-context]
 ===== Context
@@ -842,7 +840,7 @@ The `@context` property MUST be present and MUST contain at least the following 
 * `https://creator-assertions.github.io/tbd/tbd`
 
 [#issue-145]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/145[issue #145]): Transition the creator identity assertion context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/145[issue #145]): Transition the identity claims aggregation context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
 
 [#vc-property-type]
 ===== Type
@@ -850,7 +848,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 The `type` property MUST be present and MUST contain at least the following two entries:
 
 * `VerifiableCredential`
-* `CreatorIdentityAssertionCredential`
+* `IdentityClaimsAggregationCredential`
 
 [#vc-property-issuer]
 ===== Issuer
@@ -1033,11 +1031,11 @@ IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overvie
 ----
 ====
 
-==== Identity assertion verifiable credential example
+==== Identity claims aggregation verifiable credential example
 
-An example of the *<<_creator_identity_assertion,creator identity assertion>>* verifiable credential is given below:
+An example of the *<<_identity_claims_aggregation,identity claims aggregation>>* verifiable credential is given below:
 
-.Creator identity assertion verifiable credential
+.Identity claims aggregation verifiable credential
 [#example-ia-vc]
 [example]
 ====
@@ -1050,7 +1048,7 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
   ],
   "type": [
     "VerifiableCredential",
-    "CreatorIdentityAssertionCredential"
+    "IdentityClaimsAggregationCredential"
   ],
   "issuer": "did:web:connected-identities.identity.adobe.com",
   "validFrom": "2024-05-27T11:40:40Z",
@@ -1118,7 +1116,7 @@ An example of the *<<_creator_identity_assertion,creator identity assertion>>* v
   },
   "credentialSchema": [
     {
-      "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
+      "id": "https://creator-assertions.github.io/schemas/v1/identity-claims-aggregation.json",
       "type": "JSONSchema"
     }
   ]  
@@ -1131,7 +1129,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 
 ==== Data verification schema
 
-The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
+The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_identity_claims_aggregation_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/identity-claims-aggregation.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
 
 [#issue-153]
 NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/153[issue #153]): Update schema URL once it is finalized.
@@ -1143,7 +1141,7 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 ----
 "credentialSchema": [
   {
-    "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
+    "id": "https://creator-assertions.github.io/schemas/v1/identity-claims-aggregation.json",
     "type": "JSONSchema"
   }
 ]
@@ -1157,13 +1155,13 @@ NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issue
 
 The inclusion of the `credentialSchema` property in a verifiable credential is OPTIONAL. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
 
-The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
+The inclusion of the `identity-claims-aggregation.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
 
 ==== Recommendations for verifiers
 
 The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
 
-NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
+NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ==== Proofs
 

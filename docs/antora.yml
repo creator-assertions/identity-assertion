@@ -1,4 +1,4 @@
 name: identity
-version: 1.x+id-claim
+version: 1.1-draft
 title: Identity Assertion
 start_page: index.adoc
