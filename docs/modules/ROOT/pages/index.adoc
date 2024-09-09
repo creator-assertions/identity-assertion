@@ -3,12 +3,15 @@
 :toc-title:
 :sectanchors:
 :sectnums:
+:sectnumlevels: 5
 
 The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._ This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.0 Approved 09 September 2024* · xref:_version_history[]
+Version 1.1 (adding W3C VC credentials) *Draft 03 September 2024* · xref:_version_history[]
+
+IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0-draft/[1.0-draft version] primarily in the addition of xref:_w3c_verifiable_credentials[xrefstyle=full].
 
 [#maintainers]
 *Maintainers:*
@@ -59,7 +62,7 @@ NOTE: The ToIP definition of the term “verifiable identifier” is well-aligne
 
 This specification describes mechanisms to support two common individual and organizational identity mechanisms that fit the conceptual description of _<<ToIP verifiable identifier>>:_
 
-* https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C _(This will be added in a subsequent draft.)_
+* https://www.w3.org/TR/did-core/[Decentralized identifiers (DIDs)] as defined by W3C
 * https://tools.ietf.org/html/rfc5280[X.509 certificates]
 
 === Conceptual overview
@@ -215,6 +218,8 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 == Normative references
 
 * https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[C2PA technical specification, version 2.1]
+* https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model, version 2.0]
+* https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
 == Terms and definitions
@@ -283,6 +288,22 @@ One or more cryptographic hashes that uniquely identifies either the entire _<<C
 
 Hard bindings are described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
 
+=== Concepts adapted from W3C verifiable credentials specification
+
+The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model-2.0/#terminology++[W3C verifiable credentials data model] specification, version 2.0. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
+
+==== W3C verifiable credential
+
+A tamper-evident credential that has authorship that can be cryptographically verified.
+
+==== W3C decentralized identifier
+
+A portable URL-based identifier, also known as a *DID,* associated with an entity. These identifiers are most often used in a _<<W3C verifiable credential>>_ and are associated with _<<_credential_subject,credential subjects>>_ such that a _<<W3C verifiable credential>>_ itself can be easily ported from one repository to another without the need to reissue the _<<W3C verifiable credential>>_. An example of a DID is `did:example:123456abcdef`.
+
+==== W3C decentralized identifier document
+
+Also referred to as a *DID document,* this is a document that is accessible using a verifiable data registry and contains information related to a specific _<<W3C decentralized identifier>>,_ such as the associated repository and public key information.
+
 === Other concepts
 
 ==== Credential holder
@@ -304,6 +325,14 @@ A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ 
 A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of any *<<_identity_assertion,identity assertions>>* contained within the _<<C2PA Manifest>>._
 
 NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
+
+==== Identity assertion generator
+
+The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for generating the *<<_identity_assertion,identity assertion>>.* This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
+
+==== Identity provider
+
+An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._ This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
 
 ==== Named actor
 
@@ -484,11 +513,11 @@ The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the 
 
 The `signer_payload` data structure MUST be presented to be signed by the _<<_credential_holder,credential holder>>_ corresponding to each *<<_identity_assertion,identity assertion>>.* This process is described in more detail in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-IMPORTANT: If a data hash assertion is being used, the _<<C2PA claim generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+IMPORTANT: If a data hash assertion is being used, the _<<_identity_assertion_generator,identity assertion generator>>_ MUST also follow the process described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Calculating the `expected_partial_claim` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_partial_claim` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_partial_claim` field in `signer_payload`, it MUST be computed as follows:
 
 . Create a valid _<<C2PA claim>>_ data structure that includes references to all _<<_c2pa_assertion,C2PA assertions>>,_ *including* all *<<_identity_assertion,identity assertions>>.* The `hash` value for all assertion references MUST be valid and correct, except in the following cases:
 .. For the specific *<<_identity_assertion,identity assertion>>* being computed, replace the `hash` value with all zero-value (`0x00`) bytes.
@@ -503,7 +532,7 @@ The `expected_partial_claim` field SHOULD contain a CBOR map with the following 
 
 ==== Calculating the `expected_claim_generator` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_claim_generator` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_claim_generator` field in `signer_payload`, it MUST be computed as follows:
 
 . Identify the end-entity signing certificate that will be used for the expected _<<C2PA claim generator>>._
 . Serialize this signing certificate as a CBOR byte string as described in link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
@@ -518,7 +547,7 @@ The `expected_claim_generator` field SHOULD contain a CBOR map with the followin
 
 ==== Calculating the `expected_countersigners` field
 
-If the *<<_identity_assertion,identity assertion>> generator* chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
+If the _<<_identity_assertion_generator,identity assertion generator>>_ chooses to include the `expected_countersigners` field in `signer_payload`, it MUST be computed as follows:
 
 . For every _other_ *<<_identity_assertion,identity assertion>>* that will be present in the _<<C2PA Manifest>>:_
 .. Calculate the `signer_payload` map for that *<<_identity_assertion,identity assertion>>.* Exclude any `expected_countersigners` field from that `signer_payload` map and place the resulting `signer_payload` structure in the `partial_signer_payload` field of _this_ *<<_identity_assertion,identity assertion’s>>* `expected_countersigners` map.
@@ -549,7 +578,7 @@ The `signer_payload` data structure MUST be unchanged from the data structure th
 
 The values for the `signer_payload.sig_type` and `signature` fields depend on the nature of credential used. Some common signature types are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 
-The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 
 If a _<<placeholder_assertion,placeholder assertion>>_ was used, the values of the `pad1` and `pad2` fields MUST now be recomputed (adjusted in size) such that the resulting *<<_identity_assertion,identity assertion>>* exactly matches the size in bytes of the _<<placeholder_assertion,placeholder assertion.>>_ If the signature exceeds the space available in the _<<placeholder_assertion,placeholder assertion,>>_ the claim generation process as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full] MUST be repeated with a larger _<<_placeholder_assertion,placeholder assertion>>._
 
@@ -572,7 +601,7 @@ Similarly, the size of the *<<_identity_assertion,identity assertion>>* cannot b
 
 In this case, it is necessary to use a _<<_placeholder_assertion,placeholder assertion>>_ to reserve space for the content of the final *<<_identity_assertion,identity assertion>>* (including its signature) which will be created later.
 
-When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+When using a data hash assertion, an _<<_identity_assertion_generator,identity assertion generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
 
 1. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions.”] Any *<<_identity_assertion,identity assertion>>* that will be added to the claim MUST be represented during this step by an assertion using the same label as the final *<<_identity_assertion,identity assertion>>.* The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final *<<_identity_assertion,identity assertion>>.*
 2. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 10.3.2.1, “Adding assertions and redactions”]
@@ -580,7 +609,7 @@ When using a data hash assertion, a _<<C2PA claim generator>>_ MUST follow the p
 4. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_connecting_the_signature++[Section 10.3.2.3, “Connecting the signature”]
 5. If using C2PA 1.x process, link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”].
 6. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_create_content_bindings++[Section 10.4.1, “Create content bindings”]
-7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<C2PA claim generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
 8. The remaining steps from link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
 9. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
 10. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
@@ -591,7 +620,7 @@ These steps are also represented by the following sequence diagram, which is non
 [mermaid,width=100%]
 ....
 sequenceDiagram
-    participant G as C2PA claim generator
+    participant G as Identity assertion generator
     participant H as Credential holder
 
     G->>G: Create assertions
@@ -724,7 +753,418 @@ Such updates to the specification SHOULD continue to use the `cawg.identity` ass
 
 === W3C verifiable credentials
 
-IMPORTANT: This portion of the specification is still undergoing significant exploration and revision. It will be added in a subsequent version.
+In some use cases, an _<<_actor,actor>>_ in the system may wish to generate a _<<W3C verifiable credential>>_ that describes a _<<C2PA asset>>._ This credential will include the information  contained in the `signer_payload` structure to ensure that it is bound to the specific _<<C2PA asset>>._ It MAY also include information such as:
+
+* The identity of a _<<_named_actor,named actor>>_ who wishes to document their relationship to the asset
+* Social media or other accounts that are related to the asset
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.w3c.vc`.
+
+The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
+
+In some scenarios, the issuer MAY be the _<<_named_actor,named actor>>,_ but that is not required.
+
+==== Verifiable credential example
+
+_This section is non-normative._
+
+In the data flow diagram below, a software application (“Authoring tool”) is acting on behalf of Alice, an _<<_actor,actor>>_ who wishes to document her role in producing a _<<C2PA asset>>_ using credentials held in a digital wallet that she controls.
+
+The authoring tool produces a preliminary _<<_c2pa_manifest,C2PA Manifest>>_ describing the _<<C2PA asset>>._ Once enough information is finalized to produce the `signer_payload`, that information is summarized and presented to Alice’s wallet to request a Verifiable Presentation.
+
+Once she gives consent, the wallet generates a Verifiable Presentation that contains information that she wishes to disclose about herself (for example, her name and professional affiliations) and the `signer_payload` content. This Verifiable Presentation is signed on her behalf by her wallet and returned to the authoring tool.
+
+The authoring tool incorporates this Verifiable Presentation into a new _<<W3C verifiable credential>>_ that is unique to this _<<C2PA asset>>_. This becomes the `signature` field of the identity assertion, which is then fed back into the library that implements the C2PA Manifest generation. A final _<<C2PA Manifest>>_ can then be generated and embedded into the _<<C2PA asset>>_ or uploaded to cloud storage as Alice prefers.
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+  autonumber
+  participant AT as Authoring tool
+
+  rect rgb(220, 220, 220)
+  note right of AT: Create preliminary asset
+  AT ->> AT: Generate asset without C2PA Manifest
+  create participant C2PA as C2PA library
+  AT ->> C2PA: Start generating C2PA Manifest
+  AT -->> C2PA: Assertions (actions, etc.)
+  AT -->> C2PA: Placeholder for identity assertion
+  C2PA ->> C2PA: Calculate final file layout<br/>(leaving placeholders for<br/>identity assertion and<br/>claim generator signature)
+  C2PA ->> AT: Preliminary C2PA Manifest
+  end
+
+  rect rgb(220, 220, 220)
+  note right of AT: Finalize identity assertion
+  AT ->> AT: Summarize Manifest contents
+  create participant W as Wallet
+  AT ->> W: Presentation request
+  create actor Alice
+  W ->> Alice: Consent for<br/>signature
+  destroy Alice
+  Alice ->> W: Approved
+  destroy W
+  W ->> AT: W3C Verifiable Presentation<br/>describing Alice
+  AT ->> AT: Check validity of VP
+  AT ->> AT: Generate W3C Verifiable Credential<br/>describing asset, including VP
+  end
+
+  rect rgb(220, 220, 220)
+  note right of AT: Finalize C2PA Manifest
+  AT ->> C2PA: Update identity assertion<br/>placing asset VC in signature field
+  C2PA ->> C2PA: Update hash references<br/>to identity assertion
+  C2PA ->> C2PA: Generate final signature<br/>for C2PA Manifest
+  C2PA ->> AT: Final C2PA Manifest Store<br/>(embedded in asset if requested)
+  end
+....
+
+[#issue-144]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/144[issue #144]): Revise above example to reflect more common scenario where issuer ≠ named actor.
+
+==== Creator identity assertion description
+
+A *creator identity assertion* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds the identity of the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. A *creator identity assertion* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
+
+[#vc-property-context]
+===== Context
+
+The `@context` property MUST be present and MUST contain at least the following two entries:
+
+* `https://www.w3.org/ns/credentials/v2`
+* `https://creator-assertions.github.io/tbd/tbd`
+
+[#issue-145]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/145[issue #145]): Transition the creator identity assertion context to the recently-acquired domain cawg.io once it is provisioned and ready to use.
+
+[#vc-property-type]
+===== Type
+
+The `type` property MUST be present and MUST contain at least the following two entries:
+
+* `VerifiableCredential`
+* `CreatorIdentityAssertionCredential`
+
+[#vc-property-issuer]
+===== Issuer
+
+The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
+
+[#vc-property-validFrom]
+===== Validity
+
+The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
+
+[#issue-64]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/64[issue #64]): Consider stronger timestamping mechanism than W3C VC requires.
+
+[#vc-credentialsubject-verifiedIdentities]
+===== Verified identities
+
+The `verifiedIdentities` property MUST be present and MUST be a non-empty array. Every item in the array MUST contain information about the _<<_named_actor,named actor>>_ as verified by the _<<_identity_assertion_generator,identity assertion generator>>_ or a service contacted by the _<<_identity_assertion_generator,identity assertion generator>>._
+
+.Example:
+[source,json]
+----
+"credentialSubject": {
+  ...
+  "verifiedIdentities": [
+    {
+      "name": "First-Name Last-Name",
+      "type": "cawg.document_verification",
+      "provider": {
+        "id": "https://example-id-verifier.com",
+        "name": "Example ID Verifier",
+        "proof": "https://example-id-verifier.com/proofs/1"
+      },
+      "verifiedAt": "2024-07-26T22:30:15Z"
+    },
+    {
+      "type": "cawg.affiliation",
+      "provider": {
+        "id": "https://example-affiliated-organization.com",
+        "name": "Example Affiliated Organization",
+        "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
+      },
+      "verifiedAt": "2024-07-26T22:29:57Z"
+    },
+    {
+      "type": "cawg.social_media",
+      "name": "Silly Cats 929",
+      "username": "username",
+      "uri": "https://example-social-network.com/username",
+      "provider": {
+        "id": "https://example-social-network.com",
+        "name": "Example Social Network"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    },
+    {
+      "type": "cawg.crypto_wallet",
+      "address": "fa64ef445f994138bdeb9baac6ce1e16",
+      "uri": "https://example-crypto-wallet.com/fa64ef445f994138bdeb9baac6ce1e16",
+      "provider": {
+        "id": "https://example-crypto-wallet.com",
+        "name": "Example Crypto Wallet"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    }
+  ]
+  ...
+}
+----
+
+[#vc-credentialsubject-verifiedidentity-type]
+Verified identity type::
+The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._ This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
++
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |  Meaning
+| `cawg.document_verification` | The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
+| `cawg.affiliation` | The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization. This could be a professional organization or an employment relationship.
+| `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
+| `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._ 
+|=======================
++
+Other string values MAY be used in `verifiedIdentities[?].type` with the understanding that they may not be well understood by *<<_identity_assertion_consumer,identity assertion consumers>>.* String values for `verifiedIdentities[?].type` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
++
+IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `verifiedIdentities[?].type` using the `cawg.` prefix.
+
+[#vc-credentialsubject-verifiedidentity-name]
+Display name::
+The `verifiedIdentities[?].name` property MAY be present. If present, it MUST NOT be empty and must be a string defining the _<<_named_actor,named actor’s>>_ name as understood by the _<<_identity_provider,identity provider>>._
++
+If the `type` of this verified identity is `cawg.document_verification`, the `verifiedIdentities[?].name` property MUST be present and MUST exactly match the name found on the identity documents.
+
+[#vc-credentialsubject-verifiedidentity-username]
+User name::
+The `verifiedIdentities[?].username` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ user name as assigned by the _<<_identity_provider,identity provider>>._
++
+If the `type` of this verified identity is `cawg.social_media`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-address]
+Address::
+The `verifiedIdentities[?].address` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ cryptographic address as assigned by the _<<_identity_provider,identity provider>>._
++
+If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedIdentities[?].address` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-uri]
+URI::
+The `verifiedIdentities[?].uri` property MAY be present. If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
++
+If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
+
+[#vc-credentialsubject-verifiedidentity-verifiedat]
+Identity verification date::
+The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
+
+[#vc-credentialsubject-verifiedidentity-provider]
+Identity provider details::
+The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id`, `name`, and `proof`.
+
+[#vc-credentialsubject-verifiedidentity-provider-id]
+Identity provider ID:::
+The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_provider,identity provider>>._ This proof of authenticity of the _<<_identity_provider,identity provider>>_ MUST NOT be confused with the proof of verification of the _<<_named_actor,named actor>>._
+
+[#vc-credentialsubject-verifiedidentity-provider-name]
+Identity provider name:::
+The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty. The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
+
+[#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
+Identity provider proof:::
+The `verifiedIdentities[?].provider.proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_provider,identity provider>>._ The content as well as the process are outside the scope of this specification.
+
+[#issue-160]
+[NOTE]
+====
+TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/160[Issue #160]): Determine structure for `verifiedIdentities[?].proof`.
+
+Need to clarify that the proof is _identity provider's_ signature about their attestations for _named actor._
+
+For that reason, might make sense to move proof up one level from its current place in the hierarchy.
+====
+
+===== Binding to C2PA asset
+
+The `credentialSubject` field MUST contain a `c2paAsset` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature with the following adaptations:
+
+* All CBOR bytestring values in `signer_payload` data structure (for example, `hash` entries in the hashlink data structure) MUST be converted to the corresponding base 64 encoding as specified in link:++https://datatracker.ietf.org/doc/html/rfc4648#section-4++[Section 4, “Base 64 Encoding,”] of RFC 4648. The base 64 encoding MUST NOT use the URL-safe variation of base 64. The encoding MUST NOT include line feeds or additional annotations not directly required by the core base 64 specification.
+* The JSON encoding MUST use the field names exactly as specified in xref:_overview[xrefstyle=full].
++
+IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overview[xrefstyle=full]) are specified using lower-case letters with underscore characters (commonly referred to as `snake_case`). Field names in the verifiable credential data model are typically specified using lower-case letters with upper-case letters for word breaks (commonly referred to as `camelCase`). A translation between the two styles MUST NOT be performed as it creates the potential for miscommunication.
+
+[#example-c2pa-asset-section]
+.`c2paAsset` entry
+[example]
+====
+[source,json]
+----
+"credentialSubject": {
+  ...
+  "c2paAsset": {
+    ...
+    "referenced_assertions": [
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+        "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+        "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+        "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
+      }
+    ],
+    "sig_type": "cawg.w3c.vc"
+    ...
+  }
+  ...
+}
+----
+====
+
+==== Identity assertion verifiable credential example
+
+An example of the *<<_creator_identity_assertion,creator identity assertion>>* verifiable credential is given below:
+
+.Creator identity assertion verifiable credential
+[#example-ia-vc]
+[example]
+====
+[source,json]
+----
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://creator-assertions.github.io/tbd/tbd"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "CreatorIdentityAssertionCredential"
+  ],
+  "issuer": "did:web:connected-identities.identity.adobe.com",
+  "validFrom": "2024-05-27T11:40:40Z",
+  "credentialSubject": {
+    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",    
+    "verifiedIdentities": [
+      {
+        "name": "First-Name Last-Name",
+        "type": "cawg.document_verification",
+        "provider": {
+          "id": "https://example-id-verifier.com",
+          "name": "Example ID Verifier",
+          "proof": "https://example-id-verifier.com/proofs/1"
+        },
+        "verifiedAt": "2024-07-26T22:30:15Z"
+      },
+      {
+        "type": "cawg.affiliation",
+        "provider": {
+          "id": "https://example-affiliated-organization.com",
+          "name": "Example Affiliated Organization",
+          "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
+        },
+        "verifiedAt": "2024-07-26T22:29:57Z"
+      },
+      {
+        "type": "cawg.social_media",
+        "name": "Silly Cats 929",
+        "username": "username",
+        "uri": "https://example-social-network.com/username",
+        "provider": {
+          "id": "https://example-social-network.com",
+          "name": "Example Social Network"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+      },
+      {
+        "type": "cawg.crypto_wallet",
+        "username": "username",
+        "uri": "https://example-crypto-wallet.com/username",
+        "provider": {
+          "id": "https://example-crypto-wallet.com",
+          "name": "Example Crypto Wallet"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+      }
+    ],
+    "c2paAsset": {
+      "referenced_assertions": [
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+          "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+          "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+          "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
+        }
+      ],
+      "sig_type": "cawg.w3c.vc"
+    },
+  },
+  "credentialSchema": [
+    {
+      "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
+      "type": "JSONSchema"
+    }
+  ]  
+}
+----
+====
+
+[#issue-152]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/152[issue #152]): Track changes to draft schema and ensure example is correctly updated.
+
+==== Data verification schema
+
+The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_creator_identity_assertion_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
+
+[#issue-153]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/153[issue #153]): Update schema URL once it is finalized.
+
+[#issue-154]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Add text explaining the use of `credentialSchema` property as per the example below.
+
+[source,json]
+----
+"credentialSchema": [
+  {
+    "id": "https://creator-assertions.github.io/schemas/v1/creator-identity-assertion.json",
+    "type": "JSONSchema"
+  }
+]
+----
+
+NOTE: The usage of this data verification schema is not enforced by this specification, but it is RECOMMENDED to be used when possible.
+
+==== Recommendations for issuers
+
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Merge with above section? This explains the use of `credentialSchema` to answer my earlier TO DO item.
+
+The inclusion of the `credentialSchema` property in a verifiable credential is OPTIONAL. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
+
+The inclusion of the `creator-identity-assertion.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
+
+==== Recommendations for verifiers
+
+The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
+
+NOTE: `creator-identity-assertion.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
+
+==== Proofs
+
+[#issue-155]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/155[issue #155]): Write section on proofs.
+
+==== Validating an identity assertion with verifiable credentials
+
+[#issue-156]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/156[issue #156]): Write section on validating.
 
 === X.509 certificates and COSE signatures
 
@@ -885,7 +1325,7 @@ In this example, the wallet is prepared to selectively disclose portions of the 
 [mermaid,width=100%]
 ....
 sequenceDiagram
-    participant G as C2PA claim generator
+    participant G as Identity assertion generator
     participant W as Wallet
     participant H as Credential holder
 
@@ -908,10 +1348,10 @@ image::trust-model/no-signature-authority.drawio.svg[Named actor without signatu
 
 In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
 
-. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator* to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
-.. Is there a direct trust relationship with the *<<_identity_assertion,identity assertion>> generator?* If so, proceed to step 2.
-.. Is there a transitive trust relationship with the *<<_identity_assertion,identity assertion>> generator* via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the *<<_identity_assertion,identity assertion>> generator’s* _credential issuer_ to issue valid signature credentials?)
-.. If so, was the *<<_identity_assertion,identity assertion>> generator’s* credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator>>_ to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
+.. Is there a direct trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>?_ If so, proceed to step 2.
+.. Is there a transitive trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator’s>>_ _credential issuer_ to issue valid signature credentials?)
+.. If so, was the _<<_identity_assertion_generator,identity assertion generator’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
 .. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ proceed to step 2.
 .. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
 . Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
