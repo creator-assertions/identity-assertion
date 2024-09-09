@@ -85,3 +85,4 @@ _This section is non-normative._
 *09 September 2024*
 
 * Merge with 1.0 final version of this specification.
+* Rename xref:_identity_claims_aggregation[xrefstyle=full], from “W3C verifiable credentials.”

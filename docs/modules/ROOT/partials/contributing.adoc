@@ -3,9 +3,7 @@
 
 _This section is non-normative._
 
-This publicly available specification was approved by the Creator Assertions Working Group on 09 September 2024.
-
-If you wish to contribute to the development of a future version of this specification, you are invited to:
+This specification is an active working draft. If you wish to contribute to its development, you are invited to:
 
 * link:++https://creator-assertions.github.io/index.html#_contributing++[Read the CAWG contributing guide]
 * link:https://github.com/creator-assertions/identity-assertion/issues[File an issue for discussion]
