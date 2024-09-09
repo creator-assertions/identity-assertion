@@ -189,7 +189,7 @@ _This section is non-normative._
 * Added xref:_user_experience[xrefstyle=full]. (Brief section as a placeholder for forthcoming UX guidance.)
 * Revise discussion of capture devices holding credentials. See xref:_use_cases_and_examples[xrefstyle=full] and xref:_compromise_of_private_key_material[xrefstyle=full].
 * Added language to xref:_named_actor[xrefstyle=full] to clarify that a named actor can be an organization of actors.
-* Added language to describe mitigations for homoglpyh and typosquatting attacks. See xref:_homoglyph_and_typo_squatting_attacks[xrefstyle=full].
+* Added language to describe mitigations for homoglpyh and typosquatting attacks.
 * Added xref:_what_does_trust_mean[xrefstyle=full].
 
 *22 July 2024*
@@ -216,3 +216,7 @@ _This section is non-normative._
 *20 August 2024*
 
 * (Clerical) Capitalize SHALL consistently.
+
+*09 September 2024*
+
+* Approved 1.0 version of this specification.
