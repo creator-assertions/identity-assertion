@@ -6,7 +6,6 @@ site:
 content:
   sources: 
   - url: .
-    tags: v1.0
     branches: HEAD
     start_path: docs
 ui: 
