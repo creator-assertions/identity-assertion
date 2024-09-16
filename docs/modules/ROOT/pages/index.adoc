@@ -1179,7 +1179,6 @@ Implementers SHOULD consult this section in the current version of this specific
 
 The allowed list is:
 
-* link:https://github.com/quartzjer/did-jwk[`did:jwk`]
 * link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
 
 The deprecated list is empty.
