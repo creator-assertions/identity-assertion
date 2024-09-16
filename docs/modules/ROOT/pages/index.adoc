@@ -773,61 +773,109 @@ The issuer is responsible for gathering information about the _<<_named_actor,na
 
 NOTE: This specification is not meant to support a _<<_named_actor,named actor>>_ using their own _<<W3C verifiable credential>>_ to issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of the specification.
 
-==== Verifiable credential example
+[#verifiable-presentation-example]
+.Verifiable presentation example
+[example]
+====
+In this example, an _<<_actor,actor>>_ who we will call Alice:
 
-_This section is non-normative._
+* Is using an authoring tool provided by an _<<_identity_claims_aggregator,identity claims aggregator>>,_ and
+* Wishes to use a credential held in a digital wallet that she controls to document her role in creating one or more _<<_c2pa_asset,C2PA assets>>_ with that authoring tool.
 
-In the data flow diagram below, a software application (“Authoring tool”) is acting on behalf of Alice, an _<<_actor,actor>>_ who wishes to document her role in producing a _<<C2PA asset>>_ using credentials held in a digital wallet that she controls.
+IMPORTANT: This example uses a W3C Verifiable Presentation, but the workflow is similar for other forms of authentication that may be used (OAuth2 or OpenID Connect, for example).
 
-The authoring tool produces a preliminary _<<_c2pa_manifest,C2PA Manifest>>_ describing the _<<C2PA asset>>._ Once enough information is finalized to produce the `signer_payload`, that information is summarized and presented to Alice’s wallet to request a Verifiable Presentation.
+*Workflow 1: Alice demonstrates her identity to the identity claims aggregator*
 
-Once she gives consent, the wallet generates a Verifiable Presentation that contains information that she wishes to disclose about herself (for example, her name and professional affiliations) and the `signer_payload` content. This Verifiable Presentation is signed on her behalf by her wallet and returned to the authoring tool.
-
-The authoring tool incorporates this Verifiable Presentation into a new _<<W3C verifiable credential>>_ that is unique to this _<<C2PA asset>>_. This becomes the `signature` field of the identity assertion, which is then fed back into the library that implements the C2PA Manifest generation. A final _<<C2PA Manifest>>_ can then be generated and embedded into the _<<C2PA asset>>_ or uploaded to cloud storage as Alice prefers.
+Alice must first prove her identity to the _<<_identity_claims_aggregator,identity claims aggregator.>>_ This must be done prior to the creation of any *<<_identity_assertion,identity assertions>>.*
 
 [mermaid,width=100%]
 ....
 sequenceDiagram
   autonumber
-  participant AT as Authoring tool
+  participant A as Alice
+  participant W as Wallet
+  participant ICA as Identity claims aggregator
 
-  rect rgb(220, 220, 220)
-  note right of AT: Create preliminary asset
-  AT ->> AT: Generate asset without C2PA Manifest
-  create participant C2PA as C2PA library
-  AT ->> C2PA: Start generating C2PA Manifest
-  AT -->> C2PA: Assertions (actions, etc.)
-  AT -->> C2PA: Placeholder for identity assertion
-  C2PA ->> C2PA: Calculate final file layout<br/>(leaving placeholders for<br/>identity assertion and<br/>claim generator signature)
-  C2PA ->> AT: Preliminary C2PA Manifest
-  end
+  A ->> ICA: Request connection to ICA
+  ICA ->> A: Presentation request link
 
-  rect rgb(220, 220, 220)
-  note right of AT: Finalize identity assertion
-  AT ->> AT: Summarize Manifest contents
-  create participant W as Wallet
-  AT ->> W: Presentation request
-  create actor Alice
-  W ->> Alice: Consent for<br/>signature
-  destroy Alice
-  Alice ->> W: Approved
-  destroy W
-  W ->> AT: W3C Verifiable Presentation<br/>describing Alice
-  AT ->> AT: Check validity of VP
-  AT ->> AT: Generate W3C Verifiable Credential<br/>describing asset, including VP
-  end
-
-  rect rgb(220, 220, 220)
-  note right of AT: Finalize C2PA Manifest
-  AT ->> C2PA: Update identity assertion<br/>placing asset VC in signature field
-  C2PA ->> C2PA: Update hash references<br/>to identity assertion
-  C2PA ->> C2PA: Generate final signature<br/>for C2PA Manifest
-  C2PA ->> AT: Final C2PA Manifest Store<br/>(embedded in asset if requested)
-  end
+  A ->> W: Follow this link
+  W ->> ICA: Follow link
+  ICA ->> W: Presentation request
+  W ->> A: Consent to share info?
+  A ->> W: Approve
+  W ->> ICA: Verifiable presentation
+  ICA ->> ICA: Verifies and remembers presentation
 ....
 
-[#issue-144]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/144[issue #144]): Revise above example to reflect more common scenario where issuer ≠ named actor.
+The interactions involving Alice are presumed to be visible user experience interactions that she encounters. The interactions between wallet and _<<_identity_claims_aggregator,identity claims aggregator>>_ are presumed to be network traffic.
+
+1. Alice initiates a connection request via an interface provided by the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+2. The _<<_identity_claims_aggregator,identity claims aggregator>>_ responds with a link (possibly a QR code) which points to a link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request].
+
+3. Alice then instructs her digital wallet to follow the QR code or link.
+
+4. Her wallet follows the link on her behalf.
+
+5. The _<<_identity_claims_aggregator,identity claims aggregator>>_ responds with the actual link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request].
+
+6. The wallet describes the link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request] to Alice and asks her permission to provide information to the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+7. Alice approves the request.
+
+8. The wallet responds to the _<<_identity_claims_aggregator,identity claims aggregator>>_ with a link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[Verifiable Presentation] containing the requested information.
+
+9. The _<<_identity_claims_aggregator,identity claims aggregator>>_ then verifies this presentation and retains the information contained therein for future use.
+
+This workflow may be repeated any number of times to provide additional identity signals to the _<<_identity_claims_aggregator,identity claims aggregator>>_ or to renew identity signals that may have expired.
+
+*Workflow 2: Alice creates a new _<<C2PA asset>>_*
+
+Having demonstrated her identity to the _<<_identity_claims_aggregator,identity claims aggregator>>,_ Alice can now use that service to create any number of _<<_c2pa_asset,C2PA assets>>_ that include her identity.
+
+The workflow described below will be repeated for each _<<_c2pa_asset,C2PA asset>>._
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+  autonumber
+  participant A as Alice
+  participant C2PA as C2PA library
+  participant ICA as Identity claims aggregator
+
+  A ->> A: Creates asset
+  A ->> C2PA: Generate C2PA Manifest
+  C2PA ->> C2PA: Starts generating C2PA Manifest
+  C2PA ->> ICA: signer_payload, Alice’s user token
+  ICA ->> ICA: Adds one or more identity claims
+  ICA ->> C2PA: Asset-specific verifiable credential
+  C2PA ->> C2PA: Embeds signature in identity assertion
+  C2PA ->> C2PA: Finishes generating C2PA Manifest
+  C2PA ->> A: Final C2PA asset
+....
+
+1. Alice uses an authoring tool to create content that will eventually become a _<<C2PA asset>>._
+
+2. When Alice is ready to render her _<<C2PA asset>>,_ she signals to the authoring tool that she wants it to include a _<<_c2pa_manifest,C2PA Manifest>>_ with an *<<_identity_assertion,identity assertion>>* describing her role in producing the asset.
+
+3. The C2PA implementation begins the process of creating the _<<_c2pa_manifest,C2PA Manifest>>_ and *<<_identity_assertion,identity assertion>>* as described in xref:_creating_the_identity_assertion[xrefstyle=full].
+
+4. The C2PA implementation sends a request to the _<<_identity_claims_aggregator,identity claims aggregator>>_ containing the `signer_payload` for this _<<C2PA asset>>_ and a user token that uniquely identifies Alice within that system.
+
+5. Assuming the token is valid, the _<<_identity_claims_aggregator,identity claims aggregator>>_ issues an asset-specific verifiable credential. This credential includes one or more identity claims that were remembered from workflow 1 above and binds those identity claims to the `signer_payload` that describes the _<<C2PA asset>>._
+
+6. This new credential is then returned to the C2PA implementation.
+
+7. The C2PA implementation includes this credential as the `signature` value for the *<<_identity_assertion,identity assertion>>.*
+
+8. The C2PA implementation finalizes the _<<_c2pa_manifest,C2PA Manifest>>,_ including adding its own signature as _<<_c2pa_claim_generator,C2PA claim generator>>._
+
+9. This finalized _<<C2PA asset>>_ is then made available to Alice who can now distribute it as she wishes.
+
+[#issue-179]
+NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/179[issue #179]): Describe how ICA should request a Verifiable Presentation and how to describe that in VC.
+====
 
 ==== Identity claims aggregation description
 
