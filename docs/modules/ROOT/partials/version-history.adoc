@@ -94,3 +94,4 @@ _This section is non-normative._
 *16 September 2024*
 
 * Add guidance on how _<<_identity_claims_aggregator,identity claims aggregator>>_ should sign the asset-specific credential it issues
+* Rewrite verifiable presentation example to reflect common identity claims aggregation workflow
