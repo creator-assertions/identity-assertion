@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 10 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 16 September 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -767,6 +767,8 @@ The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a 
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claims_aggregation`.
 
+The `signature` value is described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+
 The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
 
 NOTE: This specification is not meant to support a _<<_named_actor,named actor>>_ using their own _<<W3C verifiable credential>>_ to issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of the specification.
@@ -1211,10 +1213,30 @@ The usage of the data verification schemas from a verifiable credential’s `cre
 
 NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
-==== Proofs
+==== Verifiable credential proof mechanism
 
-[#issue-155]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/155[issue #155]): Write section on proofs.
+The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[§3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
+
+===== Signature algorithms
+
+The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[§13.2, “Digital signatures,”] in version 2.1 or any subsequent version of the C2PA technical specification.
+
+===== DID methods
+
+The public key corresponding to the `issuer` field SHALL be discoverable using one of the link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID methods] as described in this section. This section defines:
+
+* A list of DID methods that are allowed for providing public keys for new content as well as required for discovering public keys for existing content (the allowed list);
+* A list of DID methods that are required to be supported for discovering public keys for existing content but are not allowed for providing keys for of new content (the deprecated list).
+
+A DID method SHALL appear in no more than one list. If a DID method does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding a DID method. For this reason, implementations SHALL NOT support additional DID methods on an optional basis.
+
+Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
+
+The allowed list is:
+
+* link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
+
+The deprecated list is empty.
 
 ==== Validating an identity assertion with verifiable credentials
 
