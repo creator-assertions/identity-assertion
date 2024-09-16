@@ -1167,7 +1167,7 @@ NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema k
 
 ==== Verifiable credential proof mechanism
 
-The `signature` field of an *<<_identity_assertion,identity assertion>>* using verifiable credentials MUST be secured as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[§3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
+The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[§3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
 
 ===== Signature algorithms
 
