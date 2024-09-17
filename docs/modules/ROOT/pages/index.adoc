@@ -346,6 +346,15 @@ IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an i
 
 IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
 
+==== Natural language string
+
+A sequence of UTF-8 characters that is intended to be displayed to a human user. When contained within a JSON or CBOR data structure, this may be either:
+
+* a single string object, in which case this string is to be displayed as-is to users, regardless of their expressed language preference, or
+* a JSON or CBOR map, in which case the contents should be interpreted as described in link:https://www.w3.org/TR/vc-data-model-2.0/#language-and-base-direction[§11.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
+
+The string MUST resolve to a non-empty sequence of UTF-8 characters for all supported languages.
+
 ==== Placeholder assertion
 
 A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
@@ -1024,7 +1033,7 @@ The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI 
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name:::
-The `verifiedIdentities[?].provider.name` MUST be present and MUST be a non-empty string. The `verifiedIdentities[?].provider.name` property is the user-visible name of the _<<_identity_provider,identity provider>>._
+The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
 
 [#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
 Identity provider proof:::
