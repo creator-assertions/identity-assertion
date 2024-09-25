@@ -925,6 +925,58 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
   ...
   "verifiedIdentities": [
     {
+      "type": "cawg.verified_presentation",
+      "verifiedPresentation": {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1"
+        ],
+        "type": [
+          "VerifiablePresentation"
+        ],
+        "verifiableCredential": [
+          {
+            "@context": [
+              "https://www.w3.org/2018/credentials/v1",
+              "https://www.w3.org/2018/credentials/examples/v1"
+            ],
+            "id": "https://example.com/credentials/1872",
+            "type": [
+              "VerifiableCredential",
+              "IDCardCredential"
+            ],
+            "issuer": {
+              "id": "did:example:issuer"
+            },
+            "issuanceDate": "2010-01-01T19:23:24Z",
+            "credentialSubject": {
+              "given_name": "Fredrik",
+              "family_name": "Strömberg",
+              "birthdate": "1949-01-22"
+            },
+            "proof": {
+              "type": "Ed25519Signature2018",
+              "created": "2021-03-19T15:30:15Z",
+              "jws": "eyJhb...JQdBw",
+              "proofPurpose": "assertionMethod",
+              "verificationMethod": "did:example:issuer#keys-1"
+            }
+          }
+        ],
+        "id": "ebc6f1c2",
+        "holder": "did:example:holder",
+        "proof": {
+          "type": "Ed25519Signature2018",
+          "created": "2021-03-19T15:30:15Z",
+          "challenge": "n-0S6_WzA2Mj",
+          "domain": "https://client.example.org/cb",
+          "jws": "eyJhbG...IAoDA",
+          "proofPurpose": "authentication",
+          "verificationMethod": "did:example:holder#key-1"
+        }
+      },
+      "verifiedAt": "2024-09-25T21:13:40Z"
+    },
+    {
       "name": "First-Name Last-Name",
       "type": "cawg.document_verification",
       "provider": {
@@ -976,6 +1028,7 @@ The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empt
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |  Meaning
+| `cawg.verified_presentation` | The _<<_identity_provided,identity provider>>_ has provided a valid link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation] describing the _<<_named_actor,named actor>>_ to the _<<_identity_claims_aggregator,identity claims aggregator>>._
 | `cawg.document_verification` | The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
 | `cawg.affiliation` | The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization. This could be a professional organization or an employment relationship.
 | `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
@@ -985,6 +1038,20 @@ The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empt
 Other string values MAY be used in `verifiedIdentities[?].type` with the understanding that they may not be well understood by *<<_identity_assertion_consumer,identity assertion consumers>>.* String values for `verifiedIdentities[?].type` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
 +
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `verifiedIdentities[?].type` using the `cawg.` prefix.
+
+[#vc-credentialsubject-verifiedidentity-verifiedpresentation]
+Verified presentation::
+The `verifiedIdentities[?].verifiedPresentation` property MAY be present. If present, it MUST NOT be empty and must be a JSON object containing a link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation], which was issued by an _<<_identity_provider,identity provider>>._
++
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ MUST NOT include any verifiable presentation in an *<<_identity_assertion,identity assertion>>* unless it successfully validated that verifiable presentation at time of receipt.
++
+The format of the link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation] SHALL be as specified in link:++https://www.w3.org/TR/vc-data-model/#presentations-0[version 1.1 of the W3C verifiable credentials data model] or any subsequent version.
++
+If the `type` of this verified identity is `cawg.verified_presentation`, the `verifiedIdentities[?].verifiedPresentation` property MUST be present.
++
+The method for transferring the link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation] to the _<<_identity_claims_aggregator,identity claims aggregator>>_ is implementation-dependent and not specified here. 
++
+NOTE: TO DISCUSS BEFORE MERGING PR: Can/should the ICA redact some portions of the VP for data sensitivity (`proof`?). Doing so will render the VP unverifiable by the identity assertion _consumer_ but may be necessary for privacy reasons.
 
 [#vc-credentialsubject-verifiedidentity-name]
 Display name::
