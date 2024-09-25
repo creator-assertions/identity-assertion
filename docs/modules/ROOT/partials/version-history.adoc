@@ -89,13 +89,14 @@ _This section is non-normative._
 
 *10 September 2024*
 
-* (Clerical) Fix `sig_type` in identity claims aggregation examples
+* (Clerical) Fix `sig_type` in identity claims aggregation examples.
 
 *16 September 2024*
 
-* Add guidance on how _<<_identity_claims_aggregator,identity claims aggregator>>_ should sign the asset-specific credential it issues
-* Rewrite verifiable presentation example to reflect common identity claims aggregation workflow
+* Add guidance on how _<<_identity_claims_aggregator,identity claims aggregator>>_ should sign the asset-specific credential it issues.
+* Rewrite verifiable presentation example to reflect common identity claims aggregation workflow.
 
 *25 September 2024*
 
-* (Clerical) Use numbered sections for top-level fields in description of xref:vc-credentialsubject-verifiedIdentities[xrefstyle=full]
+* (Clerical) Use numbered sections for top-level fields in description of xref:vc-credentialsubject-verifiedIdentities[xrefstyle=full].
+* (Clerical) Remove mention of C2PA 2.1 spec being in draft status.
