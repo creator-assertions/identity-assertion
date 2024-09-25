@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 16 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 25 September 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -1022,9 +1022,10 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
 ----
 
 [#vc-credentialsubject-verifiedidentity-type]
-Verified identity type::
+====== Verified identity type
+
 The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._ This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
-+
+
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |  Meaning
@@ -1034,9 +1035,9 @@ The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empt
 | `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
 | `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._ 
 |=======================
-+
+
 Other string values MAY be used in `verifiedIdentities[?].type` with the understanding that they may not be well understood by *<<_identity_assertion_consumer,identity assertion consumers>>.* String values for `verifiedIdentities[?].type` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
-+
+
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `verifiedIdentities[?].type` using the `cawg.` prefix.
 
 [#vc-credentialsubject-verifiedidentity-verifiedpresentation]
@@ -1054,47 +1055,53 @@ The method for transferring the link:++https://www.w3.org/TR/vc-data-model-2.0/#
 NOTE: TO DISCUSS BEFORE MERGING PR: Can/should the ICA redact some portions of the VP for data sensitivity (`proof`?). Doing so will render the VP unverifiable by the identity assertion _consumer_ but may be necessary for privacy reasons.
 
 [#vc-credentialsubject-verifiedidentity-name]
-Display name::
+====== Display name
+
 The `verifiedIdentities[?].name` property MAY be present. If present, it MUST NOT be empty and must be a string defining the _<<_named_actor,named actor’s>>_ name as understood by the _<<_identity_provider,identity provider>>._
-+
+
 If the `type` of this verified identity is `cawg.document_verification`, the `verifiedIdentities[?].name` property MUST be present and MUST exactly match the name found on the identity documents.
 
 [#vc-credentialsubject-verifiedidentity-username]
-User name::
+====== User name
+
 The `verifiedIdentities[?].username` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ user name as assigned by the _<<_identity_provider,identity provider>>._
-+
+
 If the `type` of this verified identity is `cawg.social_media`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
 
 [#vc-credentialsubject-verifiedidentity-address]
-Address::
+====== Address
+
 The `verifiedIdentities[?].address` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ cryptographic address as assigned by the _<<_identity_provider,identity provider>>._
-+
+
 If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedIdentities[?].address` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
 
 [#vc-credentialsubject-verifiedidentity-uri]
-URI::
+====== URI
+
 The `verifiedIdentities[?].uri` property MAY be present. If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
-+
+
 If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
 
 [#vc-credentialsubject-verifiedidentity-verifiedat]
-Identity verification date::
+====== Identity verification date
+
 The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
 
 [#vc-credentialsubject-verifiedidentity-provider]
-Identity provider details::
+====== Identity provider details
+
 The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id`, `name`, and `proof`.
 
 [#vc-credentialsubject-verifiedidentity-provider-id]
-Identity provider ID:::
+Identity provider ID::
 The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_provider,identity provider>>._ This proof of authenticity of the _<<_identity_provider,identity provider>>_ MUST NOT be confused with the proof of verification of the _<<_named_actor,named actor>>._
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
-Identity provider name:::
+Identity provider name::
 The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty. The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
 
 [#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
-Identity provider proof:::
+Identity provider proof::
 The `verifiedIdentities[?].provider.proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_provider,identity provider>>._ The content as well as the process are outside the scope of this specification.
 
 [#issue-160]
