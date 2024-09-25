@@ -1047,7 +1047,7 @@ The _<<_identity_claims_aggregator,identity claims aggregator>>_ MUST NOT includ
 +
 The format of the link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation] SHALL be as specified in link:++https://www.w3.org/TR/vc-data-model/#presentations-0[version 1.1 of the W3C verifiable credentials data model] or any subsequent version.
 +
-If the `type` of this verified identity is `cawg.verified_presentation`, the `verifiedIdentities[?].verifiedPresentation` property MUST be present.
+NOTE: TO DISCUSS BEFORE MERGING PR: Are there length-of-validity constraints that the identity provider can stipulate that must be honored by the ICA? (In other words, is there a way for identity provider to state a not-valid-after date after which the ICA can no longer consider this presentation to have been verified?)
 +
 The method for transferring the link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation] to the _<<_identity_claims_aggregator,identity claims aggregator>>_ is implementation-dependent and not specified here. 
 +
