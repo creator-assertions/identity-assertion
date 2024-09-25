@@ -1041,7 +1041,7 @@ IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification M
 
 [#vc-credentialsubject-verifiedidentity-verifiedpresentation]
 Verified presentation::
-The `verifiedIdentities[?].verifiedPresentation` property MAY be present. If present, it MUST NOT be empty and must be a JSON object containing a link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation], which was issued by an _<<_identity_provider,identity provider>>._
+The `verifiedIdentities[?].verifiedPresentation` property MUST be present if the `type` of this verified identity is `cawg.verified_presentation`. This property MUST NOT be present for any other `type` of verified identity. When present, it MUST be a JSON object containing a link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[W3C verifiable presentation], which was issued by an _<<_identity_provider,identity provider>>._
 +
 The _<<_identity_claims_aggregator,identity claims aggregator>>_ MUST NOT include any verifiable presentation in an *<<_identity_assertion,identity assertion>>* unless it successfully validated that verifiable presentation at time of receipt.
 +
