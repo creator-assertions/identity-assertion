@@ -100,3 +100,7 @@ _This section is non-normative._
 
 * (Clerical) Use numbered sections for top-level fields in description of xref:vc-credentialsubject-verifiedIdentities[xrefstyle=full].
 * (Clerical) Remove mention of C2PA 2.1 spec being in draft status.
+
+*30 September 2024*
+
+* Tweak wording of `provider.name` entry to support localization of provider name.

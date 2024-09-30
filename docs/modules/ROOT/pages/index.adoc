@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 25 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 30 September 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -343,6 +343,15 @@ The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by
 IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an individual human, an organization of humans, or a non-human (software or hardware device).
 
 IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
+
+==== Natural language string
+
+A sequence of UTF-8 characters that is intended to be displayed to a human user. When contained within a JSON or CBOR data structure, this may be either:
+
+* a single string object, in which case this string is to be displayed as-is to users, regardless of their expressed language preference, or
+* a JSON or CBOR map, in which case the contents should be interpreted as described in link:https://www.w3.org/TR/vc-data-model-2.0/#language-and-base-direction[§11.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
+
+The string MUST resolve to a non-empty sequence of UTF-8 characters for all supported languages.
 
 ==== Placeholder assertion
 
@@ -1029,7 +1038,7 @@ The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI 
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
-The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty. The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
+The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
 
 [#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
 Identity provider proof::
