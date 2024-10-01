@@ -937,7 +937,6 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
       "provider": {
         "id": "https://example-id-verifier.com",
         "name": "Example ID Verifier",
-        "proof": "https://example-id-verifier.com/proofs/1"
       },
       "verifiedAt": "2024-07-26T22:30:15Z"
     },
@@ -946,7 +945,6 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
       "provider": {
         "id": "https://example-affiliated-organization.com",
         "name": "Example Affiliated Organization",
-        "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
       },
       "verifiedAt": "2024-07-26T22:29:57Z"
     },
@@ -1030,7 +1028,7 @@ The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-
 [#vc-credentialsubject-verifiedidentity-provider]
 ====== Identity provider details
 
-The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id`, `name`, and `proof`.
+The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least two properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id` and `name`.
 
 [#vc-credentialsubject-verifiedidentity-provider-id]
 Identity provider ID::
@@ -1039,20 +1037,6 @@ The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
 The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
-
-[#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
-Identity provider proof::
-The `verifiedIdentities[?].provider.proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_provider,identity provider>>._ The content as well as the process are outside the scope of this specification.
-
-[#issue-160]
-[NOTE]
-====
-TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/160[Issue #160]): Determine structure for `verifiedIdentities[?].proof`.
-
-Need to clarify that the proof is _identity provider's_ signature about their attestations for _named actor._
-
-For that reason, might make sense to move proof up one level from its current place in the hierarchy.
-====
 
 ===== Binding to C2PA asset
 
@@ -1125,7 +1109,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
         "provider": {
           "id": "https://example-id-verifier.com",
           "name": "Example ID Verifier",
-          "proof": "https://example-id-verifier.com/proofs/1"
         },
         "verifiedAt": "2024-07-26T22:30:15Z"
       },
@@ -1134,7 +1117,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
         "provider": {
           "id": "https://example-affiliated-organization.com",
           "name": "Example Affiliated Organization",
-          "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
         },
         "verifiedAt": "2024-07-26T22:29:57Z"
       },
