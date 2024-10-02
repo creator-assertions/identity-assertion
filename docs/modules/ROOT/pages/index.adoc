@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 30 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 02 October 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -791,6 +791,7 @@ In this example, an _<<_actor,actor>>_ who we will call Alice:
 
 IMPORTANT: This example uses a W3C Verifiable Presentation, but the workflow is similar for other forms of authentication that may be used (OAuth2 or OpenID Connect, for example).
 
+[#ica-workflow-demonstrate-identity]
 *Workflow 1: Alice demonstrates her identity to the identity claims aggregator*
 
 Alice must first prove her identity to the _<<_identity_claims_aggregator,identity claims aggregator.>>_ This must be done prior to the creation of any *<<_identity_assertion,identity assertions>>.*
@@ -837,6 +838,7 @@ The interactions involving Alice are presumed to be visible user experience inte
 
 This workflow may be repeated any number of times to provide additional identity signals to the _<<_identity_claims_aggregator,identity claims aggregator>>_ or to renew identity signals that may have expired.
 
+[#ica-workflow-create-new-c2pa-asset]
 *Workflow 2: Alice creates a new _<<C2PA asset>>_*
 
 Having demonstrated her identity to the _<<_identity_claims_aggregator,identity claims aggregator>>,_ Alice can now use that service to create any number of _<<_c2pa_asset,C2PA assets>>_ that include her identity.
