@@ -112,3 +112,4 @@ _This section is non-normative._
 *08 October 2024*
 
 * Consolidate wording about `cawg.` and other externally-defined labels
+* Remove `proof` entry from `verifiedIdentities[n]` structure
