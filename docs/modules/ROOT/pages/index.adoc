@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 25 September 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 08 October 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -44,8 +44,6 @@ The C2PA technical specification allows other standards bodies to define additio
 This specification describes a specific _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to allow an _<<_actor,actor>>_ to prove control over an digital identity and to bind that identity to a _<<_c2pa_asset,C2PA asset>>_ (and, at their option, one or more _<<_c2pa_assertion,C2PA assertions>>_) produced by them or on their behalf.
 
 IMPORTANT: This document references link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[version 2.1 of the C2PA technical specification], but it is compatible with all prior versions of the specification. Where there is a meaningful difference between versions of the C2PA specification, those will be described here.
-
-NOTE: Version 2.1 of the C2PA technical specification is in a draft public review as of this writing. It contains important changes to signature and timestamp logic that are germane to this specification.
 
 === Trust over IP technical architecture
 
@@ -346,6 +344,15 @@ IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an i
 
 IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>,_ though there is an implied trust relationship between the two _<<_actor,actors>>._
 
+==== Natural language string
+
+A sequence of UTF-8 characters that is intended to be displayed to a human user. When contained within a JSON or CBOR data structure, this may be either:
+
+* a single string object, in which case this string is to be displayed as-is to users, regardless of their expressed language preference, or
+* a JSON or CBOR map, in which case the contents should be interpreted as described in link:https://www.w3.org/TR/vc-data-model-2.0/#language-and-base-direction[§11.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
+
+The string MUST resolve to a non-empty sequence of UTF-8 characters for all supported languages.
+
 ==== Placeholder assertion
 
 A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
@@ -431,9 +438,7 @@ If present, the value for `role` MUST be a non-empty CBOR array of non-empty tex
 | `cawg.translator` | The _<<_named_actor,named actor>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
 |=======================
 
-Other CBOR text string values MAY be used in `role` with the understanding that they may not be well understood by *<<_identity_assertion,identity assertion>>* consumers. CBOR text string values for `role` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
-
-IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `role` using the `cawg.` prefix.
+Other CBOR text string values MAY be used for `role`, subject to the restrictions described in xref:_labels[xrefstyle=full].
 
 === CBOR schema
 
@@ -506,6 +511,32 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
   "pad2": b64'....'  // zero-filled pad buffer
 }
 ----
+
+=== Labels
+
+Several data types in this specification have labels that can be defined either in this specification or by an external entity.
+
+Labels are non-empty string values organized into namespaces using a period (`.`) as a separator. The namespace component of the label can be an entity or a reference to a well-established standard. (See ABNF below.)
+
+Labels defined by the CAWG will begin with `cawg.`. All labels beginning with `cawg.` that are not defined in the current version of the specification are reserved for the future use of the CAWG and MUST NOT be assigned by any other entity. Future minor version updates (1.2, 1.3, etc.) to this specification MAY define new values for any label using the `cawg.` prefix.
+
+Entity-specific labels (i.e. those not defined by CAWG) SHALL begin with the Internet domain name for the entity similar to how Java packages are defined (e.g., `com.litware`, `net.fineartschool`). 
+
+[[abnf_for_labels]]
+[source,abnf]
+.ABNF for labels
+----
+namespaced-label = qualified-namespace label
+qualified-namespace = "cawg" / entity
+entity = entity-component *( "." entity-component )
+entity-component = 1( DIGIT / ALPHA ) *( DIGIT / ALPHA / "-" / "_" )
+label = 1*( "." label-component )
+label-component = 1( DIGIT / ALPHA ) *( DIGIT / ALPHA / "-" / "_" )
+----
+
+The period-separated components of a label follow the variable naming convention (`[a-zA-Z][a-zA-Z0-9_-]*`) specified in the POSIX or C locale, with the restriction that the use of a repeated underscore character (`__`) is reserved for labelling multiple assertions of the same type.
+
+WARNING: While the use of labels defined by external entities is permitted, implementers should be aware that such labels may not be widely understood by other implementations.
 
 == Creating the identity assertion
 
@@ -742,7 +773,7 @@ The *<<_identity_assertion,identity assertion>>* allows multiple signature types
 
 The signature type is represented by the `signer_payload.sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
 
-Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature` with the understanding that some *<<_identity_assertion,identity assertion>>* validators may not be prepared to understand such assertions. Values of `signer_payload.sig_type` that begin with the prefix `cawg.` are reserved for use of the Creator Assertions Working Group and MUST NOT be used in any specification not produced by this group.
+Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature`, subject to restrictions described in xref:_labels[xrefstyle=full].
 
 [IMPORTANT]
 .Credential types in minor version updates
@@ -784,6 +815,7 @@ In this example, an _<<_actor,actor>>_ who we will call Alice:
 
 IMPORTANT: This example uses a W3C Verifiable Presentation, but the workflow is similar for other forms of authentication that may be used (OAuth2 or OpenID Connect, for example).
 
+[#ica-workflow-demonstrate-identity]
 *Workflow 1: Alice demonstrates her identity to the identity claims aggregator*
 
 Alice must first prove her identity to the _<<_identity_claims_aggregator,identity claims aggregator.>>_ This must be done prior to the creation of any *<<_identity_assertion,identity assertions>>.*
@@ -830,6 +862,7 @@ The interactions involving Alice are presumed to be visible user experience inte
 
 This workflow may be repeated any number of times to provide additional identity signals to the _<<_identity_claims_aggregator,identity claims aggregator>>_ or to renew identity signals that may have expired.
 
+[#ica-workflow-create-new-c2pa-asset]
 *Workflow 2: Alice creates a new _<<C2PA asset>>_*
 
 Having demonstrated her identity to the _<<_identity_claims_aggregator,identity claims aggregator>>,_ Alice can now use that service to create any number of _<<_c2pa_asset,C2PA assets>>_ that include her identity.
@@ -910,9 +943,6 @@ The `issuer` property MUST be present and MUST follow the format as specified in
 
 The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
-[#issue-64]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/64[issue #64]): Consider stronger timestamping mechanism than W3C VC requires.
-
 [#vc-credentialsubject-verifiedIdentities]
 ===== Verified identities
 
@@ -930,7 +960,6 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
       "provider": {
         "id": "https://example-id-verifier.com",
         "name": "Example ID Verifier",
-        "proof": "https://example-id-verifier.com/proofs/1"
       },
       "verifiedAt": "2024-07-26T22:30:15Z"
     },
@@ -945,7 +974,6 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
       "provider": {
         "id": "https://example-affiliated-organization.com",
         "name": "Example Affiliated Organization",
-        "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
       },
       "verifiedAt": "2024-07-26T22:29:57Z"
     },
@@ -990,9 +1018,7 @@ The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empt
 | `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._ 
 |=======================
 
-Other string values MAY be used in `verifiedIdentities[?].type` with the understanding that they may not be well understood by *<<_identity_assertion_consumer,identity assertion consumers>>.* String values for `verifiedIdentities[?].type` that begin with the prefix `cawg.` are reserved for the use of the Creator Assertions Working Group and MUST NOT be used unless defined in a this or a future version of this specification.
-
-IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY define new values for `verifiedIdentities[?].type` using the `cawg.` prefix.
+Other string values MAY be used in `verifiedIdentities[?].type`, subject to restrictions described in xref:_labels[xrefstyle=full].
 
 [#vc-credentialsubject-verifiedidentity-name]
 ====== Display name
@@ -1036,7 +1062,7 @@ The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-
 [#vc-credentialsubject-verifiedidentity-provider]
 ====== Identity provider details
 
-The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least three properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id`, `name`, and `proof`.
+The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least two properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id` and `name`.
 
 [#vc-credentialsubject-verifiedidentity-provider-id]
 Identity provider ID::
@@ -1044,21 +1070,7 @@ The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI 
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
-The `verifiedIdentities[?].provider.name` MUST be present and MUST NOT be empty. The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
-
-[#vc-credentialsubject-verifiedidentity-verifiedBy-proof]
-Identity provider proof::
-The `verifiedIdentities[?].provider.proof` is an OPTIONAL field. If present, it MUST be a valid URI that, when dereferenced, MUST result in the proof of authenticity of the  _<<_named_actor,named actor>>_, as per the verification process of the _<<_identity_provider,identity provider>>._ The content as well as the process are outside the scope of this specification.
-
-[#issue-160]
-[NOTE]
-====
-TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/160[Issue #160]): Determine structure for `verifiedIdentities[?].proof`.
-
-Need to clarify that the proof is _identity provider's_ signature about their attestations for _named actor._
-
-For that reason, might make sense to move proof up one level from its current place in the hierarchy.
-====
+The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
 
 ===== Binding to C2PA asset
 
@@ -1131,7 +1143,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
         "provider": {
           "id": "https://example-id-verifier.com",
           "name": "Example ID Verifier",
-          "proof": "https://example-id-verifier.com/proofs/1"
         },
         "verifiedAt": "2024-07-26T22:30:15Z"
       },
@@ -1140,7 +1151,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
         "provider": {
           "id": "https://example-affiliated-organization.com",
           "name": "Example Affiliated Organization",
-          "proof": "https://example-affiliated-organization.com/proofs/ck4592p5lk8u05mdg8bg5ac7ishlqfh1"
         },
         "verifiedAt": "2024-07-26T22:29:57Z"
       },
@@ -1235,11 +1245,17 @@ NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema k
 
 ==== Verifiable credential proof mechanism
 
-The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[§3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
+The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured using a COSE signature as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[Section 3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure. As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
+
+The COSE signature MAY use a link:https://datatracker.ietf.org/doc/html/rfc3161[RFC 3161]-compliant time stamp to provide an additional, independent signal as to when the _<<_identity_claims_aggregator,identity claims aggregator>>_ generated the *<<_identity_assertion,identity assertion>>.* If so, this time stamp shall be generated as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+
+IMPORTANT: If a timestamp is present, it MUST use a version 2 or later time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”] A version 1 time stamp MUST NOT be used.
+
+If the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ credential supports querying its online credential status, the _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD include credential revocation information as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information,”] of the C2PA technical specification.
 
 ===== Signature algorithms
 
-The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[§13.2, “Digital signatures,”] in version 2.1 or any subsequent version of the C2PA technical specification.
+The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] in version 2.1 or any subsequent version of the C2PA technical specification.
 
 ===== DID methods
 
