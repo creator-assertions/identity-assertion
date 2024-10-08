@@ -113,3 +113,4 @@ _This section is non-normative._
 
 * Consolidate wording about `cawg.` and other externally-defined labels
 * Remove `proof` entry from `verifiedIdentities[n]` structure
+* Add option to use RFC 3161 timestamp in ICA COSE signature
