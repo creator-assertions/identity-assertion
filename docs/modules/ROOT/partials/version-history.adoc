@@ -104,3 +104,7 @@ _This section is non-normative._
 *30 September 2024*
 
 * Tweak wording of `provider.name` entry to support localization of provider name.
+
+*02 October 2024*
+
+* (Clerical) Add anchor references pointing to workflows within verifiable presentation example.
