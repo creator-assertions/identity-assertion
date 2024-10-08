@@ -108,3 +108,7 @@ _This section is non-normative._
 *02 October 2024*
 
 * (Clerical) Add anchor references pointing to workflows within verifiable presentation example.
+
+*08 October 2024*
+
+* Consolidate wording about `cawg.` and other externally-defined labels
