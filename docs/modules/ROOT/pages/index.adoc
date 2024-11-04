@@ -831,7 +831,7 @@ This workflow can be repeated any number of times to provide additional identity
 
 ===== Creating content using the aggregated identity claims
 
-Once the _<<_identity_claims_aggregator,identity claims aggregator>>_ has verified one or more identity signals, the _<<_named_actor,named actor>>_ can then an authoring tool to create content. This authoring tool collaborates with the _<<_identity_claims_aggregator,identity claims aggregator>>_ to attach the identity claims which have been aggregated to date to the _<<C2PA asset>>_ being created.
+Once the _<<_identity_claims_aggregator,identity claims aggregator>>_ has verified one or more identity signals, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content. This authoring tool collaborates with the _<<_identity_claims_aggregator,identity claims aggregator>>_ to attach the identity claims which have been aggregated to date to the _<<C2PA asset>>_ being created.
 
 [#ica-workflow-creating content]
 ****
@@ -855,7 +855,7 @@ ____
 
 ==== Identity claims aggregation technical description
 
-The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ signature, is the `signature` value for the *<<_identity_assertion,identity assertion>>.* The signature value is further described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ private key, is the `signature` value for the *<<_identity_assertion,identity assertion>>.* The signature value is further described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claims_aggregation`.
 
