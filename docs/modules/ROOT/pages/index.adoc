@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 08 October 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 04 November 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -788,131 +788,80 @@ Such updates to the specification SHOULD continue to use the `cawg.identity` ass
 
 === Identity claims aggregation
 
-In some use cases, an _<<_actor,actor>>_ in the system may wish to document their role in creating a _<<C2PA asset>>_ but does not have credentials with autonomous signing capability.
+==== Identity claims aggregation conceptual overview
 
-In that case, they may arrange with an _<<_identity_claims_aggregator,identity claims aggregator>>_ to collect identity attestation claims from various _<<_identity_provider,identity providers>>_ (social media sites, ID verification vendors, etc.) and replay those identity attestation claims on their behalf to describe their role in producing a specific _<<C2PA asset>>._
+_This section is non-normative._
 
-The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
+Content creators (_<<_named_actor,named actors>>_) may wish to document their role in creating a _<<C2PA asset>>_ using identity signals that are commonly understood in the mass market. Examples of such signals include:
 
-The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ signature, is the `signature` value for the *<<_identity_assertion,identity assertion>>.*
+* verified web sites
+* social media accounts
+* official ID documentation
+* professional accreditations
+* organizational affiliations
+
+These common identity signals, though popular, are not well-designed for use as lasting identifiers. Some of the challenges associated with these identity signals include:
+
+* The methods for accessing, describing, and presenting these signals are widely disparate.
+* These signals typically do not provide the ability to issue signatures on the _<<_named_actor,named actor’s>>_ behalf.
+* The verification methods associated with these signals are typicially designed for momentary validation; they typically do not provide artifacts that can be independently verified at an arbitrary time (perhaps months or years after issuance).
+
+To facilitate the use of such identity signals, the _<<_named_actor,named actor>>_ may use the services of a third-party intermediary that they trust to gather these signals and to restate them on their behalf.
+
+We call this intermediary an *<<_identity_claims_aggregator,identity claims aggregator>>.* It performs two important roles:
+
+1. It collects and verifies identity attestation claims from various _<<_identity_provider,identity providers>>_ such as social media sites and ID verification vendors.
+2. When the _<<_named_actor,named actor>>_ creates content, it creates a unique asset-specific credential binding the identity attestation claims collected earlier to the specific _<<C2PA asset>>_ being described.
+
+IMPORTANT: An *identity claims aggregation* claim does not support a _<<_named_actor,named actor>>_ using their own credential to directly issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of this specification.
+
+The two workflows performed by the _<<_identity_claims_aggregator,identity claims aggregator>>_ are described in the sections below:
+
+===== Providing identity claims to identity claims aggregator
+
+In the first workflow, the _<<_named_actor,named actor>>_ asks the _<<_identity_claims_aggregator,identity claims aggregator>>_ to verify an identity claim. The _<<_identity_claims_aggregator,identity claims aggregator>>_ contacts the _<<_identity_provider,identity provider>>_ to verify the identity claim. If that verification is successful, the _<<_identity_claims_aggregator,identity claims aggregator>>_ remembers the provided information for later use on the _<<_named_actor,named actor’s>>_ behalf.
+
+[#ica-workflow-gathering-claims]
+****
+.Gathering identity claims
+image::identity-claims-aggregation/verifying-identity-attestations.drawio.svg[Gathering identity claims,width=430,height=320,align="center"]
+****
+
+This workflow can be repeated any number of times to provide additional identity signals for the _<<_named_actor,named actor>>._
+
+===== Creating content using the aggregated identity claims
+
+Once the _<<_identity_claims_aggregator,identity claims aggregator>>_ has verified one or more identity signals, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content. This authoring tool collaborates with the _<<_identity_claims_aggregator,identity claims aggregator>>_ to attach the identity claims which have been aggregated to date to the _<<C2PA asset>>_ being created.
+
+[#ica-workflow-creating content]
+****
+.Creating content using identity claims
+image::identity-claims-aggregation/creating-content.drawio.svg[Creating content using identity claims,width=570,height=410,align="center"]
+
+****
+
+This workflow can be repeated any number of times to create new content on behalf of the _<<_named_actor,named actor>>._
+
+===== Interpreting an identity assertion using identity claims aggregation
+
+At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.* Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid and from a trustworthy source, the content of the assertion should be interpreted as follows:
+
+[quote,Signed by identity claims aggregator]
+____
+The _<<_named_actor,named actor>>_ described by this credential has presented one or more identity signals to this _<<_identity_claims_aggregation,identity claims aggregation>>_ service. Those claims were verified and deemed valid by this service as of the times indicated in the credential.
+
+The signature on the credential indicates that the _<<_identity_claims_aggregator,identity claims aggregator>>_ attests that this same _<<_named_actor,named actor>>_ has presented the _<<C2PA asset>>_ described by this _<<C2PA Manifest>>_ to this service and has claimed a role in the production of said asset.
+____
+
+==== Identity claims aggregation technical description
+
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ private key, is the `signature` value for the *<<_identity_assertion,identity assertion>>.* The signature value is further described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claims_aggregation`.
 
-The `signature` value is described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
 
-The issuer is responsible for gathering information about the _<<_named_actor,named actor>>_ and the _<<C2PA asset>>_ and generating a new _<<W3C verifiable credential>>_ that describes the relationship between the two.
-
-NOTE: This specification is not meant to support a _<<_named_actor,named actor>>_ using their own _<<W3C verifiable credential>>_ to issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of the specification.
-
-[#verifiable-presentation-example]
-.Verifiable presentation example
-[example]
-====
-In this example, an _<<_actor,actor>>_ who we will call Alice:
-
-* Is using an authoring tool provided by an _<<_identity_claims_aggregator,identity claims aggregator>>,_ and
-* Wishes to use a credential held in a digital wallet that she controls to document her role in creating one or more _<<_c2pa_asset,C2PA assets>>_ with that authoring tool.
-
-IMPORTANT: This example uses a W3C Verifiable Presentation, but the workflow is similar for other forms of authentication that may be used (OAuth2 or OpenID Connect, for example).
-
-[#ica-workflow-demonstrate-identity]
-*Workflow 1: Alice demonstrates her identity to the identity claims aggregator*
-
-Alice must first prove her identity to the _<<_identity_claims_aggregator,identity claims aggregator.>>_ This must be done prior to the creation of any *<<_identity_assertion,identity assertions>>.*
-
-[mermaid,width=100%]
-....
-sequenceDiagram
-  autonumber
-  participant A as Alice
-  participant W as Wallet
-  participant ICA as Identity claims aggregator
-
-  A ->> ICA: Request connection to ICA
-  ICA ->> A: Presentation request link
-
-  A ->> W: Follow this link
-  W ->> ICA: Follow link
-  ICA ->> W: Presentation request
-  W ->> A: Consent to share info?
-  A ->> W: Approve
-  W ->> ICA: Verifiable presentation
-  ICA ->> ICA: Verifies and remembers presentation
-....
-
-The interactions involving Alice are presumed to be visible user experience interactions that she encounters. The interactions between wallet and _<<_identity_claims_aggregator,identity claims aggregator>>_ are presumed to be network traffic.
-
-1. Alice initiates a connection request via an interface provided by the _<<_identity_claims_aggregator,identity claims aggregator>>._
-
-2. The _<<_identity_claims_aggregator,identity claims aggregator>>_ responds with a link (possibly a QR code) which points to a link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request].
-
-3. Alice then instructs her digital wallet to follow the QR code or link.
-
-4. Her wallet follows the link on her behalf.
-
-5. The _<<_identity_claims_aggregator,identity claims aggregator>>_ responds with the actual link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request].
-
-6. The wallet describes the link:https://w3c-ccg.github.io/vp-request-spec/[Verifiable Presentation Request] to Alice and asks her permission to provide information to the _<<_identity_claims_aggregator,identity claims aggregator>>._
-
-7. Alice approves the request.
-
-8. The wallet responds to the _<<_identity_claims_aggregator,identity claims aggregator>>_ with a link:++https://www.w3.org/TR/vc-data-model-2.0/#verifiable-presentations++[Verifiable Presentation] containing the requested information.
-
-9. The _<<_identity_claims_aggregator,identity claims aggregator>>_ then verifies this presentation and retains the information contained therein for future use.
-
-This workflow may be repeated any number of times to provide additional identity signals to the _<<_identity_claims_aggregator,identity claims aggregator>>_ or to renew identity signals that may have expired.
-
-[#ica-workflow-create-new-c2pa-asset]
-*Workflow 2: Alice creates a new _<<C2PA asset>>_*
-
-Having demonstrated her identity to the _<<_identity_claims_aggregator,identity claims aggregator>>,_ Alice can now use that service to create any number of _<<_c2pa_asset,C2PA assets>>_ that include her identity.
-
-The workflow described below will be repeated for each _<<_c2pa_asset,C2PA asset>>._
-
-[mermaid,width=100%]
-....
-sequenceDiagram
-  autonumber
-  participant A as Alice
-  participant C2PA as C2PA library
-  participant ICA as Identity claims aggregator
-
-  A ->> A: Creates asset
-  A ->> C2PA: Generate C2PA Manifest
-  C2PA ->> C2PA: Starts generating C2PA Manifest
-  C2PA ->> ICA: signer_payload, Alice’s user token
-  ICA ->> ICA: Adds one or more identity claims
-  ICA ->> C2PA: Asset-specific verifiable credential
-  C2PA ->> C2PA: Embeds signature in identity assertion
-  C2PA ->> C2PA: Finishes generating C2PA Manifest
-  C2PA ->> A: Final C2PA asset
-....
-
-1. Alice uses an authoring tool to create content that will eventually become a _<<C2PA asset>>._
-
-2. When Alice is ready to render her _<<C2PA asset>>,_ she signals to the authoring tool that she wants it to include a _<<_c2pa_manifest,C2PA Manifest>>_ with an *<<_identity_assertion,identity assertion>>* describing her role in producing the asset.
-
-3. The C2PA implementation begins the process of creating the _<<_c2pa_manifest,C2PA Manifest>>_ and *<<_identity_assertion,identity assertion>>* as described in xref:_creating_the_identity_assertion[xrefstyle=full].
-
-4. The C2PA implementation sends a request to the _<<_identity_claims_aggregator,identity claims aggregator>>_ containing the `signer_payload` for this _<<C2PA asset>>_ and a user token that uniquely identifies Alice within that system.
-
-5. Assuming the token is valid, the _<<_identity_claims_aggregator,identity claims aggregator>>_ issues an asset-specific verifiable credential. This credential includes one or more identity claims that were remembered from workflow 1 above and binds those identity claims to the `signer_payload` that describes the _<<C2PA asset>>._
-
-6. This new credential is then returned to the C2PA implementation.
-
-7. The C2PA implementation includes this credential as the `signature` value for the *<<_identity_assertion,identity assertion>>.*
-
-8. The C2PA implementation finalizes the _<<_c2pa_manifest,C2PA Manifest>>,_ including adding its own signature as _<<_c2pa_claim_generator,C2PA claim generator>>._
-
-9. This finalized _<<C2PA asset>>_ is then made available to Alice who can now distribute it as she wishes.
-
-[#issue-179]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/179[issue #179]): Describe how ICA should request a Verifiable Presentation and how to describe that in VC.
-====
-
-==== Identity claims aggregation description
-
-An *identity claims aggregation* is a _<<_w3c_verifiable_credential,W3C verifiable credential>>_ that binds one or more identity claim attestations regarding the _<<_named_actor,named actor>>_ to the _<<C2PA asset>>_ in which the *<<_identity_assertion,identity assertion>>* appears. An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
+An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
 
 [#vc-property-context]
 ===== Context
