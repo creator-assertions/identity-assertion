@@ -118,3 +118,7 @@ _This section is non-normative._
 *04 November 2024*
 
 * Added new introduction to identity claims aggregation section.
+
+*11 November 2024*
+
+* Allow identity claims aggregators to use either version 1.1 or 2.0 of the Verifiable credentials data model
