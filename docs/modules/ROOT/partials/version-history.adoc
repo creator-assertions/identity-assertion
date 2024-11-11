@@ -121,4 +121,5 @@ _This section is non-normative._
 
 *11 November 2024*
 
-* Allow identity claims aggregators to use either version 1.1 or 2.0 of the Verifiable credentials data model
+* Allow identity claims aggregators to use either version 1.1 or 2.0 of the Verifiable credentials data model.
+* Revise discussion of use cases to clarify that copyright information is not part of the identity assertion.
