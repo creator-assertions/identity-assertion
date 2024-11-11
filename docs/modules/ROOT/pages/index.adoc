@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 04 November 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 11 November 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -216,7 +216,8 @@ Eve is a musician with a talent for releasing songs featuring clever lyrics and 
 == Normative references
 
 * https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[C2PA technical specification, version 2.1]
-* https://www.w3.org/TR/vc-data-model-2.0/[Verifiable Credentials Data Model, version 2.0]
+* https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1]
+* https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0]
 * https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
 
@@ -288,7 +289,7 @@ Hard bindings are described in link:++https://c2pa.org/specifications/specificat
 
 === Concepts adapted from W3C verifiable credentials specification
 
-The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model-2.0/#terminology++[W3C verifiable credentials data model] specification, version 2.0. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
+The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
 
 ==== W3C verifiable credential
 
@@ -326,7 +327,7 @@ A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ 
 
 A _<<C2PA Manifest Consumer>>_ who also consumes and interprets the content of any *<<_identity_assertion,identity assertions>>* contained within the _<<C2PA Manifest>>._
 
-NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier++[W3C verifiable credentials data model].
+NOTE: This role can also be thought of as a *relying party* or *verifier* as defined in specifications such as the link:++https://www.w3.org/TR/vc-data-model/#dfn-relying-parties++[W3C verifiable credentials data model].
 
 ==== Identity assertion generator
 
@@ -349,7 +350,7 @@ IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as t
 A sequence of UTF-8 characters that is intended to be displayed to a human user. When contained within a JSON or CBOR data structure, this may be either:
 
 * a single string object, in which case this string is to be displayed as-is to users, regardless of their expressed language preference, or
-* a JSON or CBOR map, in which case the contents should be interpreted as described in link:https://www.w3.org/TR/vc-data-model-2.0/#language-and-base-direction[§11.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
+* a JSON or CBOR map, in which case the contents should be interpreted as described in link:++https://www.w3.org/TR/vc-data-model/#language-and-base-direction++[§10.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
 
 The string MUST resolve to a non-empty sequence of UTF-8 characters for all supported languages.
 
@@ -861,14 +862,14 @@ The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity
 
 The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
 
-An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], and additional requirements as stated in the remainder of this section:
+An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in the W3C Verifiable credentials data model (either https://www.w3.org/TR/vc-data-model/[version 1.1] or https://www.w3.org/TR/vc-data-model-2.0/[version 2.0]) and additional requirements as stated in the remainder of this section.
 
 [#vc-property-context]
 ===== Context
 
 The `@context` property MUST be present and MUST contain at least the following two entries:
 
-* `https://www.w3.org/ns/credentials/v2`
+* `https://www.w3.org/2018/credentials/v1` _or_ `https://www.w3.org/ns/credentials/v2`, depending on which version of the W3C verifiable credentials data model is being used
 * `https://creator-assertions.github.io/tbd/tbd`
 
 [#issue-145]
@@ -885,12 +886,14 @@ The `type` property MUST be present and MUST contain at least the following two 
 [#vc-property-issuer]
 ===== Issuer
 
-The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#issuer++[Section 4.7, “Issuer,”] of the Verifiable credentials data model.
+The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model/#issuer++[Section 4.5, “Issuer,”] of the Verifiable credentials data model.
 
 [#vc-property-validFrom]
 ===== Validity
 
-The `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
+If using https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1], the `issuanceDate` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model/#issuance-date++[Section 4.6, “Issuance date,”] of the Verifiable credentials data model.
+
+If using https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], the `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
 [#vc-credentialsubject-verifiedIdentities]
 ===== Verified identities
