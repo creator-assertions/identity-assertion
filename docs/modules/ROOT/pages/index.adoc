@@ -1003,6 +1003,8 @@ If the `type` of this verified identity is `cawg.domain_control_validation`, the
 
 If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
 
+IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification. (See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
+
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
 
