@@ -920,8 +920,6 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
     {
       "type": "cawg.domain_control_validation",
       "uri": "named-actor-site.example",
-      "metaTagSuffix": "com.example.issuer",
-      "metaTagValue": "1c1d613e5e6d422f88afed8f0579410d",
       "verifiedAt": "2024-09-25T22:13:35Z"
     },
     {
@@ -1001,12 +999,7 @@ If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedId
 
 The `verifiedIdentities[?].uri` property MAY be present. If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
 
-If the `type` of this verified identity is `cawg.domain_control_validation`, the `verifiedIdentities[?].uri` property MUST be present and must be the primary web URI for the _<<_named_actor,named actor’s>>_ web site as validated by the _<<_identity_claims_aggregator,identity claims aggregator>>._ Additionally, the following fields SHOULD be present to allow the _<<_identity_assertion_consumer,identity assertion consumer>>_ the ability to independently verify continued control over the domain:
-
-* `metaTagSuffix`: a suffix that uniquely identifies the _<<_identity_claims_aggregator,identity claims aggregator>>_ to distinguish itself from other _<<_identity_claims_aggregator,identity claims aggregators>>._
-* `metaTagValue`: a unique string issued by the _<<_identity_claims_aggregator,identity claims aggregator>>_ and placed by the _<<_named_actor,named actor>>_ in the corresponding HTML `meta` tag
-
-IMPORTANT: If the _<<_identity_claims_aggregator,identity claims aggregator>>_ uses the `meta` tag approach to validate the domain, it is RECOMMENDED that the _<<_named_actor,named actor>>_ place a tag of the form `<meta name="cawg.domain-$\{metaTagSuffix\}" value="$\{metaTagValue\}">` at the specified URI indefinitely in order to allow _<<_identity_assertion_consumer,identity assertion consumer>>_ to independently verify control of the domain.
+If the `type` of this verified identity is `cawg.domain_control_validation`, the `verifiedIdentities[?].uri` property MUST be present and must be the primary web URI for the _<<_named_actor,named actor’s>>_ web site as validated by the _<<_identity_claims_aggregator,identity claims aggregator>>._
 
 If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
 
