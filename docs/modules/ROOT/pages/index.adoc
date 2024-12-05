@@ -29,7 +29,18 @@ _This section is non-normative._
 
 === Scope
 
-This specification describes a _<<C2PA assertion>>_ that allows a _<<_named_actor,named actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_identity_assertion_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the _<<_named_actor,named actor>>_ and has not been tampered with.
+This specification describes a framework that allows a _<<_named_actor,named actor>>_ to attest to their relationship to a specific _<<C2PA asset>>_ produced by them or on their behalf.
+
+This framework takes the form of a _<<C2PA assertion>>_ which we call the *<<_identity_assertion,identity assertion>>.* This assertion provides additional trust signals that can be used when interpreting the _<<C2PA Manifest>>_ in which it appears.
+
+An _<<_identity_assertion_consumer,identity assertion consumer>>,_ upon finding that the *<<_identity_assertion,identity assertion>>* and the _<<C2PA Manifest>>_ in which it appears are valid and that the credential is from a source that it deems trustworthy, can then interpret this assertion as follows:
+
+[quote,Signed by credential holder]
+____
+The _<<_named_actor,named actor>>_ described by this credential has performed a role (e.g. produced, edited, published) in the creation of the _<<C2PA asset>>_ described by this _<<C2PA Manifest>>._
+____
+
+This specification defines that framework and specific forms of credentials that can be used within the framework.
 
 IMPORTANT: For purposes of the Community Specification License, the link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document] at the root of this project’s GitHub repository is the governing document of this specification’s scope.
 
