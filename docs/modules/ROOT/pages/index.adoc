@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 11 November 2024* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 04 December 2024* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://creator-assertions.github.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -918,6 +918,11 @@ The `verifiedIdentities` property MUST be present and MUST be a non-empty array.
       "verifiedAt": "2024-07-26T22:30:15Z"
     },
     {
+      "type": "cawg.web_site",
+      "uri": "named-actor-site.example",
+      "verifiedAt": "2024-09-25T22:13:35Z"
+    },
+    {
       "type": "cawg.affiliation",
       "provider": {
         "id": "https://example-affiliated-organization.com",
@@ -960,6 +965,7 @@ The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empt
 |=======================
 | Value        |  Meaning
 | `cawg.document_verification` | The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
+| `cawg.web_site` | The _<<_named_actor,named actor>>_ has proven control over a specific domain to the _<<_identity_claims_aggregator,identity claims aggregator>>._
 | `cawg.affiliation` | The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization. This could be a professional organization or an employment relationship.
 | `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
 | `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._ 
@@ -993,7 +999,11 @@ If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedId
 
 The `verifiedIdentities[?].uri` property MAY be present. If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
 
+If the `type` of this verified identity is `cawg.web_site`, the `verifiedIdentities[?].uri` property MUST be present and must be the primary web URI for the _<<_named_actor,named actor’s>>_ web site as validated by the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
 If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
+
+IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification. (See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
 
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
