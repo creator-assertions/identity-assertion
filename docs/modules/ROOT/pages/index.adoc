@@ -1005,6 +1005,25 @@ If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDE
 
 IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification. (See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
 
+[#vc-credentialsubject-verifiedidentity-method]
+====== Identity verification method
+
+The `verifiedIdentities[?].method` property is OPTIONAL. If present, it MUST be a non-empty string that defines the method by which the _<<_identity_assertion_generator,identity assertion generator>>_ contacted the _<<_identity_provider,identity provider>>_ to obtain the verification. This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="4,10,5",options="header"]
+|=======================
+| Value | Meaning | Example
+| `cawg.dns_record` | The _<<_identity_provider,identity provider>>_ verified control over a domain using DNS records. | link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)] 
+| `cawg.file_verification` | The _<<_identity_provider,identity provider>>_ verified control over a specific URI by providing unique file content which could subsequently be read from that URI. | link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
+| `cawg.email` | The _<<_identity_provider,identity provider>>_ verified control over a specific domain using an e-mail sent to the domain’s administrative contacts. | link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
+| `cawg.meta_tag` | The _<<_identity_provider,identity provider>>_ verified control over a specific URI by providing unique content to be placed in an HTML `<meta>` tag. | link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
+| `cawg.oath2` | The _<<_identity_provider,identity provider>>_ verified control over a specific account or resource using link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]. |
+|=======================
+
+Other string values MAY be used in `verifiedIdentities[?].method`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+The examples provided here are non-normative, but are intended to demonstrate the kind of procedures described by each method type.
+
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
 
