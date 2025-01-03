@@ -1064,6 +1064,13 @@ IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overvie
 ----
 ====
 
+===== Credential status (revocation)
+
+An _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD allow for an *<<_identity_claims_aggregation,identity claims aggregation>>* claim to be revoked by adding a `credentialStatus` section to the credential as described in link:++https://www.w3.org/TR/vc-data-model/#status++[§4.9, Status], of the Verifiable credentials data model, and subject to the following recommendations:
+
+* At least one entry SHOULD have its `statusPurpose` field set to `revocation`.
+* Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later. Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
+
 ==== Identity claims aggregation verifiable credential example
 
 An example of the *<<_identity_claims_aggregation,identity claims aggregation>>* verifiable credential is given below:
