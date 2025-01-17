@@ -1007,14 +1007,42 @@ IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT b
 
 The `verifiedIdentities[?].method` property is OPTIONAL. If present, it MUST be a non-empty string that defines the method by which the _<<_identity_assertion_generator,identity assertion generator>>_ contacted the _<<_identity_provider,identity provider>>_ to obtain the verification. This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
 
-[width="100%",cols="4,10,5",options="header"]
+[width="100%",cols="3,10,4",options="header",stripes=even]
 |=======================
-| Value | Meaning | Example
-| `cawg.dns_record` | The _<<_identity_provider,identity provider>>_ verified control over a domain using DNS records. | link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)] 
-| `cawg.uri_file_verification` | The _<<_identity_provider,identity provider>>_ verified control over a specific URI by providing unique file content which could subsequently be read from that URI. | link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
-| `cawg.email` | The _<<_identity_provider,identity provider>>_ verified control over a specific domain using an e-mail sent to the domain’s administrative contacts. | link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
-| `cawg.uri_meta_tag_verification` | The _<<_identity_provider,identity provider>>_ verified control over a specific URI by providing unique content to be placed in an HTML `<meta>` tag. | link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
-| `cawg.federated_login` | The _<<_identity_provider,identity provider>>_ verified control over a specific account or resource using a federated log-in protocol such as link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]. |
+| Value
+| Meaning
+| Trust anchor
+
+| `cawg.dns_record`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to place in a DNS record. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)]
+| Self-asserted
+
+| `cawg.uri_file_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique file content to the _<<_named_actor,named actor>>_ to place at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
+| Self-asserted
+
+| `cawg.email`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ sent an e-mail to the claimed domain’s administrative contacts and received an appropriate response to prove control over the domain.
+
+*Example:* link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
+| Domain registrar and e-mail provider
+
+| `cawg.uri_meta_tag_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to be placed in an HTML `<meta>` tag at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
+| Self-asserted
+
+| `cawg.federated_login`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ initiated, at the _<<_named_actor,named actor’s>>_ request, a federated log-in to a service operated by an _<<_identity_provider,identity provider>>._ The _<<_identity_claims_aggregator,identity claims aggregator>>_ received and recorded information about the _<<_named_actor,named actor>>._
+
+*Example:* link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]
+| _<<_identity_provider,Identity provider>>_
+
 |=======================
 
 Other string values MAY be used in `verifiedIdentities[?].method`, subject to restrictions described in xref:_labels[xrefstyle=full].
