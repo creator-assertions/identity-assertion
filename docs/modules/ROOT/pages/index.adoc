@@ -1007,6 +1007,16 @@ IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT b
 
 The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
 
+The identity verification date as stated in the `verifiedAt` entry MUST NOT be later than either:
+* the `issuanceDate` or `validFrom` as described by <<xref:_validity>>
+* the time stamp associated with the C2PA Manifest as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[§10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+
+The identity verification date as stated in the `verifiedAt` entry MUST NOT be more than 365 days earlier than the latest of:
+* the `issuanceDate` or `validFrom` as described by <<xref:_validity>>
+* the time stamp associated with the C2PA Manifest as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[§10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+
+IMPORTANT: This places an expectation that the _<<_identity_claims_aggregator,identity claims aggregator>>_ will periodically re-validate verifications on behalf of the _<<_named_actor,named actor>>._
+
 [#vc-credentialsubject-verifiedidentity-provider]
 ====== Identity provider details
 
