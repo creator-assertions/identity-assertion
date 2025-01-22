@@ -127,3 +127,11 @@ _This section is non-normative._
 *04 December 2024*
 
 * Add support for verified web site
+
+*06 January 2025*
+
+* Finalize URI for ICA context and schema
+
+*22 January 2025*
+
+* Add optional `method` field for describing the technique used to verify account/URI control
