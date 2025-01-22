@@ -1236,12 +1236,6 @@ The inclusion of the `credentialSchema` property in a verifiable credential is O
 
 The inclusion of the `identity-claims-aggregation.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
 
-==== Recommendations for verifiers
-
-The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
-
-NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
-
 ==== Verifiable credential proof mechanism
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured using a COSE signature as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[Section 3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure. As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
@@ -1273,10 +1267,90 @@ The allowed list is:
 
 The deprecated list is empty.
 
-==== Validating an identity assertion with verifiable credentials
+==== Validating an identity assertion with an identity claims aggregation credential
 
-[#issue-156]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/156[issue #156]): Write section on validating.
+If the value of `signer_payload.sig_type` is `cawg.identity_claims_aggregation`, the validator SHOULD proceed with validation of the `signature` value as described in the remainder of this section.
+
+A successful validation report SHOULD include the content of the verifiable credential and available information about the credential’s issuer.
+
+===== Prerequisites
+
+A validator shall maintain the following lists for identity claims aggregation credential issuers:
+
+* A list of direct issuers of identity claims aggregation that the validator considers trusted.
+* A list of trust anchors (issuers of identity claims aggregator credentials) that the validator considers trusted.
+
+IMPORTANT: As of this writing, the Creator Assertions Working Group has not provided guidance about which identity claims aggregators to consider trusted.
+
+===== W3C verifiable credentials verification
+
+The raw content of the `signature` value is expected to be a `COSE_Sign1` data structure as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+
+The validator SHALL parse the full `signature` value as a `COSE_Sign1` object as described in link:++https://www.rfc-editor.org/rfc/rfc9052.html#name-signing-with-one-signer++[Section 4.2, “Signing with one signer,”] of RFC 9052. If parsing fails, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_cose_sign1`.
+
+The validator SHALL inspect the `COSE_Sign1` protected header `alg` to determine the cryptographic algorithm used to issue the signature. The `alg` value MUST be one of the following algorithm labels (corresponding to the values supported by the C2PA technical specification as of this writing):
+
+* -7 (ECDSA w/SHA-256)
+* -35 (ECDSA w/ SHA-384)
+* -36 (ECDSA w/ SHA-512)
+* -37 (RSASSA-PSS w/ SHA-256)
+* -38 (RSASSA-PSS w/ SHA-384)
+* -39 (RSASSA-PSS w/ SHA-512)
+* -8 (EdDSA)
+
+NOTE: Only the Ed25519 instance of EdDSA is supported.
+
+If the `alg` header contains any other value or is not present, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_alg`.
+
+The validator SHALL inspect the `COSE_Sign1` protected header `content type` to determine the content type of the enclosed credential. The `content type` header MUST be the exact value `application/vc`. If it is not, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_content_type`.
+
+The validator SHALL obtain the unprotected `payload` of the `COSE_Sign1` data structure. This payload is the raw JSON-LD content of the verifiable credential. A validator SHALL attempt to parse the core verifiable credential data syntax of this credential using the following methods:
+
+* link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,” of Verifiable credentials data model, version 1.1]
+* link:++https://www.w3.org/TR/vc-data-model-2.0/#syntaxes++[Section 6, “Syntaxes,” of Verifiable credentials data model, version 2.0]
+
+If the validator is unable to parse the credential using either version of the Verifiable credentials data model, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_verifiable_credential`.
+
+NOTE: TO DO: Read through and incorporate/reference the following as appropriate.
+
+Key discovery: https://www.w3.org/TR/vc-jose-cose/#key-discovery.
+
+W3C VC verification: https://www.w3.org/TR/vc-data-model-2.0/#verification (§7.1). Also figure out how to reconcile W3C "problem details" (§7.2) with C2PA validation status.
+
+Include DID verification as per DID method spec.
+
+COSE signature verification as per C2PA §8.1.7.
+
+Verify `issuanceDate` or `validFrom` relative to signing credential and C2PA manifest. (Must not be newer than manifest.)
+
+Verify timestamp if present §8.1.7.
+
+Check credential status (revocation) §8.1.2.7.
+
+===== Verify binding to C2PA asset
+
+§8.1.2.6
+
+===== Verify verified identities
+
+§8.1.2.5
+
+* (Optional) A list of additional `verifiedIdentity.type` values it will accept
+* (Optional) A list of `verifiedIdentity.method` values it will accept
+
+===== Recommendations for verifiers
+
+NOTE: TO DO: Work in this section
+
+The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
+
+NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
+
+===== Status codes
+
+NOTE: TO DO: Add table summarizing status code for ICA success and failure states.
+
+
 
 === X.509 certificates and COSE signatures
 
