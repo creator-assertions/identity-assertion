@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 06 January 2025* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 22 January 2025* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -1002,6 +1002,53 @@ If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDE
 
 IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification. (See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
 
+[#vc-credentialsubject-verifiedidentity-method]
+====== Identity verification method
+
+The `verifiedIdentities[?].method` property is OPTIONAL. If present, it MUST be a non-empty string that defines the method by which the _<<_identity_assertion_generator,identity assertion generator>>_ contacted the _<<_identity_provider,identity provider>>_ to obtain the verification. This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="3,10,4",options="header",stripes=even]
+|=======================
+| Value
+| Meaning
+| Trust anchor
+
+| `cawg.dns_record`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to place in a DNS record. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)]
+| Self-asserted
+
+| `cawg.uri_file_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique file content to the _<<_named_actor,named actor>>_ to place at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
+| Self-asserted
+
+| `cawg.email`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ sent an e-mail to the claimed domain’s administrative contacts and received an appropriate response to prove control over the domain.
+
+*Example:* link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
+| Domain registrar and e-mail provider
+
+| `cawg.uri_meta_tag_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to be placed in an HTML `<meta>` tag at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
+| Self-asserted
+
+| `cawg.federated_login`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ initiated, at the _<<_named_actor,named actor’s>>_ request, a federated log-in to a service operated by an _<<_identity_provider,identity provider>>._ The _<<_identity_claims_aggregator,identity claims aggregator>>_ received and recorded information about the _<<_named_actor,named actor>>._
+
+*Example:* link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]
+| _<<_identity_provider,Identity provider>>_
+
+|=======================
+
+Other string values MAY be used in `verifiedIdentities[?].method`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+The examples provided here are non-normative, but are intended to demonstrate the kind of procedures described by each method type.
+
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
 
@@ -1070,6 +1117,13 @@ IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overvie
 }
 ----
 ====
+
+===== Credential status (revocation)
+
+An _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD allow for an *<<_identity_claims_aggregation,identity claims aggregation>>* claim to be revoked by adding a `credentialStatus` section to the credential as described in link:++https://www.w3.org/TR/vc-data-model/#status++[§4.9, Status], of the Verifiable credentials data model, and subject to the following recommendations:
+
+* At least one entry SHOULD have its `statusPurpose` field set to `revocation`.
+* Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later. Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
 
 ==== Identity claims aggregation verifiable credential example
 
