@@ -684,7 +684,7 @@ sequenceDiagram
 Validation of the _<<C2PA Manifest>>_ MUST be completed as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#validation-clause++[Section 15, “Validation,”] of the C2PA technical before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.* A validator MUST NOT attempt to interpret the content of an *<<_identity_assertion,identity assertion>>* unless the following conditions were reported from the C2PA validation process:
 
 * The _<<C2PA Manifest>>_ was found to be _valid_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_valid_manifest++[Section 14.3.5, Valid manifest,”] of the C2PA technical specification.
-* The binary content of the *<<_identity_assertion,identity assertion>>* being validated received the success code of `assertion.hashedURI.match` as per link:++*<<_identity_assertion,identity assertion>>*++[Section 15.10.3, “Assertion validation,”] of the C2PA technical specification.
+* The binary content of the *<<_identity_assertion,identity assertion>>* being validated received the success code of `assertion.hashedURI.match` as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_assertion_validation++[Section 15.10.3, “Assertion validation,”] of the C2PA technical specification.
 
 === Validation method
 
