@@ -679,9 +679,14 @@ sequenceDiagram
 
 == Validating the identity assertion
 
-=== Validation method
+=== C2PA Manifest validation prerequisites
 
-IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
+Validation of the _<<C2PA Manifest>>_ MUST be completed as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#validation-clause++[Section 15, “Validation,”] of the C2PA technical before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.* A validator MUST NOT attempt to interpret the content of an *<<_identity_assertion,identity assertion>>* unless the following conditions were reported from the C2PA validation process:
+
+* The _<<C2PA Manifest>>_ was found to be _valid_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_valid_manifest++[Section 14.3.5, Valid manifest,”] of the C2PA technical specification.
+* The binary content of the *<<_identity_assertion,identity assertion>>* being validated received the success code of `assertion.hashedURI.match` as per link:++*<<_identity_assertion,identity assertion>>*++[Section 15.10.3, “Assertion validation,”] of the C2PA technical specification.
+
+=== Validation method
 
 An *<<_identity_assertion,identity assertion>>* MUST contain a valid CBOR data structure that contains the required fields as documented in the `identity` rule in xref:_cbor_schema[xrefstyle=full]. The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule. A validator SHALL NOT consider any extra fields not documented in the `identity` rule during the validation process.
 
@@ -765,7 +770,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.expected_claim_generator.mismatch` | The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._ 
 |`cawg.identity.unexpected_countersigner` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that was not described in `signer_payload.expected_countersigners`
 |`cawg.identity.expected_countersigner.mismatch` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that has the expected `signer_payload` but has different signing credentials than were described in `signer_payload.expected_countersigners`
-|``cawg.identity.expected_countersigner.missing` | The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>_
+|`cawg.identity.expected_countersigner.missing` | The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>_
 |=======================
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
