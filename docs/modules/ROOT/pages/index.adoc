@@ -1311,15 +1311,27 @@ The validator SHALL obtain the unprotected `payload` of the `COSE_Sign1` data st
 
 If the validator is unable to parse the credential using either version of the Verifiable credentials data model, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_verifiable_credential`.
 
+The validator SHALL obtain the identity of the identity claims aggregator by inspecting the `issuer` field of the verifiable credential. The identity SHOULD be expressed as a DID (link:https://www.w3.org/TR/did-1.0/[decentralized identifier]), either as `issuer` itself or `issuer.id`. If no DID is located at either location, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_issuer`.
+
+The validator SHALL resolve the DID document as described in link:++https://www.w3.org/TR/did-1.0/#did-resolution++[Section 7.1, “DID resolution,”] of the DID specification. If the DID uses a DID method that is unsupported by the validator, the validator MUST stop validation at this point and issue the failure code `cawg.ica.did_unsupported_method`. If the DID can not be resolved, the validator MUST stop validation at this point and issue the failure code `cawg.ica.did_unavailable`.
+
+The validator SHALL locate within the DID document the `assertionMethod` verification method as described in link:++https://www.w3.org/TR/did-1.0/#assertion++[Section 5.3.2, “Assertion,”] of the DID specification. This verification method SHALL contain public key material corresponding to the stated issuer. If the public key material can not be located, the validator MUST stop validation at this point and issue the failure code `cawg.ica.missing_public_key`.
+
+The validator SHALL verify that the `type` code for this public key is on the supported list of encryption algorithms.
+
+NOTE: TO DO: Add list of supported encryption types and the corresponding type codes.
+
+If the `type` code is unsupported, the validator MUST stop validation at this point and issue the failure code `cawg.ica.unsupported_alg`.
+
+The validator SHALL verify the signature using the public key material just identified and the unsecured verifiable credential as payload as described by link:++https://www.rfc-editor.org/rfc/rfc9052#section-4.4++[Section 4.4, “Signing and verification process,”] of RFC 9052. If the signature does not match, the validator MUST stop validation at this point and issue the failure code `cawg.ica.signature_mismatch`.
+
+NOTE: TO DO: Read C2PA §8.1.7 for COSE signature validation rules.
+
+NOTE: TO DO: Read W3C VC verification: https://www.w3.org/TR/vc-data-model-2.0/#verification (§7.1) and see if additional items need to be added here. Also figure out how to reconcile W3C "problem details" (§7.2) with C2PA validation status.
+
+INITIAL DRAFT WORDING ENDS HERE -- TO-DO LIST / OUTLINE CONTINUES
+
 NOTE: TO DO: Read through and incorporate/reference the following as appropriate.
-
-Key discovery: https://www.w3.org/TR/vc-jose-cose/#key-discovery.
-
-W3C VC verification: https://www.w3.org/TR/vc-data-model-2.0/#verification (§7.1). Also figure out how to reconcile W3C "problem details" (§7.2) with C2PA validation status.
-
-Include DID verification as per DID method spec.
-
-COSE signature verification as per C2PA §8.1.7.
 
 Verify `issuanceDate` or `validFrom` relative to signing credential and C2PA manifest. (Must not be newer than manifest.)
 
