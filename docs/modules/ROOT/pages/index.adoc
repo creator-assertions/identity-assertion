@@ -1061,7 +1061,7 @@ The `verifiedIdentities[?].provider` property MUST be an object and MUST be pres
 
 [#vc-credentialsubject-verifiedidentity-provider-id]
 Identity provider ID::
-The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_provider,identity provider>>._ This proof of authenticity of the _<<_identity_provider,identity provider>>_ MUST NOT be confused with the proof of verification of the _<<_named_actor,named actor>>._
+The `verifiedIdentities[?].provider.id` SHOULD be present. If present, it MUST be a valid URI that contains information about the _<<_identity_provider,identity provider>>._ This SHOULD NOT be confused with any information about the _<<_named_actor,named actor>>_ itself. It is RECOMMENDED that this resolve to a xref:_w3c_decentralized_identifier_document[xrefstyle=full] if one is available.
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
@@ -1386,20 +1386,30 @@ NOTE: TO DO: Compare credential against JSON-LD schema. From earlier draft: The 
 
 ===== Verify binding to C2PA asset
 
-The validator SHALL take the content of `signer_payload` in the *<<_identity_assertion,identity assertion>>* and perform the transformations from CBOR to JSON as described in xref:_binding_to_c2pa_asset[xrefstyle=full]. The validator SHALL then compare the transformed `signer_payload` data structure to the `c2paAsset` contained within the verifiable credentials. If the data structures do not match, the validator MUST NOT continue validation and MUST issue the failure code `cawg.ica.signer_payload.mismatch`.
+The validator SHALL take the content of `signer_payload` in the *<<_identity_assertion,identity assertion>>* and perform the transformations from CBOR to JSON as described in xref:_binding_to_c2pa_asset[xrefstyle=full]. The validator SHALL then compare the transformed `signer_payload` data structure to the `c2paAsset` field contained within the verifiable credential’s `credentialSubject` field. If the data structures do not match, the validator MUST stop validation at this point and issue the failure code `cawg.ica.signer_payload.mismatch`.
 
 ===== Verify verified identities
 
-§8.1.2.5
+The validator SHALL inspect the contents of the `verifiedIdentities` field contained within the verifiable credential’s `credentialSubject` field. If this field is missing, if it is not a JSON array, or if it is an empty array, the validator MUST stop validation at this point and issue the failure code `cawg.ica.verified_identities.missing`.
 
-* (Optional) A list of additional `verifiedIdentity.type` values it will accept
-* (Optional) A list of `verifiedIdentity.method` values it will accept
+The validator SHALL inspect each entry in the `verifiedIdentities` array. For each entry, it SHALL verify the following conditions and issue the failure code `cawg.ica.verified_identities.invalid` if the condition is not met:
+
+* Each entry MUST be a JSON map data type.
+* Each entry MUST contain a `type` property. This value MUST be a non-empty string that is known to and supported by the validator.
+* Each entry MAY contain a `name` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.document_verification`, the `name` property MUST be present.)
+* Each entry MAY contain a `username` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.social_media`, the `username` property MUST be present.)
+* Each entry MAY contain an `address` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.crypto_wallet`, the `address` property MUST be present.)
+* Each entry MAY contain a `uri` property. If present, it MUST be a valid URI as defined by link:https://datatracker.ietf.org/doc/html/rfc3986[RFC 3986]. (If the `type` for this entry is `cawg.web_site`, the `uri` property MUST be present.)
+* Each entry MUST contain a `verifiedAt` property. This value MUST be a valid date-time as defined by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. This date-time MUST precede the `issuedAt` or `validFrom` value for the credential itself.
+* Each entry MUST contain a `provider` property. This value MUST be a JSON map array and it MUST contain a `name` property with a non-empty string.
+
+NOTE: TO DO: Check with Leonard: Is there a way to annotate `self#jumbf` URIs with field references _inside_ a specific assertion? In other words, can we point to the specific entry in `verifiedIdentities` that was accepted or not accepted?
+
+NOTE: TO DO: More specific error reporting about specific conditions not found?
 
 ===== Status codes
 
 NOTE: TO DO: Add table summarizing status code for ICA success and failure states.
-
-
 
 === X.509 certificates and COSE signatures
 
