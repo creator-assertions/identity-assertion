@@ -1367,20 +1367,26 @@ If the credential’s expiration date is earlier than any of the above values, t
 
 ====== Verify the credential’s revocation status
 
-If the credential contains a `credentialStatus` entry, the validator SHALL inspect the contents of that entry as follows:
+If the credential contains a `credentialStatus` entry, the validator SHALL inspect the contents of that entry. If the entry contains an entry with its `statusPurpose` set to `revocation`, the validator SHALL follow the procedures described as described by the corresponding `type` entry.
 
+If the `credentialStatus` entry is present but does not contain a revocation list supported by the validator, the validator MAY continue validation and SHOULD issue the failure code `cawg.ica.revocation.unsupported`.
 
+If the `credentialStatus` entry contains a revocation list that is supported by the validator but is inaccessible (e.g. due to network connection issues), the validator MAY continue validation and SHOULD issue the failure code `cawg.ica.revocation.unavailable`.
 
-INITIAL DRAFT WORDING ENDS HERE -- TO-DO LIST / OUTLINE CONTINUES
+If the validator is able to complete the revocation status check, it should respond as follows:
 
-NOTE: TO DO: Read through and incorporate/reference the following as appropriate.
+* If the status check indicates that the credential has not been revoked, the validator SHOULD continue validation and SHOULD issue the success code `cawg.ica.credential.not_revoked`.
+* If the status check indicates that the credential has been revoked, the validator SHOULD NOT continue validation and MUST issue the failure code `cawg.ica.credential.revoked`.
 
+NOTE: This specification recommends that issuers and validators support the `BitstringStatusListEntry` type as defined by the link:https://www.w3.org/TR/vc-bitstring-status-list/[Bitstring status list] specification (in 1.0 draft status as of this writing).
 
-Check credential status (revocation) §8.1.2.7.
+====== Verify the credential’s schema
+
+NOTE: TO DO: Compare credential against JSON-LD schema. From earlier draft: The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules. `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ===== Verify binding to C2PA asset
 
-§8.1.2.6
+The validator SHALL take the content of `signer_payload` in the *<<_identity_assertion,identity assertion>>* and perform the transformations from CBOR to JSON as described in xref:_binding_to_c2pa_asset[xrefstyle=full]. The validator SHALL then compare the transformed `signer_payload` data structure to the `c2paAsset` contained within the verifiable credentials. If the data structures do not match, the validator MUST NOT continue validation and MUST issue the failure code `cawg.ica.signer_payload.mismatch`.
 
 ===== Verify verified identities
 
@@ -1388,14 +1394,6 @@ Check credential status (revocation) §8.1.2.7.
 
 * (Optional) A list of additional `verifiedIdentity.type` values it will accept
 * (Optional) A list of `verifiedIdentity.method` values it will accept
-
-===== Recommendations for verifiers
-
-NOTE: TO DO: Work in this section
-
-The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
-
-NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ===== Status codes
 
