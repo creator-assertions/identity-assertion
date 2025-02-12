@@ -1,0 +1,1 @@
+Version 1.1 (adding identity claims aggregation) *Draft 11 February 2025* · xref:index.adoc#_version_history[Version history]

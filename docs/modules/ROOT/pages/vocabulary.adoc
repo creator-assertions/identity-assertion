@@ -1,0 +1,96 @@
+= CAWG Identity Claims Aggregation Vocabulary
+:toc: macro
+:toc-title:
+:sectanchors:
+:sectnums:
+:sectnumlevels: 5
+
+[discrete]
+== Abstract
+
+This specification describes a Linked Data vocabulary for asserting https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials] that allow a _xref:index.adoc#_named_actor[named actor]_ to describe their relationship to a _xref:index.adoc#_c2pa_asset[C2PA asset]._ 
+
+include::partial$version-id.adoc[]
+include::partial$maintainers.adoc[]
+include::partial$license.adoc[]
+include::partial$contributing.adoc[]
+include::partial$foreword.adoc[]
+include::partial$toc.adoc[]
+
+== Introduction
+
+_This section is non-normative._
+
+NOTE: TO DO: Write introductory text, based on similar specs found elsewhere.
+
+== Namespaces
+
+This specification makes use of the following namespaces:
+
+[cols="1,2"]
+|===
+| cred
+| https://www.w3.org/2018/credentials#
+
+| dc
+| http://purl.org/dc/terms/
+
+| owl
+| http://www.w3.org/2002/07/owl#
+
+| rdf
+| http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+| rdfs
+| http://www.w3.org/2000/01/rdf-schema#
+
+| xsd
+| http://www.w3.org/2001/XMLSchema#
+
+| vs
+| http://www.w3.org/2003/06/sw-vocab-status/ns#
+
+| schema
+| http://schema.org/
+
+| jsonld
+| http://www.w3.org/ns/json-ld#
+|===
+
+NOTE: TO DO: Review namespaces actually used.
+
+== `@context` files
+
+The following `@context` files make use of the terms defined in this specification:
+
+* https://cawg.io/identity/1.1/ica/context/
+
+== Regular terms
+
+=== Property definitions
+
+The following are property definitions in the `ica` namespace.
+
+NOTE: TO DO: Cross-check this namespace with schema definition once available.
+
+NOTE: TO DO: Dig into what `range` and `domain` mean in this spec.
+
+==== `verifiedIdentities`
+
+_Identity verified by identity claims aggregator_
+
+See the xref:index.adoc#vc-credentialsubject-verifiedIdentities[formal definition of this term].
+
+[cols="1,2"]
+|===
+| *Range*
+| `VerifiedIdentity`
+
+| *Domain*
+| `IdentityClaimsAggregationCredential`
+
+| *Relevant context*
+| `https://cawg.io/identity/1.1/ica/context/`
+|===
+
+=== Class definitions
