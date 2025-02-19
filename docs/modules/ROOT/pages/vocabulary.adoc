@@ -73,8 +73,6 @@ The following are property definitions in the `ica` namespace.
 
 NOTE: TO DO: Cross-check this namespace with schema definition once available.
 
-NOTE: TO DO: Dig into what `range` and `domain` mean in this spec.
-
 ==== `verifiedIdentities`
 
 _Identity verified by identity claims aggregator_
@@ -84,13 +82,21 @@ See the xref:index.adoc#vc-credentialsubject-verifiedIdentities[formal definitio
 [cols="1,2"]
 |===
 | *Range*
-| `VerifiedIdentity`
+| xref:_verifiedidentity[`VerifiedIdentity`]
 
 | *Domain*
-| `IdentityClaimsAggregationCredential`
+| xref:_identityclaimsaggregationcredential[`IdentityClaimsAggregationCredential`]
 
-| *Relevant context*
+| *Relevant `@context`*
 | `https://cawg.io/identity/1.1/ica/context/`
 |===
 
 === Class definitions
+
+==== `IdentityClaimsAggregationCredential`
+
+NOTE: TO DO: Write class definition.
+
+==== `VerifiedIdentity`
+
+NOTE: TO DO: Write class definition.
