@@ -1392,20 +1392,9 @@ The validator SHALL take the content of `signer_payload` in the *<<_identity_ass
 
 The validator SHALL inspect the contents of the `verifiedIdentities` field contained within the verifiable credential’s `credentialSubject` field. If this field is missing, if it is not a JSON array, or if it is an empty array, the validator MUST issue the failure code `cawg.ica.verified_identities.missing` but MAY continue validation.
 
-The validator SHALL inspect each entry in the `verifiedIdentities` array. For each entry, it SHALL verify the following conditions and issue the failure code `cawg.ica.verified_identities.invalid` if the condition is not met:
-
-* Each entry MUST be a JSON map data type.
-* Each entry MUST contain a `type` property. This value MUST be a non-empty string that is known to and supported by the validator.
-* Each entry MAY contain a `name` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.document_verification`, the `name` property MUST be present.)
-* Each entry MAY contain a `username` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.social_media`, the `username` property MUST be present.)
-* Each entry MAY contain an `address` property. If present, it MUST be a non-empty string. (If the `type` for this entry is `cawg.crypto_wallet`, the `address` property MUST be present.)
-* Each entry MAY contain a `uri` property. If present, it MUST be a valid URI as defined by link:https://datatracker.ietf.org/doc/html/rfc3986[RFC 3986]. (If the `type` for this entry is `cawg.web_site`, the `uri` property MUST be present.)
-* Each entry MUST contain a `verifiedAt` property. This value MUST be a valid date-time as defined by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. This date-time MUST precede the `issuedAt` or `validFrom` value for the credential itself.
-* Each entry MUST contain a `provider` property. This value MUST be a JSON map array and it MUST contain a `name` property with a non-empty string.
+The validator SHALL inspect each entry in the `verifiedIdentities` array. For each entry, it SHALL verify each of the conditions stated in xref:#vc-credentialsubject-verifiedIdentities[xrefstyle=full] and issue the failure code `cawg.ica.verified_identities.invalid` if any condition stated there is unmet.
 
 NOTE: TO DO: Check with Leonard: Is there a way to annotate `self#jumbf` URIs with field references _inside_ a specific assertion? In other words, can we point to the specific entry in `verifiedIdentities` that was accepted or not accepted?
-
-NOTE: TO DO: More specific error reporting about specific conditions not found?
 
 ===== Status codes
 
