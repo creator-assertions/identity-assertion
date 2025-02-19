@@ -1315,7 +1315,7 @@ The validator SHALL obtain the unprotected `payload` of the `COSE_Sign1` data st
 
 If the validator is unable to parse the credential using either version of the Verifiable credentials data model, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_verifiable_credential`.
 
-NOTE: TO DO: Read W3C VC verification: https://www.w3.org/TR/vc-data-model-2.0/#verification (§7.1) and see if additional items need to be added here. Also figure out how to reconcile W3C "problem details" (§7.2) with C2PA validation status.
+NOTE: This specification defines a series of success and failure codes that align with the C2PA technical specification. A validator MAY also provide supplementary information to its client, such as “problem details” as defined in link:++https://www.w3.org/TR/vc-data-model-2.0/#verification++[Section 7.1, “Validation,”] of the W3C verifiable credentials data model specification.
 
 ====== Obtain the credential issuer’s public key
 
