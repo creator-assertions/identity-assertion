@@ -1396,6 +1396,10 @@ The validator SHALL inspect each entry in the `verifiedIdentities` array. For ea
 
 NOTE: TO DO: Check with Leonard: Is there a way to annotate `self#jumbf` URIs with field references _inside_ a specific assertion? In other words, can we point to the specific entry in `verifiedIdentities` that was accepted or not accepted?
 
+===== Success code
+
+If the validator has completed the process without generating any failure codes, it MUST issue the success code `cawg.ica.credential_valid` for this assertion.
+
 ===== Status codes
 
 NOTE: TO DO: Add table summarizing status code for ICA success and failure states.
