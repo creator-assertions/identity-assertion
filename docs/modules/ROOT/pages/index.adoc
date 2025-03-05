@@ -1252,7 +1252,7 @@ The COSE signature MUST be secured using one of the signature algorithms defined
 
 ===== DID methods
 
-The public key corresponding to the `issuer` field SHALL be discoverable using one of the link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID methods] as described in this section. This section defines:
+The public key corresponding to the `issuer` field SHALL be discoverable as a `verificationMethod` using one of the link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID methods] as described in this section. This section defines:
 
 * A list of DID methods that are allowed for providing public keys for new content as well as required for discovering public keys for existing content (the allowed list);
 * A list of DID methods that are required to be supported for discovering public keys for existing content but are not allowed for providing keys for of new content (the deprecated list).
@@ -1264,6 +1264,23 @@ Implementers SHOULD consult this section in the current version of this specific
 The allowed list is:
 
 * link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
+
+The deprecated list is empty.
+
+===== DID verification methods
+
+The `verificationMethod` containing the `issuer`’s public key SHALL be expressed in the DID document using an approved DID verification method type. This section defines:
+
+* A list of DID verification method types that are allowed for providing public keys for new content as well as required for discovering public keys for existing content (the allowed list);
+* A list of DID verification method types that are required to be supported for discovering public keys for existing content but are not allowed for providing keys for of new content (the deprecated list).
+
+A DID verification method type SHALL appear in no more than one list. If a DID verification method type does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding a DID method. For this reason, implementations SHALL NOT support additional DID verification method types on an optional basis.
+
+Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID verification method types conform to it.
+
+The allowed list is:
+
+* link:++https://www.w3.org/TR/did-extensions-properties/#jsonwebkey2020++[`JsonWebKey2020`]
 
 The deprecated list is empty.
 
