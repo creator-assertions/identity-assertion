@@ -1327,7 +1327,7 @@ The validator SHALL locate within the DID document the `assertionMethod` verific
 
 The validator SHALL verify that the `type` code for this public key is on the supported list of encryption algorithms.
 
-NOTE: TO DO: Add list of supported encryption types and the corresponding type codes.
+NOTE: TO DO: Add list of supported encryption types and the corresponding type codes. (Asking Drummond for list of encryption type names.)
 
 If the `type` code is unsupported, the validator MUST issue the failure code `cawg.ica.unsupported_alg` but MAY continue validation.
 
@@ -1396,7 +1396,7 @@ The validator SHALL inspect each entry in the `verifiedIdentities` array. For ea
 
 The validator MAY annotate entries in the `verifiedIdentities` array according to its own policies regarding trust or validity of each identity.
 
-NOTE: TO DO: Check with Leonard: Is there a way to annotate `self#jumbf` URIs with field references _inside_ a specific assertion? In other words, can we point to the specific entry in `verifiedIdentities` that was accepted or not accepted?
+NOTE: The C2PA validation status mechanism does not currently define a mechanism for signaling _which_ entry within a given assertion is the cause for a validation status entry. For that reason, it is RECOMMENDED that the validator provide an out-of-band signal which identifies which of the entries in `verifiedIdentities` is not accepted.
 
 ===== Success code
 
