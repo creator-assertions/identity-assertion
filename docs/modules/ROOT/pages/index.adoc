@@ -1331,7 +1331,7 @@ NOTE: TO DO: Add list of supported encryption types and the corresponding type c
 
 If the `type` code is unsupported, the validator MUST issue the failure code `cawg.ica.unsupported_alg` but MAY continue validation.
 
-NOTE: TO DO: Add verification of issuer DID against validator’s trust list(s).
+The validator SHALL verify that the issuer’s DID is present or can be traced to its preconfigured list of trustable entities. If the issuer is not verifiably trusted, the validator MUST issue the failure code `cawg.ica.untrusted_issuer` but MAY continue validation.
 
 ====== Verify the COSE signature
 
