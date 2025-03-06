@@ -1342,11 +1342,7 @@ The validator SHALL resolve the DID document as described in link:++https://www.
 
 The validator SHALL locate within the DID document the `assertionMethod` verification method as described in link:++https://www.w3.org/TR/did-1.0/#assertion++[Section 5.3.2, “Assertion,”] of the DID specification. This verification method SHALL contain public key material corresponding to the stated issuer. If the public key material can not be located, the validator MUST issue the failure code `cawg.ica.missing_public_key` but MAY continue validation.
 
-The validator SHALL verify that the `type` code for this public key is on the supported list of encryption algorithms.
-
-NOTE: TO DO: Add list of supported encryption types and the corresponding type codes. (Asking Drummond for list of encryption type names.)
-
-If the `type` code is unsupported, the validator MUST issue the failure code `cawg.ica.unsupported_alg` but MAY continue validation.
+The validator SHALL verify that the `type` code for this public key is on the supported list of DID verification methods as described in xref:_did_verification_methods[xrefstyle=full]. If the type is not supported, the validator MUST issue the failure code `cawg.ica.unsupported_alg` but MAY continue validation.
 
 The validator SHALL verify that the issuer’s DID is present or can be traced to its preconfigured list of trustable entities. If the issuer is not verifiably trusted, the validator MUST issue the failure code `cawg.ica.untrusted_issuer` but MAY continue validation.
 
