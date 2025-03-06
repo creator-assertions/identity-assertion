@@ -4,7 +4,7 @@ This repository contains the source material for the current working draft of th
 
 ## Governance
 
-This specification is subject to the [Community Specification License 1.0](https://github.com/CommunitySpecification/1.0).
+This specification is subject to the W3C Patent Policy (2004) as described in the [license.md](./license.md) file.
 
 ## Site build process
 
