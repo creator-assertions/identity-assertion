@@ -1417,7 +1417,111 @@ If the validator has completed the process without generating any failure codes,
 
 ===== Status codes
 
-NOTE: TO DO: Add table summarizing status code for ICA success and failure states.
+[width="100%",cols="4,3,10",options="header"]
+|=======================
+| Value
+| Status
+| Definition
+
+|`cawg.ica.credential_valid`
+| Success
+| The identity claims aggregation credential has passed all known validation requirements.
+
+|`cawg.ica.invalid_cose_sign1`
+| Failure
+| The `signature` value could not be parsed as a valid `COSE_Sign1` data structure.
+
+|`cawg.ica.invalid_alg`
+| Failure
+| The `alg` header is missing or references an unsupported signature algorithm.
+
+|`cawg.ica.invalid_content_type`
+| Failure
+| The `content type` header is missing or incorrect.
+
+|`cawg.ica.invalid_verifiable_credential`
+| Failure
+| The payload of the `COSE_Sign1` data structure is not valid as a Verifiable credential.
+
+|`cawg.ica.invalid_issuer`
+| Failure
+| The `issuer` field in the Verifiable credential is not a DID (<<decentralized identifier>>).
+
+|`cawg.ica.did_unsupported_method`
+| Failure
+| The `issuer` DID uses a DID method that is not supported by the validator.
+
+|`cawg.ica.did_unavailable`
+| Failure
+| The validator was unable to resolve the DID to its DID document.
+
+|`cawg.ica.missing_public_key`
+| Failure
+| The DID document did not contain a public key.
+
+|`cawg.ica.unsupported_alg`
+| Failure
+| The `type` code for the DID document’s public key is not supported.
+
+|`cawg.ica.untrusted_issuer`
+| Failure
+| The DID is issued from an untrusted source.
+
+|`cawg.ica.signature_mismatch`
+| Failure
+| The signature is not valid for the verifiable credential and the credential issuer’s public key.
+
+|`cawg.ica.time_stamp.validated`
+| Success
+| The `COSE_Sign1` data structure contained a valid RFDC 3161 timestamp.
+
+|`cawg.ica.time_stamp.invalid`
+| Failure
+| The `COSE_Sign1` data structure contained an invalid RFDC 3161 timestamp.
+
+|`cawg.ica.valid_from.missing`
+| Failure
+| The Verifiable credential did not contain an `issuanceDate` or `validFrom` field.
+
+|`cawg.ica.valid_from.invalid`
+| Failure
+| The Verifiable credential’s `issuanceDate` or `validFrom` date is invalid.
+
+|`cawg.ica.valid_until.invalid`
+| Failure
+| The Verifiable credential’s `expirationDate` or `validUntil` date is invalid.
+
+|`cawg.ica.revocation.unsupported`
+| Failure
+| The Verifiable credential’s `credentialStatus` field uses an unsupported revocation method.
+
+|`cawg.ica.revocation.unavailable`
+| Failure
+| The Verifiable credential’s revocation status could not be verified (e.g. due to network connection issues).
+
+|`cawg.ica.credential.not_revoked`
+| Success
+| The Verifiable credential was verified as not revoked.
+
+|`cawg.ica.credential.revoked`
+| Failure
+| The Verifiable credential was found to be revoked.
+
+|`cawg.ica.signer_payload.mismatch`
+| Failure
+| The `c2paAsset` field in the Verifiable credential does not match the `signer_payload` value in the identity assertion.
+
+|`cawg.ica.verified_identities.missing`
+| Failure
+| The `verifiedIdentities` field in the Verifiable credential is missing.
+
+|`cawg.ica.verified_identities.invalid`
+| Failure
+| One or more of the entries in `verifiedIdentities` is invalid.
+
+|=======================
+
+With the exception of `cawg.ica.credential_valid`, all of the above codes are failure codes.
 
 === X.509 certificates and COSE signatures
 
