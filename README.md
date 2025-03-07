@@ -1,10 +1,15 @@
-# Creator Assertions Working Group Identity Assertion
+# Creator Assertions Working Group :: Identity Assertion
 
-This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://creator-assertions.github.io/)'s identity assertion. A rendered version of this specification can be found [here](https://creator-assertions.github.io/identity/).
+This repository contains the source material for the current working draft of the [Creator Assertions Working Group](https://cawg.io/)'s identity assertion. A rendered version of this specification can be found [here](https://cawg.io/identity/).
 
 ## Governance
 
-This specification is subject to the [Community Specification License 1.0](https://github.com/CommunitySpecification/1.0).
+This specification is subject to:
+
+* The W3C Patent Policy (2004) as described in the [license.md](./license.md) file.
+* The DIF [Code of Conduct](https://bit.ly/DIF_code_of_conduct).
+* The DIF [CAWG Charter](https://github.com/decentralized-identity/org/blob/main/Org%20documents/WG%20documents/DIF_CAWG_WG_charter_v1.pdf).
+* The DIF [CAWG Operating Addendum](https://github.com/decentralized-identity/org/blob/main/Org%20documents/WG%20documents/DIF_CAWG_WG_Operating_Addendum_v1.pdf).
 
 ## Site build process
 
