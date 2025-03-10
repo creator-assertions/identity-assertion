@@ -43,6 +43,10 @@
       "type": "string",
       "format": "date-time"
     },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
     "credentialSubject": {
       "type": "object",
       "properties": {
