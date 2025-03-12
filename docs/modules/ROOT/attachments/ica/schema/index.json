@@ -256,27 +256,32 @@
     }
   },
   "required": ["type", "issuer", "validFrom", "credentialSubject"],
-  "definitions": {
+  "$defs": {
     "nonEmptyString": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "A non-empty string"
     },
     "nonEmptyUri": {
       "type": "string",
       "minLength": 1,
-      "format": "uri"
+      "format": "uri",
+      "description": "A non-empty URI string"
     },
     "identifiableObject": {
       "type": "object",
       "properties": {
         "id": {
-          "$ref": "#/definitions/nonEmptyUri"
+          "$ref": "#/$defs/nonEmptyUri",
+          "description": "The unique identifier URI"
         },
         "name": {
-          "$ref": "#/definitions/nonEmptyString"
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "The name of the object"
         }
       },
-      "required": ["id", "name"]
+      "required": ["id", "name"],
+      "description": "An object with an identifiable URI and name"
     }
   }
 }
