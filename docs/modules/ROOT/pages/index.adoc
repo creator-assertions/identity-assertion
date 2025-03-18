@@ -1263,6 +1263,8 @@ Other DID methods MAY be used but implementers are advised that such DIDs may no
 
 Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
 
+NOTE: A future version of this specification will likely align with the forthcoming work of the link:https://w3c.github.io/did-methods-wg-charter/2025/did-methods-wg.html[W3C DID Methods Working Group].
+
 ===== DID verification methods
 
 The `verificationMethod` containing the `issuer`’s public key SHALL be expressed in the DID document using a publicly-documented DID verification method type.
