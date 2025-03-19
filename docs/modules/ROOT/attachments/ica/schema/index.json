@@ -236,7 +236,7 @@
             },
             "role": {
               "type": "string",
-              "enum": ["cawg.creator", "cawg.contributor", "cawg.editor", "cawg.producer", "cawg.producer",
+              "enum": ["cawg.creator", "cawg.contributor", "cawg.editor", "cawg.producer",
                 "cawg.publisher", "cawg.sponsor", "cawg.translator"]
             },
             "expected_partial_claim": {
