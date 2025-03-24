@@ -3,11 +3,4 @@
 
 _This section is non-normative._
 
-This specification is an active working draft. If you wish to contribute to its development, you are invited to:
-
-* link:++https://creator-assertions.github.io/index.html#_contributing++[Read the CAWG contributing guide]
-* link:https://github.com/creator-assertions/identity-assertion/issues[File an issue for discussion]
-* link:https://github.com/creator-assertions/identity-assertion/pulls[File a pull request (suggested revision)]
-* link:++https://creator-assertions.github.io/index.html#_meeting_schedule++[Attend a working group meeting]
-* xref:maintainers[Contact one of the maintainers directly]
-
+This specification is an active working draft. If you wish to contribute to its development, please view the link:++https://creator-assertions.github.io/index.html#_contributing++[CAWG contributing guide].

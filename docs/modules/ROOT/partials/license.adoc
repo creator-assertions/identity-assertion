@@ -1,6 +1,8 @@
 [discrete]
 == License
 
-This specification is subject to the link:https://github.com/CommunitySpecification/1.0[Community Specification License 1.0].
+This specification is subject to the link:https://www.w3.org/Consortium/Patent-Policy-20040205/[W3C Patent Policy] (2004).
 
-Additional information about this specification's scope and governance can be found at the project’s link:https://github.com/creator-assertions/identity-assertion[GitHub repository (creator-assertions/identity-assertion)]. The Community Specification License documents at the root of that repository are the authoritative governance documents for this specification.
+For sample or reference code included in the specification itself, that code is subject to the link:https://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license], unless otherwise designated. In the case of any conflict or confusion within this specification repository between the W3C Patent Policy (2004) or other designated license, the terms of the W3C Patent Policy (2004) shall apply.
+
+These terms are inherited from the link:++https://github.com/decentralized-identity/org/blob/main/Org%20documents/Membership%20agreements/DIF%20Project%20Charter%20_4.0.3.pdf++[Decentralized Identity Foundation Project Charter].
