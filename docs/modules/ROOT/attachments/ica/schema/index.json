@@ -252,7 +252,7 @@
           "required": ["referenced_assertions", "sig_type"]
         }
       },
-      "required": ["id", "verifiedIdentities", "c2paAsset"]
+      "required": ["verifiedIdentities", "c2paAsset"]
     }
   },
   "required": ["type", "issuer", "validFrom", "credentialSubject"],
@@ -280,7 +280,7 @@
           "description": "The name of the object"
         }
       },
-      "required": ["id", "name"],
+      "required": ["name"],
       "description": "An object with an identifiable URI and name"
     }
   }
