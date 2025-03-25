@@ -1252,7 +1252,7 @@ The COSE signature MUST be secured using one of the signature algorithms defined
 
 ===== DID methods
 
-The public key corresponding to the `issuer` field SHALL be discoverable as a `verificationMethod` using a publicy-documented link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID method].
+The public key corresponding to the `issuer` field SHALL be discoverable as a `verificationMethod` using a publicly-documented link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID method].
 
 It is RECOMMENDED that *<<_identity_claims_aggregator,identity claims aggregators>>* use one of the DID methods from the list below:
 
