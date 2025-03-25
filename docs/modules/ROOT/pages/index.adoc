@@ -1267,9 +1267,10 @@ A DID method SHALL appear in no more than one list. If a DID method does not app
 
 Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
 
-The allowed list is:
+The did methods allowed should belong to either of the following groups:
 
-* link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
+* link:https://w3c.github.io/did-methods-wg-charter/2025/did-methods-wg.html[`did methods working group at the W3C`]
+* blockchain based did methods working group at the Decentralized Identity Foundation &lpar;DIF&rpar; &lpar;link pending&rpar;
 
 The deprecated list is empty.
 
