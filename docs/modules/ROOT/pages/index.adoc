@@ -13,11 +13,6 @@ Version 1.1 (adding identity claims aggregation) *Draft 25 March 2025* · xref:_
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
-[#maintainers]
-*Maintainers:*
-
-* mailto:scouten@adobe.com[Eric Scouten] (https://adobe.com[Adobe])
-
 include::partial$license.adoc[]
 include::partial$contributing.adoc[]
 include::partial$foreword.adoc[]
@@ -30,8 +25,6 @@ _This section is non-normative._
 === Scope
 
 This specification describes a _<<C2PA assertion>>_ that allows a _<<_named_actor,named actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_identity_assertion_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the _<<_named_actor,named actor>>_ and has not been tampered with.
-
-IMPORTANT: For purposes of the Community Specification License, the link:https://github.com/creator-assertions/identity-assertion/blob/main/scope.md[scope.md document] at the root of this project’s GitHub repository is the governing document of this specification’s scope.
 
 This specification draws upon and extends existing work from two standards organizations:
 
