@@ -136,3 +136,7 @@ _This section is non-normative._
 
 * Add optional `method` field for describing the technique used to verify account/URI control.
 * Add section on credential status / revocation.
+
+*25 March 2025*
+
+* Add JSON schema document.
