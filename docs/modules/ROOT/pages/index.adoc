@@ -1454,7 +1454,7 @@ If the validator has completed the process without generating any failure codes,
 | Failure
 | The validator was unable to resolve the DID to its DID document.
 
-|`cawg.ica.cawg.ica.invalid_did_document`
+|`cawg.ica.invalid_did_document`
 | Failure
 | The DID document could not be parsed or did not contain usable public key material.
 
