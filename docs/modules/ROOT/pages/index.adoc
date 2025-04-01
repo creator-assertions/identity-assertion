@@ -1516,8 +1516,6 @@ If the validator has completed the process without generating any failure codes,
 
 |=======================
 
-With the exception of `cawg.ica.credential_valid`, all of the above codes are failure codes.
-
 === X.509 certificates and COSE signatures
 
 In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
