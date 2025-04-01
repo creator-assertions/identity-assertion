@@ -1462,11 +1462,11 @@ If the validator has completed the process without generating any failure codes,
 
 |`cawg.ica.time_stamp.validated`
 | Success
-| The `COSE_Sign1` data structure contained a valid RFDC 3161 timestamp.
+| The `COSE_Sign1` data structure contained a valid RFC 3161 timestamp.
 
 |`cawg.ica.time_stamp.invalid`
 | Failure
-| The `COSE_Sign1` data structure contained an invalid RFDC 3161 timestamp.
+| The `COSE_Sign1` data structure contained an invalid RFC 3161 timestamp.
 
 |`cawg.ica.valid_from.missing`
 | Failure
