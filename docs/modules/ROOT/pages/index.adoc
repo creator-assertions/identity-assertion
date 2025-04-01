@@ -1339,9 +1339,9 @@ The validator SHALL obtain the identity of the identity claims aggregator by ins
 
 The validator SHALL resolve the DID document as described in link:++https://www.w3.org/TR/did-1.0/#did-resolution++[Section 7.1, “DID resolution,”] of the DID specification. If the DID uses a DID method that is unsupported by the validator, the validator MUST issue the failure code `cawg.ica.did_unsupported_method` but MAY continue validation. If the DID can not be resolved, the validator MUST issue the failure code `cawg.ica.did_unavailable` but MAY continue validation.
 
-The validator SHALL locate within the DID document the `assertionMethod` verification method as described in link:++https://www.w3.org/TR/did-1.0/#assertion++[Section 5.3.2, “Assertion,”] of the DID specification. This verification method SHALL contain public key material corresponding to the stated issuer. If the public key material can not be located, the validator MUST issue the failure code `cawg.ica.missing_public_key` but MAY continue validation.
+The validator SHALL parse the DID document and locate within the DID document the `assertionMethod` verification method as described in link:++https://www.w3.org/TR/did-1.0/#assertion++[Section 5.3.2, “Assertion,”] of the DID specification. This verification method SHALL contain public key material corresponding to the stated issuer. If the DID document can not be parsed or the public key material can not be located, the validator MUST issue the failure code `cawg.ica.invalid_did_document` but MAY continue validation.
 
-The validator SHALL verify that the `type` code for this public key is on the supported list of DID verification methods as described in xref:_did_verification_methods[xrefstyle=full]. If the type is not supported, the validator MUST issue the failure code `cawg.ica.unsupported_alg` but MAY continue validation.
+The validator SHALL verify that the `type` code for this public key is on the supported list of DID verification methods as described in xref:_did_verification_methods[xrefstyle=full]. If the type is not supported, the validator MUST issue the failure code `cawg.ica.invalid_did_document` but MAY continue validation.
 
 The validator SHALL verify that the issuer’s DID is present or can be traced to its preconfigured list of trustable entities. If the issuer is not verifiably trusted, the validator MUST issue the failure code `cawg.ica.untrusted_issuer` but MAY continue validation.
 
@@ -1454,13 +1454,9 @@ If the validator has completed the process without generating any failure codes,
 | Failure
 | The validator was unable to resolve the DID to its DID document.
 
-|`cawg.ica.missing_public_key`
+|`cawg.ica.cawg.ica.invalid_did_document`
 | Failure
-| The DID document did not contain a public key.
-
-|`cawg.ica.unsupported_alg`
-| Failure
-| The `type` code for the DID document’s public key is not supported.
+| The DID document could not be parsed or did not contain usable public key material.
 
 |`cawg.ica.untrusted_issuer`
 | Failure
