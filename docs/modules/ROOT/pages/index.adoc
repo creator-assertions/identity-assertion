@@ -1254,22 +1254,16 @@ The COSE signature MUST be secured using one of the signature algorithms defined
 
 The public key corresponding to the `issuer` field SHALL be discoverable as a `verificationMethod` using a publicly-documented link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID method].
 
-It is RECOMMENDED that *<<_identity_claims_aggregator,identity claims aggregators>>* use one of the DID methods from the list below:
-
-* link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
-* link:https://trustoverip.github.io/tswg-did-method-webs-specification/[`did:webs`]
+As of this writing, a current implementation of an *<<_identity_claims_aggregator,identity claims aggregators>>* uses `did:web`, so it is RECOMMENDED that ICA consumers be prepared to read that method.
 
 Other DID methods MAY be used but implementers are advised that such DIDs may not be widely understood by _<<_identity_assertion_consumer,identity assertion consumers>>._
 
-Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
-
-[NOTE]
-====
-A future version of this specification will likely align with the forthcoming work of the following working groups:
+A future version of this specification will likely align with the forthcoming work one or both of the following working groups:
 
 * link:https://w3c.github.io/did-methods-wg-charter/2025/did-methods-wg.html[W3C DID Methods Working Group]
-* Blockchain-based DID methods working group at DIF _(link pending)_
-====
+* link:https://github.com/decentralized-identity/did-methods[DID method working group at DIF]
+
+Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
 
 ===== DID verification methods
 
