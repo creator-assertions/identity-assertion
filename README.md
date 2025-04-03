@@ -15,7 +15,7 @@ This specification is subject to:
 
 The site content is built using [Antora](https://antora.org), which takes Asciidoc (.adoc) plain text files and renders them to HTML and other formats.
 
-The primary content of this document is available in [docs/modules/ROOT/pages/index.adoc](https://github.com/creator-assertions/identity-assertion/blob/main/docs/modules/ROOT/pages/index.adoc) in this repo.
+The primary content of this document is available in [docs/modules/ROOT/pages/index.adoc](https://github.com/decentralized-identity/cawg-identity-assertion/blob/main/docs/modules/ROOT/pages/index.adoc) in this repo.
 
 ## Local preview
 
