@@ -140,3 +140,7 @@ _This section is non-normative._
 *25 March 2025*
 
 * Add JSON schema document.
+
+*03 April 2025*
+
+* Add instructions for identity claims aggregation validators.

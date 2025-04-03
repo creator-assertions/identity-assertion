@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-Version 1.1 (adding identity claims aggregation) *Draft 25 March 2025* · xref:_version_history[]
+Version 1.1 (adding identity claims aggregation) *Draft 03 April 2025* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -1061,7 +1061,7 @@ The `verifiedIdentities[?].provider` property MUST be an object and MUST be pres
 
 [#vc-credentialsubject-verifiedidentity-provider-id]
 Identity provider ID::
-The `verifiedIdentities[?].provider.id` MUST be present and MUST be a valid URI that, when dereferenced, MUST result in a proof of authenticity of the _<<_identity_provider,identity provider>>._ This proof of authenticity of the _<<_identity_provider,identity provider>>_ MUST NOT be confused with the proof of verification of the _<<_named_actor,named actor>>._
+The `verifiedIdentities[?].provider.id` SHOULD be present. If present, it MUST be a valid URI that contains information about the _<<_identity_provider,identity provider>>._ This SHOULD NOT be confused with any information about the _<<_named_actor,named actor>>_ itself. It is RECOMMENDED that this resolve to a xref:_w3c_decentralized_identifier_document[xrefstyle=full] if one is available.
 
 [#vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
@@ -1236,12 +1236,6 @@ The inclusion of the `credentialSchema` property in a verifiable credential is O
 
 The inclusion of the `identity-claims-aggregation.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
 
-==== Recommendations for verifiers
-
-The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules.
-
-NOTE: `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
-
 ==== Verifiable credential proof mechanism
 
 The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured using a COSE signature as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[Section 3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure. As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
@@ -1258,25 +1252,263 @@ The COSE signature MUST be secured using one of the signature algorithms defined
 
 ===== DID methods
 
-The public key corresponding to the `issuer` field SHALL be discoverable using one of the link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID methods] as described in this section. This section defines:
+The public key corresponding to the `issuer` field SHALL be discoverable as a `verificationMethod` using a publicly-documented link:++https://www.w3.org/TR/did-core/#dfn-did-methods++[DID method].
 
-* A list of DID methods that are allowed for providing public keys for new content as well as required for discovering public keys for existing content (the allowed list);
-* A list of DID methods that are required to be supported for discovering public keys for existing content but are not allowed for providing keys for of new content (the deprecated list).
+As of this writing, a current implementation of an *<<_identity_claims_aggregator,identity claims aggregators>>* uses `did:web`, so it is RECOMMENDED that ICA consumers be prepared to read that method.
 
-A DID method SHALL appear in no more than one list. If a DID method does not appear in either list, it is forbidden and MUST NOT be used or supported. Algorithms can be removed from the lists in order to implement forbidding a DID method. For this reason, implementations SHALL NOT support additional DID methods on an optional basis.
+Other DID methods MAY be used but implementers are advised that such DIDs may not be widely understood by _<<_identity_assertion_consumer,identity assertion consumers>>._
+
+A future version of this specification will likely align with the forthcoming work of one or both of the following working groups:
+
+* link:https://w3c.github.io/did-methods-wg-charter/2025/did-methods-wg.html[W3C DID Methods Working Group]
+* link:https://github.com/decentralized-identity/did-methods[DID method working group at DIF]
 
 Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID methods conform to it.
 
-The allowed list is:
+===== DID verification methods
 
-* link:https://w3c-ccg.github.io/did-method-web/[`did:web`]
+The `verificationMethod` containing the `issuer`’s public key SHALL be expressed in the DID document using a publicly-documented DID verification method type.
 
-The deprecated list is empty.
+It is RECOMMENDED that *<<_identity_claims_aggregator,identity claims aggregators>>* use one of the DID verification methods from the list below:
 
-==== Validating an identity assertion with verifiable credentials
+* link:++https://www.w3.org/TR/did-extensions-properties/#jsonwebkey2020++[`JsonWebKey2020`]
 
-[#issue-156]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/156[issue #156]): Write section on validating.
+Other DID verification methods MAY be used but implementers are advised that such DID documents may not be widely understood by _<<_identity_assertion_consumer,identity assertion consumers>>._
+
+Implementers SHOULD consult this section in the current version of this specification when releasing software updates and ensure their supported DID verification methods conform to it.
+
+==== Validating an identity assertion with an identity claims aggregation credential
+
+If the value of `signer_payload.sig_type` is `cawg.identity_claims_aggregation`, the validator SHOULD proceed with validation of the `signature` value as described in the remainder of this section.
+
+A successful validation report SHOULD include the content of the verifiable credential and available information about the credential’s issuer.
+
+===== Prerequisites
+
+A validator shall maintain the following lists for identity claims aggregation credential issuers:
+
+* A list of direct issuers of identity claims aggregation that the validator considers trusted.
+* A list of trust anchors (issuers of identity claims aggregator credentials) that the validator considers trusted.
+
+IMPORTANT: As of this writing, the Creator Assertions Working Group has not provided guidance about which identity claims aggregators to consider trusted.
+
+===== W3C verifiable credentials verification
+
+The raw content of the `signature` value is expected to be a `COSE_Sign1` data structure as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full]. The validator SHALL follow the steps outlined in the following subsections in the order presented.
+
+====== Parse the `COSE_Sign1` structure
+
+The validator SHALL parse the full `signature` value as a `COSE_Sign1` object as described in link:++https://www.rfc-editor.org/rfc/rfc9052.html#name-signing-with-one-signer++[Section 4.2, “Signing with one signer,”] of RFC 9052. If parsing fails, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_cose_sign1`.
+
+The validator SHALL inspect the `COSE_Sign1` protected header `alg` to determine the cryptographic algorithm used to issue the signature. The `alg` value MUST be one of the following algorithm labels (corresponding to the values supported by the C2PA technical specification as of this writing):
+
+* -7 (ECDSA w/SHA-256)
+* -35 (ECDSA w/ SHA-384)
+* -36 (ECDSA w/ SHA-512)
+* -37 (RSASSA-PSS w/ SHA-256)
+* -38 (RSASSA-PSS w/ SHA-384)
+* -39 (RSASSA-PSS w/ SHA-512)
+* -8 (EdDSA)
+
+NOTE: Only the Ed25519 instance of EdDSA is supported.
+
+If the `alg` header contains any other value or is not present, the validator MUST issue the failure code `cawg.ica.invalid_alg` but MAY continue validation.
+
+The validator SHALL inspect the `COSE_Sign1` protected header `content type` to determine the content type of the enclosed credential. The `content type` header MUST be the exact value `application/vc`. If it is not, the validator MUST issue the failure code `cawg.ica.invalid_content_type` but MAY continue validation.
+
+====== Parse the verifiable credential
+
+The validator SHALL obtain the unprotected `payload` of the `COSE_Sign1` data structure. This payload is the raw JSON-LD content of the verifiable credential. A validator SHALL attempt to parse the core verifiable credential data syntax of this credential using the following methods:
+
+* link:++https://www.w3.org/TR/vc-data-model/#syntaxes++[Section 6, “Syntaxes,” of Verifiable credentials data model, version 1.1]
+* link:++https://www.w3.org/TR/vc-data-model-2.0/#syntaxes++[Section 6, “Syntaxes,” of Verifiable credentials data model, version 2.0]
+
+If the validator is unable to parse the credential using either version of the Verifiable credentials data model, the validator MUST stop validation at this point and issue the failure code `cawg.ica.invalid_verifiable_credential`.
+
+NOTE: This specification defines a series of success and failure codes that align with the C2PA technical specification. A validator MAY also provide supplementary information to its client, such as “problem details” as defined in link:++https://www.w3.org/TR/vc-data-model-2.0/#verification++[Section 7.1, “Validation,”] of the W3C verifiable credentials data model specification.
+
+====== Obtain the credential issuer’s public key
+
+The validator SHALL obtain the identity of the identity claims aggregator by inspecting the `issuer` field of the verifiable credential. The identity SHOULD be expressed as a DID (link:https://www.w3.org/TR/did-1.0/[decentralized identifier]), either as `issuer` itself or `issuer.id`. If no DID is located at either location, the validator MUST issue the failure code `cawg.ica.invalid_issuer` but MAY continue validation.
+
+The validator SHALL resolve the DID document as described in link:++https://www.w3.org/TR/did-1.0/#did-resolution++[Section 7.1, “DID resolution,”] of the DID specification. If the DID uses a DID method that is unsupported by the validator, the validator MUST issue the failure code `cawg.ica.did_unsupported_method` but MAY continue validation. If the DID can not be resolved, the validator MUST issue the failure code `cawg.ica.did_unavailable` but MAY continue validation.
+
+The validator SHALL parse the DID document and locate within the DID document the `assertionMethod` verification method as described in link:++https://www.w3.org/TR/did-1.0/#assertion++[Section 5.3.2, “Assertion,”] of the DID specification. This verification method SHALL contain public key material corresponding to the stated issuer. If the DID document can not be parsed or the public key material can not be located, the validator MUST issue the failure code `cawg.ica.invalid_did_document` but MAY continue validation.
+
+The validator SHALL verify that the `type` code for this public key is on the supported list of DID verification methods as described in xref:_did_verification_methods[xrefstyle=full]. If the type is not supported, the validator MUST issue the failure code `cawg.ica.invalid_did_document` but MAY continue validation.
+
+The validator SHALL verify that the issuer’s DID is present or can be traced to its preconfigured list of trustable entities. If the issuer is not verifiably trusted, the validator MUST issue the failure code `cawg.ica.untrusted_issuer` but MAY continue validation.
+
+====== Verify the COSE signature
+
+The validator SHALL verify the signature using the public key material just identified and the unsecured verifiable credential as payload as described by link:++https://www.rfc-editor.org/rfc/rfc9052#section-4.4++[Section 4.4, “Signing and verification process,”] of RFC 9052. If the signature does not match, the validator MUST issue the failure code `cawg.ica.signature_mismatch` but MAY continue validation.
+
+====== Verify the time stamp, if present
+
+The validator SHALL inspect the time stamp included in the `COSE_Sign1` data structure if it is present. This will be stored in a COSE unprotected header named `sigTst2`. If such a header is found, the validator SHALL follow the procedure described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification. If the validation is successful, the validator MUST issue the success code `cawg.ica.time_stamp.validated`. If the validation is not successful, the validator MUST issue the status code `cawg.ica.time_stamp.invalid`. It MAY continue validation, but MUST NOT use the time stamp in any further validation calculation.
+
+IMPORTANT: C2PA “version 1” time stamps are not supported when used in *<<_identity_assertion,identity assertions>>.* A validator SHOULD ignore any value found in a `sigTst` unprotected header.
+
+====== Verify the credential’s validity range
+
+The validator SHALL inspect the credential's effective date. This may be stored as `issuanceDate` or `validFrom`, depending on the version of the verifiable credentials data model in use. If this field is missing, the validator MUST issue the failure code `cawg.ica.valid_from.missing` but MAY continue validation.
+
+The validator SHALL compare the effective date of the credential against each of the following values, if available:
+
+* Current date and time
+* Time stamp for the C2PA Manifest as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
+* Time stamp for the COSE signature as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full]
+
+If the credential’s effective date is later than any of the above values, the validator MUST issue the failure code `cawg.ica.valid_from.invalid` but MAY continue validation.
+
+If the credential contains an expiration date, the validator SHALL inspect that date. This may be stored as `expirationDate` or `validUntil`, depending on the version of the verifiable credentials data model in use. If this field is missing, the validator SHALL proceed without issuing any status code.
+
+If the expiration date is present, the validator SHALL compare the expiration date of the credential against each of the following values, if available:
+
+* Current date and time
+* Time stamp for the C2PA Manifest as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
+* Time stamp for the COSE signature as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full]
+
+If the credential’s expiration date is earlier than any of the above values, the validator MUST issue the failure code `cawg.ica.valid_until.invalid` but MAY continue validation.
+
+====== Verify the credential’s revocation status
+
+If the credential contains a `credentialStatus` entry, the validator SHALL inspect the contents of that entry. If the entry contains an entry with its `statusPurpose` set to `revocation`, the validator SHALL follow the procedures described as described by the corresponding `type` entry.
+
+If the `credentialStatus` entry is present but does not contain a revocation list supported by the validator, the validator MAY continue validation and SHOULD issue the failure code `cawg.ica.revocation.unsupported`.
+
+If the `credentialStatus` entry contains a revocation list that is supported by the validator but is inaccessible (e.g. due to network connection issues), the validator MAY continue validation and SHOULD issue the failure code `cawg.ica.revocation.unavailable`.
+
+If the validator is able to complete the revocation status check, it should respond as follows:
+
+* If the status check indicates that the credential has not been revoked, the validator SHOULD continue validation and SHOULD issue the success code `cawg.ica.credential.not_revoked`.
+* If the status check indicates that the credential has been revoked, the validator SHOULD NOT continue validation and MUST issue the failure code `cawg.ica.credential.revoked`.
+
+NOTE: This specification recommends that issuers and validators support the `BitstringStatusListEntry` type as defined by the link:https://www.w3.org/TR/vc-bitstring-status-list/[Bitstring status list] specification (in 1.0 draft status as of this writing).
+
+====== Verify the credential’s schema
+
+NOTE: TO DO: Compare credential against JSON-LD schema. From earlier draft: The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules. `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
+
+===== Verify binding to C2PA asset
+
+The validator SHALL take the content of `signer_payload` in the *<<_identity_assertion,identity assertion>>* and perform the transformations from CBOR to JSON as described in xref:_binding_to_c2pa_asset[xrefstyle=full]. The validator SHALL then compare the transformed `signer_payload` data structure to the `c2paAsset` field contained within the verifiable credential’s `credentialSubject` field. If the data structures do not match, the validator MUST issue the failure code `cawg.ica.signer_payload.mismatch` but MAY continue validation.
+
+===== Verify verified identities
+
+The validator SHALL inspect the contents of the `verifiedIdentities` field contained within the verifiable credential’s `credentialSubject` field. If this field is missing, if it is not a JSON array, or if it is an empty array, the validator MUST issue the failure code `cawg.ica.verified_identities.missing` but MAY continue validation.
+
+The validator SHALL inspect each entry in the `verifiedIdentities` array. For each entry, it SHALL verify each of the conditions stated in xref:#vc-credentialsubject-verifiedIdentities[xrefstyle=full] and issue the failure code `cawg.ica.verified_identities.invalid` if any condition stated there is unmet.
+
+The validator MAY annotate entries in the `verifiedIdentities` array according to its own policies regarding trust or validity of each identity.
+
+NOTE: The C2PA validation status mechanism does not currently define a mechanism for signaling _which_ entry within a given assertion is the cause for a validation status entry. For that reason, it is RECOMMENDED that the validator provide an out-of-band signal which identifies which of the entries in `verifiedIdentities` is not accepted.
+
+===== Success code
+
+If the validator has completed the process without generating any failure codes, it MUST issue the success code `cawg.ica.credential_valid` for this assertion.
+
+===== Status codes
+
+[width="100%",cols="4,3,10",options="header"]
+|=======================
+| Value
+| Status
+| Definition
+
+|`cawg.ica.credential_valid`
+| Success
+| The identity claims aggregation credential has passed all known validation requirements.
+
+|`cawg.ica.invalid_cose_sign1`
+| Failure
+| The `signature` value could not be parsed as a valid `COSE_Sign1` data structure.
+
+|`cawg.ica.invalid_alg`
+| Failure
+| The `alg` header is missing or references an unsupported signature algorithm.
+
+|`cawg.ica.invalid_content_type`
+| Failure
+| The `content type` header is missing or incorrect.
+
+|`cawg.ica.invalid_verifiable_credential`
+| Failure
+| The payload of the `COSE_Sign1` data structure is not valid as a Verifiable credential.
+
+|`cawg.ica.invalid_issuer`
+| Failure
+| The `issuer` field in the Verifiable credential is not a DID (<<decentralized identifier>>).
+
+|`cawg.ica.did_unsupported_method`
+| Failure
+| The `issuer` DID uses a DID method that is not supported by the validator.
+
+|`cawg.ica.did_unavailable`
+| Failure
+| The validator was unable to resolve the DID to its DID document.
+
+|`cawg.ica.invalid_did_document`
+| Failure
+| The DID document could not be parsed or did not contain usable public key material.
+
+|`cawg.ica.untrusted_issuer`
+| Failure
+| The DID is issued from an untrusted source.
+
+|`cawg.ica.signature_mismatch`
+| Failure
+| The signature is not valid for the verifiable credential and the credential issuer’s public key.
+
+|`cawg.ica.time_stamp.validated`
+| Success
+| The `COSE_Sign1` data structure contained a valid RFC 3161 timestamp.
+
+|`cawg.ica.time_stamp.invalid`
+| Failure
+| The `COSE_Sign1` data structure contained an invalid RFC 3161 timestamp.
+
+|`cawg.ica.valid_from.missing`
+| Failure
+| The Verifiable credential did not contain an `issuanceDate` or `validFrom` field.
+
+|`cawg.ica.valid_from.invalid`
+| Failure
+| The Verifiable credential’s `issuanceDate` or `validFrom` date is invalid.
+
+|`cawg.ica.valid_until.invalid`
+| Failure
+| The Verifiable credential’s `expirationDate` or `validUntil` date is invalid.
+
+|`cawg.ica.revocation.unsupported`
+| Failure
+| The Verifiable credential’s `credentialStatus` field uses an unsupported revocation method.
+
+|`cawg.ica.revocation.unavailable`
+| Failure
+| The Verifiable credential’s revocation status could not be verified (e.g. due to network connection issues).
+
+|`cawg.ica.credential.not_revoked`
+| Success
+| The Verifiable credential was verified as not revoked.
+
+|`cawg.ica.credential.revoked`
+| Failure
+| The Verifiable credential was found to be revoked.
+
+|`cawg.ica.signer_payload.mismatch`
+| Failure
+| The `c2paAsset` field in the Verifiable credential does not match the `signer_payload` value in the identity assertion.
+
+|`cawg.ica.verified_identities.missing`
+| Failure
+| The `verifiedIdentities` field in the Verifiable credential is missing.
+
+|`cawg.ica.verified_identities.invalid`
+| Failure
+| One or more of the entries in `verifiedIdentities` is invalid.
+
+|=======================
 
 === X.509 certificates and COSE signatures
 
