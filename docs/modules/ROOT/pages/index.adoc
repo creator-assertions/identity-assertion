@@ -1258,7 +1258,7 @@ As of this writing, a current implementation of an *<<_identity_claims_aggregato
 
 Other DID methods MAY be used but implementers are advised that such DIDs may not be widely understood by _<<_identity_assertion_consumer,identity assertion consumers>>._
 
-A future version of this specification will likely align with the forthcoming work one or both of the following working groups:
+A future version of this specification will likely align with the forthcoming work of one or both of the following working groups:
 
 * link:https://w3c.github.io/did-methods-wg-charter/2025/did-methods-wg.html[W3C DID Methods Working Group]
 * link:https://github.com/decentralized-identity/did-methods[DID method working group at DIF]
