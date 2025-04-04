@@ -3,4 +3,4 @@
 
 _This section is non-normative._
 
-This specification is an active working draft. If you wish to contribute to its development, please view the link:++https://creator-assertions.github.io/index.html#_contributing++[CAWG contributing guide].
+This specification is an active working draft. If you wish to contribute to its development, please view the link:++https://cawg.io/#_contributing++[CAWG contributing guide].

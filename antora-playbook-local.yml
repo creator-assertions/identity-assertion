@@ -10,7 +10,7 @@ content:
     start_path: docs
 ui: 
   bundle:
-    url: https://creator-assertions.github.io/antora-ui/ui-bundle-local.zip
+    url: https://cawg.io/antora-ui/ui-bundle-local.zip
     snapshot: true
 antora:
   extensions:
