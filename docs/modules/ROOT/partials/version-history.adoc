@@ -144,3 +144,7 @@ _This section is non-normative._
 *03 April 2025*
 
 * Add instructions for identity claims aggregation validators.
+
+*14 April 2025*
+
+* Transition to DIF draft specification.
