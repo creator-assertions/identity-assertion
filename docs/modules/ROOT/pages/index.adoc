@@ -1199,9 +1199,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
 ----
 ====
 
-[#issue-152]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/152[issue #152]): Track changes to draft schema and ensure example is correctly updated.
-
 ==== Data verification schema
 
 The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_identity_claims_aggregation_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://cawg.io/identity/1.1/ica/schema/`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
